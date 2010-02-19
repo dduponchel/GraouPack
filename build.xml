@@ -1,0 +1,174 @@
+<project name="IzPack Js Builder" default="build" basedir=".">
+	
+	<target name="build"
+		depends="load.properties, clean, js.check.all, js.minify.all"
+		description="Release builder">
+	</target>
+	
+	<target name="quickbuild"
+		depends="load.properties, clean, js.minify.all"
+		description="Release builder">
+	</target>
+	
+	
+	<!--                            -->
+	<!--            init            -->
+	<!--                            -->
+	<target name="load.properties">
+		
+		<!-- source files -->
+		<path id="js.srcFiles">
+			<fileset dir="js/src">
+				<include name="*.js" />
+			</fileset>
+			<fileset dir="js/src/xml">
+				<include name="*.js" />
+			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/generator">
+				<include name="GenericGenerator.js" />
+			</fileset>
+			<fileset dir="js/src/generator">
+				<include name="*.js" />
+				<exclude name="GenericGenerator.js" />
+			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/tab">
+				<include name="GenericTab.js" />
+			</fileset>
+			<fileset dir="js/src/tab">
+				<include name="*.js" />
+				<exclude name="GenericTab.js" />
+			</fileset>
+		</path>
+
+		<property name="target" value="target"/>
+		<property name="target.concatFile.path" value="${target}/izpack.js"/>
+		<property name="target.minFile.path" value="${target}/izpack.min.js"/>
+		<path id="target.concatFile">
+			<fileset dir=".">
+				<include name="${target.concatFile.path}"/>
+			</fileset>
+		</path>
+		<path id="target.minFile">
+			<fileset dir=".">
+				<include name="${target.minFile.path}"/>
+			</fileset>
+		</path>
+		
+		
+		<!-- compressor -->
+		<property name="lib.dir"
+			value="build"
+			description="compression librairies dir" />
+		
+		<property
+			name="yui.compressor"
+			value="${lib.dir}/yuicompressor-2.4.2.jar"
+			description="YUI compressor" />
+		
+		<!-- syntax check -->
+		<property
+			name="rhino.jar"
+			value="${lib.dir}/rhino-1.7R2.jar"
+			description="Rhino javascript engine" />
+		
+		<property
+			name="syntax.check"
+			value="${lib.dir}/jslint/syntaxcheck.js"
+			description="syntax check file" />
+	</target>
+	
+	
+	<!--                            -->
+	<!--       concatenation        -->
+	<!--                            -->
+	<target
+		description="JavaScript concatenation"
+		name="js.concatenate"
+		depends="load.properties">
+		
+		<mkdir dir="${target}" />
+		<concat destfile="${target.concatFile.path}">
+			<path refid="js.srcFiles" />
+		</concat>
+	</target>
+	
+	
+	<!--                            -->
+	<!--        syntax check        -->
+	<!--                            -->
+	<target
+		description="JavaScript each file syntax check"
+		name="js.check.all"
+		depends="load.properties">
+		
+		<apply executable="java" parallel="false">
+			
+			<path refid="js.srcFiles" />
+			
+			<arg line="-jar" />
+			<arg path="${rhino.jar}" />
+			<arg line="${syntax.check}" />
+			<srcfile />
+		</apply>
+		
+		<resourcecount property="count.srcFiles">
+			<path refid="js.srcFiles" />
+		</resourcecount>
+		<echo>${count.srcFiles} files checked</echo>
+		
+	</target>
+	
+	<!--                            -->
+	<!--        minification        -->
+	<!--                            -->
+	<target
+		description="JavaScript minification"
+		name="js.minify.all"
+		depends="load.properties, js.concatenate">
+	
+		<apply executable="java" parallel="false">
+			
+			<path refid="target.concatFile" />
+			
+			<arg line="-jar" />
+			<arg path="${yui.compressor}" />
+			<!--<arg line="${target.concatFile}" />-->
+			<srcfile />
+			<arg line="-o" />
+			<mapper type="glob"
+				from="*.js"
+				to="*.min.js" />
+			<targetfile />
+		</apply>
+
+
+		<length property="length.uncompressed">
+			<path refid="target.concatFile" />
+		</length>
+		<echo>uncompressed : ${length.uncompressed}</echo>
+		
+		<length property="length.compressed">
+			<path refid="target.minFile" />
+		</length>
+		<echo>compressed :   ${length.compressed}</echo>
+
+		<delete>
+			<path refid="target.concatFile" />
+		</delete>
+	</target>
+	
+	<!--                            -->
+	<!--            clean           -->
+	<!--                            -->
+	<target
+		description="Clean all built files."
+		name="clean"
+		depends="load.properties">
+		
+		<delete dir="${target}" />
+	</target>
+</project>

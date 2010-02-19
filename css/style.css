@@ -1,0 +1,9 @@
+form.aligned-form label {
+	width: 8em;
+	float: left;
+	margin-right: 0.5em;
+	text-align: right;
+}
+.aligned-button {
+	margin: 0.5em 0 0.5em 8.5em;
+}

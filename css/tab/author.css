@@ -1,0 +1,28 @@
+#tab-author .add span {
+	display: block;
+	background: url("../../img/add.png") no-repeat;
+	padding: 5px 5px 5px 32px;
+}
+
+#tab-author .trash {
+	width: 75px;
+	height: 75px;
+	float: right;
+	background: url("../../img/trash.png") no-repeat center #ccc;
+}
+#tab-author .trash-active {
+	background: url("../../img/trash.png") no-repeat center #ec5;
+}
+
+#tab-author ul.sortable {
+	float:left;
+	padding: 0;
+	margin: 0;
+	background: #eee;
+}
+
+#tab-author ul.sortable li, #tab-author ul.draggable li {
+	margin: 5px;
+	padding: 5px;
+	list-style-type: none;
+}
