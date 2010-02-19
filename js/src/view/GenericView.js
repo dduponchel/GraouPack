@@ -25,41 +25,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.tab");
+$.namespace("izpack.view");
 
-izpack.tab.General = function () {
+/**
+ * A generic tab.
+ * @param {String} name The internal name of the tab.
+ */
+izpack.view.GenericView = function (name) {
+	
+	/**
+	 * The name of the tab.
+	 */
+	this.name = name;
 
-	var appname = "#" + this.id + " input[name=tab-general-appname]";
-	var appversion = "#" + this.id + " input[name=tab-general-appversion]";
+	/**
+	 * The html id used for this tab.
+	 */
+	this.id = "tab-" + name;
+	
+	/**
+	 * the url of the associated view
+	 */
+	this.href = "html/" + this.id + ".html";
 
-	this.initView = function () {
-		// nothing to do
-	};
-
+	/**
+	 * Is the html view loaded ?
+	 */
+	this.viewLoaded = false;
+	
+        /**
+         * Verify if all required infos for this generator are here.
+         * @return {boolean} true if everything is ok, false otherwise.
+         */
 	this.validate = function () {
-		if (!this.viewLoaded) {
-			return false;
-		}
-		
-		$.validity.setup({
-			outputMode : "summary"
-		});
-
-		$.validity.start();
-
-		$(appname).require();
-		$(appversion).require();
-		
-		var result = $.validity.end();
-		return result.valid;
+		throw "validate must be overriden !";
 	};
 	
-	this.getAppName = function () {
-		return $.trim($(appname).val());
+	/**
+	 * This method is called when the view (html) is loaded.
+	 * It calls then the method initView.
+	 */
+	this.load = function () {
+		this.viewLoaded = true;
+		this.initView();
 	};
 	
-	this.getAppVersion = function () {
-		return $.trim($(appversion).val());
+	/**
+	 * Adds the UI logic (drag/drop, etc) as soon as the html tab is loaded.
+	 */
+	this.initView = function () {
+		throw "initView must be overriden !";
 	};
 };
-izpack.tab.General.prototype = new izpack.tab.GenericTab("general");

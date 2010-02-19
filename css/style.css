@@ -7,3 +7,11 @@ form.aligned-form label {
 .aligned-button {
 	margin: 0.5em 0 0.5em 8.5em;
 }
+
+.error-tab-highlight {
+	background-color: #f55;
+}
+
+.error-tab {
+	background-color: #ee8;
+}

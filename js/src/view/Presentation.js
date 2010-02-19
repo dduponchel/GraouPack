@@ -25,55 +25,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.tab");
+$.namespace("izpack.view");
 
-/**
- * A generic tab.
- * @param {String} name The internal name of the tab.
- */
-izpack.tab.GenericTab = function (name) {
-	
-	/**
-	 * The name of the tab.
-	 */
-	this.name = name;
-
-	/**
-	 * The html id used for this tab.
-	 */
-	this.id = "tab-" + name;
-	
-	/**
-	 * the url of the associated view
-	 */
-	this.href = "html/" + this.id + ".html";
-
-	/**
-	 * Is the html view loaded ?
-	 */
-	this.viewLoaded = false;
-	
-        /**
-         * Verify if all required infos for this generator are here.
-         * @return {boolean} true if everything is ok, false otherwise.
-         */
-	this.validate = function () {
-		throw "validate must be overriden !";
-	};
-	
-	/**
-	 * This method is called when the view (html) is loaded.
-	 * It calls then the method initView.
-	 */
-	this.load = function () {
-		this.viewLoaded = true;
-		this.initView();
-	};
-	
-	/**
-	 * Adds the UI logic (drag/drop, etc) as soon as the html tab is loaded.
-	 */
+izpack.view.Presentation = function () {
 	this.initView = function () {
-		throw "initView must be overriden !";
+		// nothing to do
+	};
+	
+	this.validate = function () {
+		return true; // no required field
 	};
 };
+izpack.view.Presentation.prototype = new izpack.view.GenericView("presentation");

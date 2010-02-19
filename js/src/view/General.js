@@ -25,15 +25,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.tab");
+$.namespace("izpack.view");
 
-izpack.tab.Presentation = function () {
+izpack.view.General = function () {
+
+	var appname = "#" + this.id + " input[name=tab-general-appname]";
+	var appversion = "#" + this.id + " input[name=tab-general-appversion]";
+
 	this.initView = function () {
 		// nothing to do
 	};
-	
+
 	this.validate = function () {
-		return true; // no required field
+		if (!this.viewLoaded) {
+			return false;
+		}
+		
+		$.validity.setup({
+			outputMode : "summary"
+		});
+
+		$.validity.start();
+
+		$(appname).require();
+		$(appversion).require();
+		
+		var result = $.validity.end();
+		return result.valid;
+	};
+	
+	this.getAppName = function () {
+		return $.trim($(appname).val());
+	};
+	
+	this.getAppVersion = function () {
+		return $.trim($(appversion).val());
 	};
 };
-izpack.tab.Presentation.prototype = new izpack.tab.GenericTab("presentation");
+izpack.view.General.prototype = new izpack.view.GenericView("general");

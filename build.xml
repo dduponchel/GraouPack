@@ -35,12 +35,12 @@
 			</fileset>
 
 			<!-- we want first the mother class -->
-			<fileset dir="js/src/tab">
-				<include name="GenericTab.js" />
+			<fileset dir="js/src/view">
+				<include name="GenericView.js" />
 			</fileset>
-			<fileset dir="js/src/tab">
+			<fileset dir="js/src/view">
 				<include name="*.js" />
-				<exclude name="GenericTab.js" />
+				<exclude name="GenericView.js" />
 			</fileset>
 		</path>
 

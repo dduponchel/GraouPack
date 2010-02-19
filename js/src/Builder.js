@@ -38,7 +38,24 @@ izpack.Builder = function (htmlID) {
 	
 	var rootElt = $("#" + htmlID);
 	
-	var generators = [];
+	var tabs = [];
+
+	var addErrorTab = function (index) {
+		tabs[index].htmlTab
+			.stop()
+			.css("background-color", "")
+			.removeClass("error-tab")
+			.addClass("error-tab-highlight")
+			.switchClass("error-tab-highlight", "error-tab", "slow");
+	};
+	
+	var removeErrorTab = function (index) {
+		tabs[index].htmlTab
+			.stop()
+			.removeClass("error-tab")
+			.removeClass("error-tab-highlight")
+			.css("background-color", "transparent");
+	};
 	
 	/**
 	 * Add a panel for more functionalities !
@@ -54,22 +71,23 @@ izpack.Builder = function (htmlID) {
 		
 		var generator = new izpack.generator[settings.name]();
 		generator.label = settings.label;
-		var tab = new izpack.tab[settings.name]();
+		var view = new izpack.view[settings.name]();
 		
-		generator.view = tab;
+		generator.view = view;
 		
-		generators.push({
-			name:		settings.name,
-			tab:		tab,
-			generator:	generator,
-			label:		settings.label
-		});
-		
+		var htmlTab = $("<a></a>").attr("href", view.href).text(settings.label);
+
 		$(" > ul", rootElt).append(
-			$("<li></li>").data("optional", settings.optional).append(
-				$("<a></a>").attr("href", tab.href).text(settings.label)
-			)
+			$("<li></li>").data("optional", settings.optional).append(htmlTab)
 		);
+		
+		tabs.push({
+			name:		settings.name,
+			view:		view,
+			generator:	generator,
+			label:		settings.label,
+			htmlTab:	htmlTab
+		});
 	};
 	
 	/**
@@ -79,32 +97,40 @@ izpack.Builder = function (htmlID) {
 		rootElt.tabs({
 			cache : true,
 			load : function (event, ui) {
-				generators[ui.index].tab.load();
+				tabs[ui.index].view.load();
+			},
+			show : function (event, ui) {
+				// remove any error / error animation
+				removeErrorTab(ui.index);
 			}
 		});
 	};
 
 
-	this.validateAll = function () {
+	var validateAll = function () {
 		var fails = [];
-		for (var index  = 0; index < generators.length; index++) {
-			var generator = generators[index].generator;
-			if (!generator.validate()) {
-				fails.push(generator.name);
+		for (var index  = 0; index < tabs.length; index++) {
+			var tab = tabs[index];
+			if (!tab.generator.validate()) {
+				addErrorTab(index);
+				fails.push(tab.name);
+			}
+			else {
+				removeErrorTab(index);
 			}
 		}
 		if (fails.length) {
-			alert("tab(s) '" + fails + "' have errors");
+			//alert("tab(s) '" + fails + "' have errors");
 			return false;
 		}
 		return true;
 	};
 	
-	this.generateXML = function () {
-		if (that.validateAll()) {
+	var generateXML = function () {
+		if (validateAll()) {
 			var xml = new izpack.xml.XMLBuilder();
-			for (var i = 0; i < generators.length; i++) {
-				var generator = generators[i].generator;
+			for (var i = 0; i < tabs.length; i++) {
+				var generator = tabs[i].generator;
 				generator.addXMLInfo(xml);
 			}
 			$("<div/>").text(xml.toString()).dialog({ title: 'generated XML' });
@@ -117,6 +143,6 @@ izpack.Builder = function (htmlID) {
 		.attr("type", "submit")
 		.val("generate xml")
 		.addClass("ui-state-default ui-corner-all")
-		.click(that.generateXML)
+		.click(generateXML)
 	);
 };

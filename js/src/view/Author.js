@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.tab");
+$.namespace("izpack.view");
 
-izpack.tab.Author = function () {
+izpack.view.Author = function () {
 	var fields =	"#" + this.id + " input";
 	var name =	"#" + this.id + " input[name=tab-author-name]";
 	var mail =	"#" + this.id + " input[name=tab-author-mail]";
@@ -94,4 +94,4 @@ izpack.tab.Author = function () {
 	};
 };
 
-izpack.tab.Author.prototype = new izpack.tab.GenericTab("author");
+izpack.view.Author.prototype = new izpack.view.GenericView("author");
