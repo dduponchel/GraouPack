@@ -45,7 +45,7 @@ izpack.tab.Locale = function () {
 		if (!this.viewLoaded) {
 			return false;
 		}
-		return $(selected).length !== 0;
+		return $(" li", selected).length !== 0;
 	};
 	
 	this.getLocales = function () {

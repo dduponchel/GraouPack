@@ -1,10 +1,10 @@
 #tab-locale ul {
 	background:#eee;
-	padding:1em;
+	padding:0.5em;
 	text-align:center;
 }
 
-#tab-locale li.ui-state-highlight {
+#tab-locale .ui-state-highlight {
 	height:1.1em;
 }
 
