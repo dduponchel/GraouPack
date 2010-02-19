@@ -88,7 +88,10 @@ izpack.xml.XMLBuilder = function () {
 	};
 	
 	/**
-	 * 
+	 * Create a new element on the current xml document.
+	 * @Param {String} name The name of the new element.
+	 * @Param {XMLElement} xmlParent The parent for the new element.
+	 * @Return {XMLElement} the created xml element.
 	 */
 	this.createElement = function (name, xmlParent) {
 		var newElement = this.xmlDocument.createElement(name);
