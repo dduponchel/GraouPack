@@ -84,6 +84,11 @@ izpack.xml.XMLBuilder = function () {
 	 * @return {String} the string representing the xml.
 	 */
 	this.toString = function () {
+		/*
+		 * TODO prettier output, indentation for example.
+		 * It can't pass by an xslt transformation : the effet of indent = "yes" depends of the browser (and firefox doesn't indent).
+		 * @see http://www.w3.org/TR/xslt#output : "indent specifies whether the XSLT processor <strong>may</strong> add additional whitespace when outputting the result tree; the value must be yes or no"
+		 */
 		return  new XMLSerializer().serializeToString(this.xmlDocument);
 	};
 	
