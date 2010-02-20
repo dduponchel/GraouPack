@@ -91,14 +91,34 @@ test("get: multiple runs", function() {
 
 
 test("toString: empty xml", function(){
-	equals(this.xmlBuilder.toString(), '<installation version="1.0"/>');
+	equals(this.xmlBuilder.toString(), '<installation version="1.0"/>\n');
 });
 
-test("toString: filled in xml", function(){
+test("toString: linear tree, indented xml", function(){
 	var appname = this.xmlBuilder.get("/installation/info/appname");
 	appname.setAttribute("test", true);
 	appname.textContent = "IzPack Js Builder";
-	equals(this.xmlBuilder.toString(), '<installation version="1.0"><info><appname test="true">IzPack Js Builder</appname></info></installation>');
+	equals(this.xmlBuilder.toString(), 
+		'<installation version="1.0">\n' +
+		'\t<info>\n' +
+		'\t\t<appname test="true">IzPack Js Builder</appname>\n' +
+		'\t</info>\n' +
+		'</installation>\n');
+});
+
+test("toString: non linear tree, indented xml", function(){
+	var appname = this.xmlBuilder.get("/installation/info/appname");
+	appname.setAttribute("test", true);
+	appname.textContent = "IzPack Js Builder";
+	var appversion = this.xmlBuilder.get("/installation/info/appversion");
+	appversion.setAttribute("foo", "baz");
+	equals(this.xmlBuilder.toString(), 
+		'<installation version="1.0">\n' +
+		'\t<info>\n' +
+		'\t\t<appname test="true">IzPack Js Builder</appname>\n' +
+		'\t\t<appversion foo="baz"/>\n' + 
+		'\t</info>\n' +
+		'</installation>\n');
 });
 
 test("createElement: create a new element", function(){

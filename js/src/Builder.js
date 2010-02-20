@@ -133,7 +133,11 @@ izpack.Builder = function (htmlID) {
 				var generator = tabs[i].generator;
 				generator.addXMLInfo(xml);
 			}
-			$("<textarea/>").text(xml.toString()).dialog({ title: 'generated XML' });
+			$("<textarea/>").addClass("generated-xml").text(xml.toString()).dialog({
+				title: 'generated XML',
+				height: 500,
+				width: 700
+			}).css("width", ""); // override the width property
 		}
 		return false;
 	};

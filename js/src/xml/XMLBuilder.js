@@ -85,11 +85,60 @@ izpack.xml.XMLBuilder = function () {
 	 */
 	this.toString = function () {
 		/*
-		 * TODO prettier output, indentation for example.
 		 * It can't pass by an xslt transformation : the effet of indent = "yes" depends of the browser (and firefox doesn't indent).
 		 * @see http://www.w3.org/TR/xslt#output : "indent specifies whether the XSLT processor <strong>may</strong> add additional whitespace when outputting the result tree; the value must be yes or no"
 		 */
-		return  new XMLSerializer().serializeToString(this.xmlDocument);
+		var initialXml = new XMLSerializer().serializeToString(this.xmlDocument);
+		var xml = ""; // the result
+		var depth = 0;
+		var sameLine = false; // used when </foo> goes after <foo>bar
+		var fragments = initialXml.match(/<[^>]+>[^<]*/gi);
+		var append = function (fragment) {
+			xml += fragment;
+		};
+		var indent = function (depth) {
+			for (var i = 0; i < depth; i++) {
+				xml += "\t";
+			}
+		};
+		var newLine = function () {
+			xml += "\n";
+		};
+		for (var i = 0; i < fragments.length; i++) {
+			var fragment = fragments[i];
+			if (fragment.match(/>.+/)) { // <---->blabla
+				indent(depth);
+				sameLine = true;
+				append(fragment);
+			}
+			else if (fragment.match(/\/>$/)) { // <----/>
+				indent(depth);
+				append(fragment);
+				newLine();
+			}
+			else if (fragment.match(/<[^\/]+>/)) { // <---->
+				indent(depth++);
+				append(fragment);
+				newLine();
+			}
+			else if (fragment.match(/<\//)) { // </---->
+				if (sameLine) {
+					append(fragment);
+					sameLine = false;
+					newLine();
+				}
+				else {
+					indent(--depth);
+					append(fragment);
+					newLine();
+				}
+			}
+			else { // should not happen
+				append(fragment);
+			}
+		}
+
+		return xml;
 	};
 	
 	/**

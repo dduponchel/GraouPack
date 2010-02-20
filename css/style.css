@@ -1,3 +1,7 @@
+textarea.generated-xml {
+	width:95%;
+}
+
 form.aligned-form label {
 	width: 8em;
 	float: left;
