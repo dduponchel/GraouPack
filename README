@@ -10,9 +10,9 @@ Known limitations : since it runs in a browser, it will only be able to
 generate the xml. It's up to you to copy/paste it in a file, and run 
 IzPack's bin/compile on it.
 
-The main repository is on GitHub (http://github.com/dduponchel/GraouPack)
-and this app can be seen deployed on google app engine (http://graoupack.appspot.com/)
-thanks to DryDrop (http://drydrop.binaryage.com/).
+The main repository is on GitHub ( http://github.com/dduponchel/GraouPack )
+and this app can be seen deployed on google app engine ( http://graoupack.appspot.com/ )
+thanks to DryDrop ( http://drydrop.binaryage.com/ ).
 
 GraouPack is published under the terms of the new BSD License.
 Some third-party components (e.g., jQuery and its plugins) may be released
