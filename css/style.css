@@ -1,5 +1,9 @@
 textarea.generated-xml {
-	width:95%;
+	width: 95%;
+	height: 90%;
+}
+.dialog {
+	text-align : center;
 }
 
 form.aligned-form label {

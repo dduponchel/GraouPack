@@ -88,57 +88,84 @@ izpack.xml.XMLBuilder = function () {
 		 * It can't pass by an xslt transformation : the effet of indent = "yes" depends of the browser (and firefox doesn't indent).
 		 * @see http://www.w3.org/TR/xslt#output : "indent specifies whether the XSLT processor <strong>may</strong> add additional whitespace when outputting the result tree; the value must be yes or no"
 		 */
-		var initialXml = new XMLSerializer().serializeToString(this.xmlDocument);
-		var xml = ""; // the result
-		var depth = 0;
-		var sameLine = false; // used when </foo> goes after <foo>bar
-		var fragments = initialXml.match(/<[^>]+>[^<]*/gi);
-		var append = function (fragment) {
-			xml += fragment;
-		};
-		var indent = function (depth) {
-			for (var i = 0; i < depth; i++) {
-				xml += "\t";
-			}
-		};
-		var newLine = function () {
-			xml += "\n";
-		};
-		for (var i = 0; i < fragments.length; i++) {
-			var fragment = fragments[i];
-			if (fragment.match(/>.+/)) { // <---->blabla
-				indent(depth);
-				sameLine = true;
-				append(fragment);
-			}
-			else if (fragment.match(/\/>$/)) { // <----/>
-				indent(depth);
-				append(fragment);
-				newLine();
-			}
-			else if (fragment.match(/<[^\/]+>/)) { // <---->
-				indent(depth++);
-				append(fragment);
-				newLine();
-			}
-			else if (fragment.match(/<\//)) { // </---->
-				if (sameLine) {
-					append(fragment);
-					sameLine = false;
-					newLine();
+		
+		// from http://svg-edit.googlecode.com/svn/trunk/editor/svgcanvas.js
+		var convertToXMLReferences = function (input) {
+			var output = '';
+			for (var n = 0; n < input.length; n++) {
+				var c = input.charCodeAt(n);
+				if (c < 128) {
+					output += input[n];
 				}
-				else {
-					indent(--depth);
-					append(fragment);
-					newLine();
+				else if (c > 127) {
+					output += ("&#" + c + ";");
 				}
 			}
-			else { // should not happen
-				append(fragment);
+			return output;
+		};
+
+		var input = new XMLSerializer().serializeToString(this.xmlDocument);
+		var output = "";
+
+
+		// we can use E4X. /!\ don't use CDATA !
+		// see https://developer.mozilla.org/en/Parsing_and_serializing_XML#.22Pretty.22_serialization_of_DOM_trees_to_strings
+		if (typeof XML === "function") {
+			output = XML(input).toXMLString();
+		}
+		else { // without E4X, we must indent manually
+			var depth = 0;
+			var sameLine = false; // used when </foo> goes after <foo>bar
+			var fragments = input.match(/<[^>]+>[^<]*/gi);
+			var append = function (fragment) {
+				output += fragment;
+			};
+			var indent = function (depth) {
+				for (var i = 0; i < depth; i++) {
+					output += "  ";
+				}
+			};
+			var newLine = function () {
+				output += "\n";
+			};
+			for (var i = 0; i < fragments.length - 1; i++) {
+				var fragment = fragments[i];
+				if (fragment.match(/>.+/)) { // <---->blabla
+					indent(depth);
+					sameLine = true;
+					append(fragment);
+				}
+				else if (fragment.match(/\/>$/)) { // <----/>
+					indent(depth);
+					append(fragment);
+					newLine();
+				}
+				else if (fragment.match(/<[^\/]+>/)) { // <---->
+					indent(depth++);
+					append(fragment);
+					newLine();
+				}
+				else if (fragment.match(/<\//)) { // </---->
+					if (sameLine) {
+						append(fragment);
+						sameLine = false;
+						newLine();
+					}
+					else {
+						indent(--depth);
+						append(fragment);
+						newLine();
+					}
+				}
+				else { // should not happen
+					append(fragment);
+				}
 			}
+			append(fragments[fragments.length - 1]);
 		}
 
-		return xml;
+		output = convertToXMLReferences(output);
+		return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' + output;
 	};
 	
 	/**

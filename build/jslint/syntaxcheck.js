@@ -15,7 +15,7 @@ nomen: false, 		// true if names should be checked for initial underbars
 on: false, 		// true if HTML event handlers should be allowed
 passfail: false, 	// true if the scan should stop on first error
 plusplus: false, 	// true if ++ and -- should not be allowed
-predef: ["jQuery", "$", "izpack", "izpack.tab", "izpack.generator", "XMLSerializer"],	// an array of strings, the names of predefined global variables
+predef: ["jQuery", "$", "izpack", "izpack.tab", "izpack.generator", "XML", "XMLSerializer"],	// an array of strings, the names of predefined global variables
 regexp: false, 		// true if . should not be allowed in RegExp literals
 rhino: false, 		// true if the Rhino environment globals should be predefined
 sidebar: false, 	// true if the Windows Sidebar Gadgets globals should be predefined

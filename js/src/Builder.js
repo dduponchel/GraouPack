@@ -37,6 +37,13 @@ izpack.Builder = function (htmlID) {
 	var that = this;
 	
 	var rootElt = $("#" + htmlID);
+
+	var dialog = $("#GraouXML .dialog").dialog({
+		autoOpen : false,
+		title : "generated XML",
+		width : 700,
+		height : 500
+	});
 	
 	var tabs = [];
 
@@ -133,20 +140,26 @@ izpack.Builder = function (htmlID) {
 				var generator = tabs[i].generator;
 				generator.addXMLInfo(xml);
 			}
-			$("<textarea/>").addClass("generated-xml").text(xml.toString()).dialog({
-				title: 'generated XML',
-				height: 500,
-				width: 700
-			}).css("width", ""); // override the width property
+			try {
+				$(".generated-xml", dialog).text(xml.toString());
+			}
+			catch (e) {
+				alert(e);
+			}
+			dialog.dialog("open");
 		}
 		return false;
 	};
 	
-	rootElt.append(
-		$("<input/>")
-		.attr("type", "submit")
-		.val("generate xml")
-		.addClass("ui-state-default ui-corner-all")
-		.click(generateXML)
-	);
+	$("#GraouXML .generateXML button")
+	.addClass("ui-state-default ui-corner-all")
+	.click(generateXML);
+	
+
+	$("button", dialog).click(function () {
+		var b64 = $.base64.encode($(".generated-xml", dialog).text());
+		var win = window.open("data:application/xml;base64," + b64);
+		win.alert('Select "Save As..." in your browser to save this xml as an XML file.');
+		return false;
+	});
 };

@@ -32,4 +32,4 @@
 	if (!compat) {
 		alert("this browser doesn't seem to be recent enough to support this app.");
 	}
-})( );
+})();
