@@ -26,7 +26,7 @@
  */
 (function () {
 	var compat = 
-		XMLSerializer && typeof XMLSerializer === "function" &&
+		typeof XMLSerializer === "function" &&
 		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument === "function";
 
 	if (!compat) {
