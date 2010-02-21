@@ -82,7 +82,12 @@ izpack.Builder = function (htmlID) {
 		
 		generator.view = view;
 		
-		var htmlTab = $("<a></a>").attr("href", view.href).text(settings.label);
+		var htmlTab = $("<a></a>")
+		.attr("href", view.href)
+		.attr("title", settings.name)
+		.append(
+			$("<span/>").text(settings.label)
+		);
 
 		$(" > ul", rootElt).append(
 			$("<li></li>").data("optional", settings.optional).append(htmlTab)
