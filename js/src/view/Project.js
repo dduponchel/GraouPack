@@ -27,13 +27,17 @@
  
 $.namespace("izpack.view");
 
-izpack.view.Author = function () {
-	var fields =	"#" + this.id + " input";
-	var name =	"#" + this.id + " input[name=tab-author-name]";
-	var mail =	"#" + this.id + " input[name=tab-author-mail]";
-	var authors =	"#" + this.id + " ul";
-	var addButton =	"#" + this.id + " .add";
-	var trash =	"#" + this.id + " .trash";
+izpack.view.Project = function () {
+	
+	var appname = "#" + this.id + " input[name=tab-project-appname]";
+	var appversion = "#" + this.id + " input[name=tab-project-appversion]";
+	
+	var fields =	"#" + this.id + " fieldset.authors input";
+	var name =		"#" + this.id + " fieldset.authors input[name=tab-project-name]";
+	var mail =		"#" + this.id + " fieldset.authors input[name=tab-project-mail]";
+	var authors =	"#" + this.id + " fieldset.authors ul";
+	var addButton =	"#" + this.id + " fieldset.authors .add";
+	var trash =		"#" + this.id + " fieldset.authors .trash";
 
 	this.initView = function () {
 		$(authors).sortable();
@@ -90,8 +94,33 @@ izpack.view.Author = function () {
 	};
 
 	this.validate = function () {
-		return true; // authors are not required
+		if (!this.viewLoaded) {
+			return false;
+		}
+		
+		$.validity.setup({
+			outputMode : "summary"
+		});
+
+		$.validity.start();
+
+		// only appname / appversion are required
+		$(appname).require();
+		$(appversion).require();
+		
+		var result = $.validity.end();
+		return result.valid;
+
 	};
+	
+	this.getAppName = function () {
+		return $.trim($(appname).val());
+	};
+	
+	this.getAppVersion = function () {
+		return $.trim($(appversion).val());
+	};
+
 };
 
-izpack.view.Author.prototype = new izpack.view.GenericView("author");
+izpack.view.Project.prototype = new izpack.view.GenericView("project");

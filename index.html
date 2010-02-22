@@ -8,7 +8,7 @@
 	<link type="text/css" href="js/lib/jQuery.validity/jquery.validity.css" rel="stylesheet" />
 
 	<link type="text/css" href="css/tab/Locale.css" rel="stylesheet" />
-	<link type="text/css" href="css/tab/Author.css" rel="stylesheet" />
+	<link type="text/css" href="css/tab/Project.css" rel="stylesheet" />
 
 	<script type="text/javascript" src="js/src/CompatibilityCheck.js"></script>
 	
@@ -23,14 +23,12 @@
 	<script type="text/javascript" src="js/src/xml/XMLBuilder.js"></script>
 	
 	<script type="text/javascript" src="js/src/view/GenericView.js"></script>
-	<script type="text/javascript" src="js/src/view/Author.js"></script>
-	<script type="text/javascript" src="js/src/view/General.js"></script>
+	<script type="text/javascript" src="js/src/view/Project.js"></script>
 	<script type="text/javascript" src="js/src/view/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/view/Locale.js"></script>
 	
 	<script type="text/javascript" src="js/src/generator/GenericGenerator.js"></script>
-	<script type="text/javascript" src="js/src/generator/Author.js"></script>
-	<script type="text/javascript" src="js/src/generator/General.js"></script>
+	<script type="text/javascript" src="js/src/generator/Project.js"></script>
 	<script type="text/javascript" src="js/src/generator/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/generator/Locale.js"></script>
 
@@ -60,8 +58,7 @@
 <script type="text/javascript">
 	var builder = new izpack.Builder("GraouPack");
 	builder.addPanel({label : "Presentation",	name : "Presentation"});
-	builder.addPanel({label : "the general panel",	name : "General"});
-	builder.addPanel({label : "the authors",	name : "Author"});
+	builder.addPanel({label : "my application",	name : "Project"});
 	builder.addPanel({label : "locales",		name : "Locale"});
 	builder.start();
 </script>

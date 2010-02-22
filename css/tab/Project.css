@@ -1,20 +1,20 @@
-#tab-author .add span {
+#tab-project .add span {
 	display: block;
 	background: url("../../img/add.png") no-repeat;
 	padding: 5px 5px 5px 32px;
 }
 
-#tab-author .trash {
+#tab-project .trash {
 	width: 75px;
 	height: 75px;
 	float: right;
 	background: url("../../img/trash.png") no-repeat center #ccc;
 }
-#tab-author .trash-active {
+#tab-project .trash-active {
 	background: url("../../img/trash.png") no-repeat center #ec5;
 }
 
-#tab-author ul.sortable {
+#tab-project ul.sortable {
 	float:left;
 	padding: 0;
 	margin: 0;

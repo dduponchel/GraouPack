@@ -27,7 +27,7 @@
  
 $.namespace("izpack.generator");
 
-izpack.generator.Author = function () {
+izpack.generator.Project = function () {
 
 	this.addXMLInfo = function (xmlBuilder) {
 		var authors = this.view.getAuthors();
@@ -40,7 +40,10 @@ izpack.generator.Author = function () {
 				authorXml.setAttribute("email", author.mail);
 			}
 		}
+
+		xmlBuilder.get("/installation/info/appname").textContent = this.view.getAppName();
+		xmlBuilder.get("/installation/info/appversion").textContent = this.view.getAppVersion();
 	};
 };
 
-izpack.generator.Author.prototype = new izpack.generator.GenericGenerator("author");
+izpack.generator.Project.prototype = new izpack.generator.GenericGenerator("project");

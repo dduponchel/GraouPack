@@ -25,13 +25,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+module("Generator General", {
+        setup: function(){
+                this.generator = new izpack.generator.Project();
+        },
+        teardown: function(){
+                this.generator = null;
+        }
+});
 
-izpack.generator.General = function () {
-
-	this.addXMLInfo = function (xmlBuilder) {
-		xmlBuilder.get("/installation/info/appname").textContent = this.view.getAppName();
-		xmlBuilder.get("/installation/info/appversion").textContent = this.view.getAppVersion();
+test("addXMLInfo: no authors", function () {
+	var mockXmlBuilder = {
+		testHolder: {},
+		get: function (path) {
+			this.testHolder[path] = {};
+			return this.testHolder[path];
+		}
 	};
-};
-izpack.generator.General.prototype = new izpack.generator.GenericGenerator("general");
+	
+	var mockView = {
+		getAppName : function(){return "appname"},
+		getAppVersion : function(){return "appversion"},
+		getAuthors : function(){return {}}
+	};
+	
+	this.generator.view = mockView;
+	this.generator.addXMLInfo(mockXmlBuilder);
+	
+	equals(mockXmlBuilder.testHolder["/installation/info/appname"].textContent, "appname", "appname setted");
+	equals(mockXmlBuilder.testHolder["/installation/info/appversion"].textContent, "appversion", "appversion setted");
+});
