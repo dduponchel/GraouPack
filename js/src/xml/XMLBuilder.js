@@ -105,6 +105,10 @@ izpack.xml.XMLBuilder = function () {
 		};
 
 		var input = new XMLSerializer().serializeToString(this.xmlDocument);
+		
+		// we don't always have an xml declaration : we remove it and add our own
+		input = input.replace(/<\?xml[^>]+>\s*/, "");
+		
 		var output = "";
 
 
@@ -161,10 +165,11 @@ izpack.xml.XMLBuilder = function () {
 					append(fragment);
 				}
 			}
-			append(fragments[fragments.length - 1]);
+			append(fragments[fragments.length - 1]); // no \n for the last one
 		}
 
 		output = convertToXMLReferences(output);
+		
 		return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' + output;
 	};
 	
