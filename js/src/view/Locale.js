@@ -45,7 +45,15 @@ izpack.view.Locale = function () {
 		if (!this.viewLoaded) {
 			return false;
 		}
-		return $(" li", selected).length !== 0;
+		var isValid = $(" li", selected).length !== 0;
+		
+		if (isValid) {
+			$(selected).removeClass("validity-erroneous");
+		}
+		else {
+			$(selected).addClass("validity-erroneous");
+		}
+		return isValid;
 	};
 	
 	this.getLocales = function () {
