@@ -26,8 +26,8 @@
  */
 (function () {
 	var compat = 
-		typeof XMLSerializer === "function" &&
-		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument === "function";
+		typeof XMLSerializer !== "undefined" &&
+		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined";
 
 	if (!compat) {
 		alert("this browser doesn't seem to be recent enough to support this app.");

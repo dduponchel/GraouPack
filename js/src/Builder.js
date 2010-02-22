@@ -140,18 +140,18 @@ izpack.Builder = function (htmlID) {
 	
 	var generateXML = function () {
 		if (validateAll()) {
-			var xml = new izpack.xml.XMLBuilder();
-			for (var i = 0; i < tabs.length; i++) {
-				var generator = tabs[i].generator;
-				generator.addXMLInfo(xml);
-			}
 			try {
+				var xml = new izpack.xml.XMLBuilder();
+				for (var i = 0; i < tabs.length; i++) {
+					var generator = tabs[i].generator;
+					generator.addXMLInfo(xml);
+				}
 				$(".generated-xml", dialog).text(xml.toString());
+				dialog.dialog("open");
 			}
 			catch (e) {
-				alert(e);
+				alert("Something went wrong with the xml generation !\n" + e);
 			}
-			dialog.dialog("open");
 		}
 		return false;
 	};
