@@ -21,8 +21,3 @@
 	background: #eee;
 }
 
-#tab-author ul.sortable li, #tab-author ul.draggable li {
-	margin: 5px;
-	padding: 5px;
-	list-style-type: none;
-}

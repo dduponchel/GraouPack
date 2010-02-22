@@ -23,3 +23,9 @@ form.aligned-form label {
 .error-tab {
 	background-color: #ee8;
 }
+
+ul.sortable li, ul.draggable li {
+	margin: 5px;
+	padding: 5px;
+	list-style-type: none;
+}
