@@ -76,9 +76,16 @@ izpack.Builder = function (htmlID) {
 		};
 		$.extend(settings, options);
 		
-		var generator = new izpack.generator[settings.name]();
-		generator.label = settings.label;
-		var view = new izpack.view[settings.name]();
+		var generator = {};
+		var view = {};
+		try {
+			generator = new izpack.generator[settings.name]();
+			generator.label = settings.label;
+			view = new izpack.view[settings.name]();
+		}
+		catch(e) {
+			throw "Creating '" + settings.name + "' tab : " + e;
+		}
 		
 		generator.view = view;
 		
