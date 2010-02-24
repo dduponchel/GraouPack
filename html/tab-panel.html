@@ -1,0 +1,134 @@
+<form id="tab-panel" class="ui-helper-clearfix ui-corner-all">
+<div>
+
+	<div class="tab-panel-available-place">
+		<h2>available panels</h2>
+		<div id="tab-panel-available" class="draggable">
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/HelloPanel-small.png" class="preview" alt="HelloPanel"/>
+				<div class="summary">
+					<h3>HelloPanel</h3>
+					<p>Welcomes the user with the project name, the version, the URL as well as the authors.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/HelloPanel.png" alt="screenshot"/>
+					<p>This panel welcomes the user by displaying the project name, the version, the URL as well as the authors.</p>
+					<p class="other-features">There are also an HTMLHelloPanel (rendering html instead of text) and a CheckedHelloPanel (checking the registry for a previous installation).</p>
+				</div>
+			</div>
+			
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/InfoPanel-small.png" class="preview" alt="InfoPanel"/>
+				<div class="summary">
+					<h3>InfoPanel</h3>
+					<p>This is a kind of 'README' panel.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/InfoPanel.png" alt="screenshot"/>
+					<p>This is a kind of 'README' panel. It presents text of any length.</p>
+					<p class="other-features">There is also an HTMLInfoPanel rendering html instead of text.</p>
+				</div>
+			</div>
+			
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/LicencePanel-small.png" class="preview" alt="LicencePanel"/>
+				<div class="summary">
+					<h3>LicencePanel</h3>
+					<p>Prompt the user to acknowledge a license agreement.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/LicencePanel.png" alt="screenshot"/>
+					<p>These panels can prompt the user to acknowledge a license agreement. They block unless the user selects the 'agree' option.</p>
+					<p class="other-features">There is also an HTMLLicencePanel rendering html instead of text.</p>
+				</div>
+			</div>
+			
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/TargetPanel-small.png" class="preview" alt="TargetPanel"/>
+				<div class="summary">
+					<h3>TargetPanel</h3>
+					<p>Allows the user to select the installation path.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/TargetPanel.png" alt="screenshot"/>
+					<p>This panel allows the user to select the installation path.</p>
+					<p class="other-features">The installation path can be customized and the "target directory will be created" dialog can be suppressed.</p>
+				</div>
+			</div>
+			
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/PacksPanel-small.png" class="preview" alt="PacksPanel"/>
+				<div class="summary">
+					<h3>PacksPanel</h3>
+					<p>Allows the user to select the packs he wants to install.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/PacksPanel.png" alt="screenshot"/>
+					<p>Allows the user to select the packs he wants to install.</p>
+					<p class="other-features">The packs can be required/optionnal and be grouped into installGroups. There are also an ImgPacksPanel (each pack has a different picture), a TreePacksPanel (uses a tree-like list instead of a simple list).</p>
+				</div>
+			</div>
+			
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/InstallPanel-small.png" class="preview" alt="InstallPanel"/>
+				<div class="summary">
+					<h3>InstallPanel</h3>
+					<p>Launches the installation process.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/InstallPanel.png" alt="screenshot"/>
+					<p>You should always have this one as it launches the installation process !</p>
+					<p class="other-features"></p>
+				</div>
+			</div>
+			
+			<div class="available-panel ui-helper-clearfix ui-corner-all">
+				<div class="action">
+					<img src="img/add.png" alt="add" class="add" /><br/>
+					<img src="img/help.png" alt="info" class="info" />
+				</div>
+				<img src="img/panel/SimpleFinishPanel-small.png" class="preview" alt="SimpleFinishPanel"/>
+				<div class="summary">
+					<h3>SimpleFinishPanel</h3>
+					<p>An ending panel.</p>
+				</div>
+				<div class="ui-helper-hidden detail">
+					<img src="img/panel/SimpleFinishPanel.png" alt="screenshot"/>
+					<p>An ending panel.</p>
+					<p class="other-features">There is also a FinishPanel able to write automated installer information.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab-panel-selected-place">
+		<h2>selected panels</h2>
+		<div id="tab-panel-selected" class="sortable"></div>
+	</div>
+
+</div>
+</form>
