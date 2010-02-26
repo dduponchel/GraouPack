@@ -28,6 +28,7 @@
 $.namespace("izpack.view");
 
 izpack.view.Project = function () {
+	izpack.view.GenericView.apply(this, [ "project" ]);
 	
 	this.appname = "#" + this.id + " fieldset.application input[name=tab-project-appname]";
 	this.appversion = "#" + this.id + " fieldset.application input[name=tab-project-appversion]";
@@ -36,19 +37,22 @@ izpack.view.Project = function () {
 	this.addAuthorName =		"#" + this.id + " fieldset.authors input[name=tab-project-name]";
 	this.addAuthorMail =		"#" + this.id + " fieldset.authors input[name=tab-project-mail]";
 	this.authors =	"#" + this.id + " fieldset.authors ul";
-	var addButton =	"#" + this.id + " fieldset.authors .add";
-	var trash =		"#" + this.id + " fieldset.authors .trash";
+	this.addButton =	"#" + this.id + " fieldset.authors .add";
+	this.trash =		"#" + this.id + " fieldset.authors .trash";
+};
 
-	this.addAuthor = function (name, mail) {
+izpack.view.Project.prototype = $.extend({}, izpack.view.GenericView.prototype, {
+
+	addAuthor : function (name, mail) {
 		$(this.authors).append(
 			$("<li/>").addClass("ui-state-default")
 				.append($("<span/>").addClass("name").text(name))
 				.append($("<span/>").text(" - "))
 				.append($("<span/>").addClass("mail").text(mail))
 		);
-	};
+	},
 	
-	this.initView = function () {
+	initView : function () {
 		$(this.authors)
 		.sortable({
 			update : function (event, ui) {
@@ -56,7 +60,7 @@ izpack.view.Project = function () {
 			}
 		});
 		
-		$(addButton).bind("click", {view: this}, function (event) {
+		$(this.addButton).bind("click", {view: this}, function (event) {
 			var view = event.data.view;
 			$.validity.setup({
 				outputMode : "summary"
@@ -79,7 +83,7 @@ izpack.view.Project = function () {
 			return false;
 		});
 		
-		$(trash)
+		$(this.trash)
 		.droppable({
 			accept : this.authors + " li",
 			tolerance : 'touch',
@@ -91,9 +95,9 @@ izpack.view.Project = function () {
 		.click(function () {
 			$("<div/>").text("To delete an author, drag/drop it on this trash can !").dialog({title : "Help"});
 		});
-	};
+	},
 	
-	this.getAuthors = function () {
+	getAuthors : function () {
 		var authorsRes = [];
 		$(this.authors + " li").each(function () {
 			authorsRes.push({
@@ -102,28 +106,25 @@ izpack.view.Project = function () {
 			});
 		});
 		return authorsRes;
-	};
-	this.setAuthors = function (authors) {
+	},
+	setAuthors : function (authors) {
 		$("li", this.authors).remove();
 		for (var i = 0; i < authors.length; i++) {
 			this.addAuthor(authors[i].name, authors[i].mail);
 		}
-	};
+	},
 
-	this.getAppName = function () {
+	getAppName : function () {
 		return $.trim($(this.appname).val());
-	};
-	this.setAppName = function (name) {
+	},
+	setAppName : function (name) {
 		$(this.appname).val(name);
-	};
+	},
 	
-	this.getAppVersion = function () {
+	getAppVersion : function () {
 		return $.trim($(this.appversion).val());
-	};
-	this.setAppVersion = function (version) {
+	},
+	setAppVersion : function (version) {
 		$(this.appversion).val(version);
-	};
-
-};
-
-izpack.view.Project.prototype = new izpack.view.GenericView("project");
+	}
+});

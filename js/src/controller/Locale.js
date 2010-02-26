@@ -27,8 +27,12 @@
  
 $.namespace("izpack.controller");
 
-izpack.controller.Locale = function () {
-	this.setBindings = function () {
+izpack.controller.Locale = function (view, blackBoard) {
+	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
+};
+
+izpack.controller.Locale.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+	setBindings : function () {
 		this.bind({
 			view: this.view.selected,
 			model: "locales",
@@ -37,6 +41,5 @@ izpack.controller.Locale = function () {
 			toView: this.view.setLocales,
 			constraints : [ "required" ]
 		});
-	};
-};
-izpack.controller.Locale.prototype = new izpack.controller.GenericController();
+	}
+});

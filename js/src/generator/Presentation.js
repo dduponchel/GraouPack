@@ -27,11 +27,16 @@
  
 $.namespace("izpack.generator");
 
-izpack.generator.Presentation = function () {
-	
-	this.addXMLInfo = function (xml) {
-		// does nothing
-	};
+izpack.generator.Presentation = function (blackBoard) {
+	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
 };
 
-izpack.generator.Presentation.prototype = new izpack.generator.GenericGenerator("presentation");
+izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+	
+	/**
+	 * @Override
+	 */
+	addXMLInfo : function (xml) {
+		// does nothing
+	}
+});

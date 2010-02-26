@@ -30,15 +30,21 @@ $.namespace("izpack.generator");
 /**
  * A generic generator.
  */
-izpack.generator.GenericGenerator = function () {
-	
-	this.blackBoard = null;
-	
+izpack.generator.GenericGenerator = function (blackBoard) {
+	/**
+	 * The black board having all datas.
+	 */
+	this.blackBoard = blackBoard;
+};
+
+izpack.generator.GenericGenerator.prototype = {
+
 	/**
 	 * Add infos from the html generator to the current xml dom tree.
 	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
 	 */
-	this.addXMLInfo = function (xmlBuilder) {
+	addXMLInfo : function (xmlBuilder) {
 		throw "addXMLInfo method must be overriden !";
-	};
+	}
 };
+

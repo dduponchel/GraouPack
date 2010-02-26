@@ -27,9 +27,13 @@
  
 $.namespace("izpack.controller");
 
-izpack.controller.Project = function () {
-	
-	this.setBindings = function () {	
+izpack.controller.Project = function (view, blackBoard) {
+	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
+};
+
+izpack.controller.Project.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+
+	setBindings : function () {	
 		
 		this.bind({
 			view: this.view.authors,
@@ -58,7 +62,5 @@ izpack.controller.Project = function () {
 			toView : this.view.setAppVersion,
 			constraints : [ "required" ]
 		});
-	};
-};
-
-izpack.controller.Project.prototype = new izpack.controller.GenericController();
+	}
+});

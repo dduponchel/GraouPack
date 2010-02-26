@@ -24,39 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.model");
 
-izpack.model.BlackBoard = function () {
-	this.data = {};
-};
-
-izpack.model.BlackBoard.prototype = {
-
-	get : function (key) {
-		console.debug("BlackBoard::get '" + key + "'");
-		return this.data[key];
-	},
-	
-	set : function (key, value) {
-		console.debug("BlackBoard::set '" + key + "' : ", value);
-		this.data[key] = value;
-	},
-	
-	add : function (key, value) {
-		console.debug("BlackBoard::add '" + key + "' : ", value);
-		if (!this.data[key]) {
-			this.data[key] = [];
-		}
-		this.data[key].push(value);
-	},
-	
-	isDefined : function (key) {
-		console.debug("BlackBoard::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
-		return (typeof this.data[key] !== "undefined");
-	},
-	
-	remove : function (key) {
-		delete this.data[key];
+var GeneratorHelper = {
+	getNewMockXmlBuilder : function () {
+		return {
+       		        testHolder: [],
+       		        get: function (path) {
+				this.testHolder[path] = {
+					attributes: {},
+					setAttribute: function(key, value) {
+						this.attributes[key] = value;
+					}
+				};
+				return this.testHolder[path];
+			},
+			createElement: function (name, xmlParent) {
+				if(!xmlParent.children) xmlParent.children = [];
+				var res = {
+					attributes: {},
+					setAttribute: function(key, value) {
+						this.attributes[key] = value;
+					}
+				};
+				xmlParent.children.push(res);
+				return res;
+			}
+		};
 	}
 };

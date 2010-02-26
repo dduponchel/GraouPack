@@ -27,13 +27,9 @@
  
 $.namespace("izpack.controller");
 
-izpack.controller.GenericController = function () {
-	this.blackBoard = null;
-	this.view = null;
-	
-	this.setBindings = function () {
-		throw "setBindings must be overriden !";
-	};
+izpack.controller.GenericController = function (view, blackBoard) {
+	this.view = view;
+	this.blackBoard = blackBoard;
 	
 	this.constraints = {
 		required : function (data, view) {
@@ -49,9 +45,15 @@ izpack.controller.GenericController = function () {
 		}
 	};
 
-	var bindings = [];
+	this.bindings = [];
+};
+
+izpack.controller.GenericController.prototype = {
+	setBindings : function () {
+		throw "setBindings must be overriden !";
+	},
 	
-	this.validateBinding = function (view, data, constraints) {
+	validateBinding : function (view, data, constraints) {
 		var isValid = true;
 		for (var i = 0; i < constraints.length; i++) {
 			var constraint = constraints[i];
@@ -64,9 +66,9 @@ izpack.controller.GenericController = function () {
 			$(view).addClass("error");
 		}
 		return isValid;
-	};
+	},
 	
-	this.bind = function (options) {
+	bind : function (options) {
 		var settings = {
 			view: "",
 			model: "",
@@ -86,28 +88,28 @@ izpack.controller.GenericController = function () {
 			this.blackBoard.set(settings.model, settings.defaultValue);
 		}
 		
-		bindings.push(settings);
-	};
+		this.bindings.push(settings);
+	},
 	
-	this.validate = function () {
+	validate : function () {
 		var isValid = true;
-		for (var i = 0; i < bindings.length; i++) {
-			var binding = bindings[i];
+		for (var i = 0; i < this.bindings.length; i++) {
+			var binding = this.bindings[i];
 			var viewData = binding.fromView.apply(this.view, [binding.view]);
 			isValid = this.validateBinding(binding.view, viewData, binding.constraints) && isValid;
 		}
 		return isValid;
-	};
+	},
 	
-	this.showView = function () {
-		console.debug("GenericController::showView ", this.view.name, ", setting " + bindings.length + " view items via binding");
-		for (var i = 0; i < bindings.length; i++) {
-			var binding = bindings[i];
+	showView : function () {
+		console.debug("GenericController::showView ", this.view.name, ", setting " + this.bindings.length + " view items via binding");
+		for (var i = 0; i < this.bindings.length; i++) {
+			var binding = this.bindings[i];
 			binding.toView.apply(this.view, [this.blackBoard.get(binding.model)]);
 		}
-	};
+	},
 	
-	this.initView = function () {
+	initView : function () {
 		console.debug("GenericController::initView ", this.view.name);
 		
 		this.view.load();
@@ -124,9 +126,9 @@ izpack.controller.GenericController = function () {
 		};
 		
 		// binding to the real elements
-		for (var i = 0; i < bindings.length; i++) {
-			var binding = bindings[i];
+		for (var i = 0; i < this.bindings.length; i++) {
+			var binding = this.bindings[i];
 			$(binding.view).bind(binding.event, {binding: binding, controller: this}, handler);
 		}
-	};
+	}
 };

@@ -26,8 +26,8 @@
  */
  
 function checkXMLElt(xml, name, children) {
-	equals(xml.childNodes.length, children, "number of children for " + name);
-	equals(xml.localName, name, "elt name for " + name);
+	equal(xml.childNodes.length, children, "number of children for " + name);
+	equal(xml.localName, name, "elt name for " + name);
 }
 
 module("XMLBuilder", {
@@ -52,7 +52,7 @@ test("get: empty", function() {
 
 test("get: root elt", function() {
 	var res = this.xmlBuilder.get("/installation");
-	equals(res.localName, "installation");
+	equal(res.localName, "installation");
 });
 
 test("get: sub sub elt", function() {
@@ -90,7 +90,7 @@ test("get: multiple runs", function() {
 });
 
 test("toString: empty xml", function(){
-	equals(this.xmlBuilder.toString(), 
+	equal(this.xmlBuilder.toString(), 
 		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' +
 		'<installation version="1.0"/>');
 });
@@ -99,7 +99,7 @@ test("toString: linear tree, indented xml", function(){
 	var appname = this.xmlBuilder.get("/installation/info/appname");
 	appname.setAttribute("test", true);
 	appname.textContent = "IzPack Js Builder";
-	equals(this.xmlBuilder.toString(), 
+	equal(this.xmlBuilder.toString(), 
 		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' +
 		'<installation version="1.0">\n' +
 		'  <info>\n' +
@@ -114,7 +114,7 @@ test("toString: non linear tree, indented xml", function(){
 	appname.textContent = "IzPack Js Builder";
 	var appversion = this.xmlBuilder.get("/installation/info/appversion");
 	appversion.setAttribute("foo", "baz");
-	equals(this.xmlBuilder.toString(), 
+	equal(this.xmlBuilder.toString(), 
 		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' +
 		'<installation version="1.0">\n' +
 		'  <info>\n' +
@@ -126,8 +126,8 @@ test("toString: non linear tree, indented xml", function(){
 
 test("createElement: create a new element", function(){
 	var info = this.xmlBuilder.get("/installation/info");
-	equals(0, info.childNodes.length, "no child");
+	equal(0, info.childNodes.length, "no child");
 	var appname = this.xmlBuilder.createElement("appname", info);
-	equals(1, info.childNodes.length, "a new child");
+	equal(1, info.childNodes.length, "a new child");
 	checkXMLElt(appname, "appname", 0);
 });

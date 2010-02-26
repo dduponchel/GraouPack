@@ -24,39 +24,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.model");
 
-izpack.model.BlackBoard = function () {
-	this.data = {};
-};
-
-izpack.model.BlackBoard.prototype = {
-
-	get : function (key) {
-		console.debug("BlackBoard::get '" + key + "'");
-		return this.data[key];
-	},
+var Helper = {
 	
-	set : function (key, value) {
-		console.debug("BlackBoard::set '" + key + "' : ", value);
-		this.data[key] = value;
-	},
-	
-	add : function (key, value) {
-		console.debug("BlackBoard::add '" + key + "' : ", value);
-		if (!this.data[key]) {
-			this.data[key] = [];
-		}
-		this.data[key].push(value);
-	},
-	
-	isDefined : function (key) {
-		console.debug("BlackBoard::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
-		return (typeof this.data[key] !== "undefined");
-	},
-	
-	remove : function (key) {
-		delete this.data[key];
+	getMockBlackBoardFrom : function (datas) {
+		return {
+			get: function(path){
+				if(! path in datas) {
+					console.warn(path, "is not in", datas);
+				}
+				return datas[path];
+			},
+			isDefined: function (path) {
+				return typeof datas[path] !== "undefined";
+			},
+			set: function (path, data) {
+				datas[path] = data;
+			}
+		};
 	}
 };

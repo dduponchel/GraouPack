@@ -80,11 +80,8 @@ izpack.Builder = function (htmlID) {
 		var controller = null;
 		var view = null;
 		try {
-			controller = new izpack.controller[settings.name]();
-			controller.blackBoard = this.blackBoard;
-			controller.label = settings.label;
 			view = new izpack.view[settings.name]();
-			controller.view = view;
+			controller = new izpack.controller[settings.name](view, this.blackBoard);
 			controller.setBindings();
 		}
 		catch (e) {
@@ -154,8 +151,7 @@ izpack.Builder = function (htmlID) {
 			try {
 				var xml = new izpack.xml.XMLBuilder();
 				for (var i = 0; i < this.xmlHandlers.length; i++) {
-					var generator = new izpack.generator[this.xmlHandlers[i]]();
-					generator.blackBoard = this.blackBoard;
+					var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
 					generator.addXMLInfo(xml);
 				}
 				$(".generated-xml", dialog).text(xml.toString());

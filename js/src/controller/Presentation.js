@@ -27,13 +27,16 @@
  
 $.namespace("izpack.controller");
 
-izpack.controller.Presentation = function () {
-	this.initView = function () {
-		// nothing to do
-	};
-	
-	this.setBindings = function () {
-		// nothing to do
-	};
+izpack.controller.Presentation = function (view, blackBoard) {
+	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
 };
-izpack.controller.Presentation.prototype = new izpack.controller.GenericController();
+
+izpack.controller.Presentation.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+	initView : function () {
+		// nothing to do
+	},
+	
+	setBindings : function () {
+		// nothing to do
+	}
+});

@@ -27,14 +27,20 @@
  
 $.namespace("izpack.generator");
 
-izpack.generator.Locale = function () {
+izpack.generator.Locale = function (blackBoard) {
+	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+};
 
-	this.addXMLInfo = function (xmlBuilder) {
+izpack.generator.Locale.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+	
+	/**
+	 * @Override
+	 */
+	addXMLInfo : function (xmlBuilder) {
 		var localeXml = xmlBuilder.get("/installation/locale");
 		var locales = this.blackBoard.get("locales");
 		for (var i = 0; i < locales.length; i++) {
 			xmlBuilder.createElement("langpack", localeXml).setAttribute("iso3", locales[i]);
 		}
-	};
-};
-izpack.generator.Locale.prototype = new izpack.generator.GenericGenerator("locale");
+	}
+});

@@ -25,38 +25,52 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.model");
+module("Model BlackBoard", {
+        setup: function(){
+		this.model = new izpack.model.BlackBoard();
+        },
+        teardown: function(){
+                this.model = null;
+        }
+});
 
-izpack.model.BlackBoard = function () {
-	this.data = {};
-};
 
-izpack.model.BlackBoard.prototype = {
 
-	get : function (key) {
-		console.debug("BlackBoard::get '" + key + "'");
-		return this.data[key];
-	},
-	
-	set : function (key, value) {
-		console.debug("BlackBoard::set '" + key + "' : ", value);
-		this.data[key] = value;
-	},
-	
-	add : function (key, value) {
-		console.debug("BlackBoard::add '" + key + "' : ", value);
-		if (!this.data[key]) {
-			this.data[key] = [];
-		}
-		this.data[key].push(value);
-	},
-	
-	isDefined : function (key) {
-		console.debug("BlackBoard::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
-		return (typeof this.data[key] !== "undefined");
-	},
-	
-	remove : function (key) {
-		delete this.data[key];
-	}
-};
+test("isDefined", function () {
+	ok(!this.model.isDefined("doesn't exist !"), "not defined");
+	this.model.set("exists", "");
+	ok(this.model.isDefined("exists"), "defined");
+});
+
+test("remove", function () {
+	this.model.set("key", "");
+	ok(this.model.isDefined("key"), "defined");
+	this.model.remove("key");
+	ok(!this.model.isDefined("key"), "now undefined");
+});
+
+test("set & get: primitive value", function () {
+	this.model.set("graou", "value");
+	equal(this.model.get("graou"), "value", "get and set are symetrics");
+});
+
+test("set & get: complex value", function () {
+	var value = {
+		toto : "foo",
+		bar : function(){}
+	};
+	this.model.set("graou", value);
+	equal(this.model.get("graou"), value, "get and set are symetrics");
+});
+
+test("add: not defined key", function () {
+	ok(!this.model.isDefined("key"), "not defined");
+	this.model.add("key", "value");
+	deepEqual(this.model.get("key"), ["value"], "value added");
+});
+
+test("add: defined key", function () {
+	this.model.set("key", ["val1", "val2"]);
+	this.model.add("key", "val3");
+	deepEqual(this.model.get("key"), ["val1", "val2", "val3"], "value added");
+});

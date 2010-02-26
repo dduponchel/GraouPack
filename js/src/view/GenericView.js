@@ -52,28 +52,30 @@ izpack.view.GenericView = function (name) {
 	 * Is the html view loaded ?
 	 */
 	this.viewLoaded = false;
-	
+};
+
+izpack.view.GenericView.prototype = {
         /**
          * Verify if all required infos for this generator are here.
          * @return {boolean} true if everything is ok, false otherwise.
          */
-	this.validate = function () {
+	validate : function () {
 		throw "validate must be overriden !";
-	};
+	},
 	
 	/**
 	 * This method is called when the view (html) is loaded.
 	 * It calls then the method initView.
 	 */
-	this.load = function () {
+	load : function () {
 		this.viewLoaded = true;
 		this.initView();
-	};
+	},
 	
 	/**
 	 * Adds the UI logic (drag/drop, etc) as soon as the html tab is loaded.
 	 */
-	this.initView = function () {
+	initView : function () {
 		throw "initView must be overriden !";
-	};
+	}
 };

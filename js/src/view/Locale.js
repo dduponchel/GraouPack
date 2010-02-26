@@ -28,14 +28,16 @@
 $.namespace("izpack.view");
 
 izpack.view.Locale = function () {
-
-	var available	= "#" + this.id + " #tab-locale-available";
+	izpack.view.GenericView.apply(this, [ "locale" ]);
+	this.available	= "#" + this.id + " #tab-locale-available";
 	this.selected	= "#" + this.id + " #tab-locale-selected";
-	var lists	= "#" + this.id + " ul";
-	
-	this.initView = function () {
-		$(lists).sortable({
-			connectWith : lists,
+	this.lists	= "#" + this.id + " ul";
+};
+
+izpack.view.Locale.prototype = $.extend({}, izpack.view.GenericView.prototype, {
+	initView : function () {
+		$(this.lists).sortable({
+			connectWith : this.lists,
 			placeholder : 'ui-state-highlight'
 		})
 		.bind('sortupdate', {view: this}, function (event, ui) {
@@ -45,17 +47,17 @@ izpack.view.Locale = function () {
 		})
 		.disableSelection();
 
-	};
+	},
 
-	this.getLocales = function () {
+	getLocales : function () {
 		var locales = [];
 		$("li", this.selected).each(function () {
 			locales.push($(this).attr("data-iso3"));
 		});
 		return locales;
-	};
+	},
 
-	this.setLocales = function (locales) {
+	setLocales : function (locales) {
 		var currentLocales = {};
 		$("li", this.selected).each(function () {
 			currentLocales[$(this).attr("data-iso3")] = $(this);
@@ -68,15 +70,14 @@ izpack.view.Locale = function () {
 			}
 			else {
 				// the locale isn't selected, we add it
-				$("li[data-iso3=" + locale + "]", available).appendTo(this.selected);
+				$("li[data-iso3=" + locale + "]", this.available).appendTo(this.selected);
 			}
 		}
 		// the remaining locales in currentLocales are no longer relevant
 		for (var currentLocale in currentLocales) {
 			if (currentLocales.hasOwnProperty(currentLocale)) {
-				$("li[data-iso3=" + currentLocale + "]", this.selected).appendTo(available);
+				$("li[data-iso3=" + currentLocale + "]", this.selected).appendTo(this.available);
 			}
 		}
-	};
-};
-izpack.view.Locale.prototype = new izpack.view.GenericView("locale");
+	}
+});

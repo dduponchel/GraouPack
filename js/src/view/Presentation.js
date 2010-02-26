@@ -28,12 +28,15 @@
 $.namespace("izpack.view");
 
 izpack.view.Presentation = function () {
-	this.initView = function () {
-		// nothing to do
-	};
-	
-	this.validate = function () {
-		return true; // no required field
-	};
+	izpack.view.GenericView.apply(this, [ "presentation" ]);
 };
-izpack.view.Presentation.prototype = new izpack.view.GenericView("presentation");
+
+izpack.view.Presentation.prototype = $.extend({}, izpack.view.GenericView.prototype, {
+	initView : function () {
+		// nothing to do
+	},
+	
+	validate : function () {
+		return true; // no required field
+	}
+});
