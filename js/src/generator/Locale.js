@@ -31,7 +31,7 @@ izpack.generator.Locale = function () {
 
 	this.addXMLInfo = function (xmlBuilder) {
 		var localeXml = xmlBuilder.get("/installation/locale");
-		var locales = this.view.getLocales();
+		var locales = this.blackBoard.get("locales");
 		for (var i = 0; i < locales.length; i++) {
 			xmlBuilder.createElement("langpack", localeXml).setAttribute("iso3", locales[i]);
 		}

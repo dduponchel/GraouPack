@@ -25,20 +25,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.controller");
 
-/**
- * A generic generator.
- */
-izpack.generator.GenericGenerator = function () {
-	
-	this.blackBoard = null;
-	
-	/**
-	 * Add infos from the html generator to the current xml dom tree.
-	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
-	 */
-	this.addXMLInfo = function (xmlBuilder) {
-		throw "addXMLInfo method must be overriden !";
+izpack.controller.Locale = function () {
+	this.setBindings = function () {
+		this.bind({
+			view: this.view.selected,
+			model: "locales",
+			defaultValue: [],
+			fromView: this.view.getLocales,
+			toView: this.view.setLocales,
+			constraints : [ "required" ]
+		});
 	};
 };
+izpack.controller.Locale.prototype = new izpack.controller.GenericController();

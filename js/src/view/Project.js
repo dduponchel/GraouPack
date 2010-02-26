@@ -29,53 +29,64 @@ $.namespace("izpack.view");
 
 izpack.view.Project = function () {
 	
-	var appname = "#" + this.id + " input[name=tab-project-appname]";
-	var appversion = "#" + this.id + " input[name=tab-project-appversion]";
+	this.appname = "#" + this.id + " fieldset.application input[name=tab-project-appname]";
+	this.appversion = "#" + this.id + " fieldset.application input[name=tab-project-appversion]";
 	
-	var fields =	"#" + this.id + " fieldset.authors input";
-	var name =		"#" + this.id + " fieldset.authors input[name=tab-project-name]";
-	var mail =		"#" + this.id + " fieldset.authors input[name=tab-project-mail]";
-	var authors =	"#" + this.id + " fieldset.authors ul";
+	this.addAuthorFields =	"#" + this.id + " fieldset.authors input";
+	this.addAuthorName =		"#" + this.id + " fieldset.authors input[name=tab-project-name]";
+	this.addAuthorMail =		"#" + this.id + " fieldset.authors input[name=tab-project-mail]";
+	this.authors =	"#" + this.id + " fieldset.authors ul";
 	var addButton =	"#" + this.id + " fieldset.authors .add";
 	var trash =		"#" + this.id + " fieldset.authors .trash";
 
+	this.addAuthor = function (name, mail) {
+		$(this.authors).append(
+			$("<li/>").addClass("ui-state-default")
+				.append($("<span/>").addClass("name").text(name))
+				.append($("<span/>").text(" - "))
+				.append($("<span/>").addClass("mail").text(mail))
+		);
+	};
+	
 	this.initView = function () {
-		$(authors).sortable();
-		$(addButton).click(function () {
-
+		$(this.authors)
+		.sortable({
+			update : function (event, ui) {
+				$(this).trigger("izpack.change");
+			}
+		});
+		
+		$(addButton).bind("click", {view: this}, function (event) {
+			var view = event.data.view;
 			$.validity.setup({
 				outputMode : "summary"
 			});
 
 			$.validity.start();
-			$(name).require();
-			$(mail).require().match("email");
+			$(view.addAuthorName).require();
+			$(view.addAuthorMail).require().match("email");
 
 			if (!$.validity.end().valid) {
 				return false;
 			}
 
-			var nameText = $(name).val();
-			var mailText = $(mail).val();
-			$(authors).append(
-				$("<li/>").addClass("ui-state-default")
-					.append($("<span/>").addClass("name").text(nameText))
-					.append($("<span/>").text(" - "))
-					.append($("<span/>").addClass("mail").text(mailText))
-			);
-			$(fields).val("");
+			var nameText = $(view.addAuthorName).val();
+			var mailText = $(view.addAuthorMail).val();
+			view.addAuthor(nameText, mailText);
+			$(view.authors).trigger("izpack.change");
+			$(view.addAuthorFields).val("");
 			
 			return false;
 		});
 		
 		$(trash)
 		.droppable({
-			accept : authors + " li",
+			accept : this.authors + " li",
 			tolerance : 'touch',
-			hoverClass : 'trash-active',
-			drop : function (event, ui) {
-				$(ui.draggable).remove();
-			}
+			hoverClass : 'trash-active'
+		})
+		.bind("drop", {view: this}, function (event, ui) {
+			$(ui.draggable).remove(); // triggers sortupdate on the list, which triggers the right event
 		})
 		.click(function () {
 			$("<div/>").text("To delete an author, drag/drop it on this trash can !").dialog({title : "Help"});
@@ -84,7 +95,7 @@ izpack.view.Project = function () {
 	
 	this.getAuthors = function () {
 		var authorsRes = [];
-		$(authors + " li").each(function () {
+		$(this.authors + " li").each(function () {
 			authorsRes.push({
 				name : $(".name", $(this)).text(),
 				mail : $(".mail", $(this)).text()
@@ -92,33 +103,25 @@ izpack.view.Project = function () {
 		});
 		return authorsRes;
 	};
-
-	this.validate = function () {
-		if (!this.viewLoaded) {
-			return false;
+	this.setAuthors = function (authors) {
+		$("li", this.authors).remove();
+		for (var i = 0; i < authors.length; i++) {
+			this.addAuthor(authors[i].name, authors[i].mail);
 		}
-		
-		$.validity.setup({
-			outputMode : "summary"
-		});
-
-		$.validity.start();
-
-		// only appname / appversion are required
-		$(appname).require();
-		$(appversion).require();
-		
-		var result = $.validity.end();
-		return result.valid;
-
 	};
-	
+
 	this.getAppName = function () {
-		return $.trim($(appname).val());
+		return $.trim($(this.appname).val());
+	};
+	this.setAppName = function (name) {
+		$(this.appname).val(name);
 	};
 	
 	this.getAppVersion = function () {
-		return $.trim($(appversion).val());
+		return $.trim($(this.appversion).val());
+	};
+	this.setAppVersion = function (version) {
+		$(this.appversion).val(version);
 	};
 
 };

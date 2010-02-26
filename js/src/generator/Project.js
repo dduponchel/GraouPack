@@ -30,7 +30,7 @@ $.namespace("izpack.generator");
 izpack.generator.Project = function () {
 
 	this.addXMLInfo = function (xmlBuilder) {
-		var authors = this.view.getAuthors();
+		var authors = this.blackBoard.get("authors");
 		if (authors.length) {
 			var authorsXml = xmlBuilder.get("/installation/info/authors");
 			for (var i = 0; i < authors.length; i++) {
@@ -41,8 +41,8 @@ izpack.generator.Project = function () {
 			}
 		}
 
-		xmlBuilder.get("/installation/info/appname").textContent = this.view.getAppName();
-		xmlBuilder.get("/installation/info/appversion").textContent = this.view.getAppVersion();
+		xmlBuilder.get("/installation/info/appname").textContent = this.blackBoard.get("app.name");
+		xmlBuilder.get("/installation/info/appversion").textContent = this.blackBoard.get("app.version");
 	};
 };
 

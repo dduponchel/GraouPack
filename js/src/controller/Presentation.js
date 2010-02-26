@@ -25,20 +25,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.controller");
 
-/**
- * A generic generator.
- */
-izpack.generator.GenericGenerator = function () {
+izpack.controller.Presentation = function () {
+	this.initView = function () {
+		// nothing to do
+	};
 	
-	this.blackBoard = null;
-	
-	/**
-	 * Add infos from the html generator to the current xml dom tree.
-	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
-	 */
-	this.addXMLInfo = function (xmlBuilder) {
-		throw "addXMLInfo method must be overriden !";
+	this.setBindings = function () {
+		// nothing to do
 	};
 };
+izpack.controller.Presentation.prototype = new izpack.controller.GenericController();

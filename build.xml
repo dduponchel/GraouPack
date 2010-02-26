@@ -33,6 +33,19 @@
 				<include name="*.js" />
 				<exclude name="GenericGenerator.js" />
 			</fileset>
+			
+			<fileset dir="js/src/model">
+				<include name="*.js" />
+			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/controller">
+				<include name="GenericController.js" />
+			</fileset>
+			<fileset dir="js/src/controller">
+				<include name="*.js" />
+				<exclude name="GenericController.js" />
+			</fileset>
 
 			<!-- we want first the mother class -->
 			<fileset dir="js/src/view">

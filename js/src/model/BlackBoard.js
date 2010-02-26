@@ -25,20 +25,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.model");
 
-/**
- * A generic generator.
- */
-izpack.generator.GenericGenerator = function () {
+izpack.model.BlackBoard = function () {
+	this.data = {};
+	this.get = function (key) {
+		console.debug("BlackBoard::get '" + key + "'");
+		return this.data[key];
+	};
 	
-	this.blackBoard = null;
+	this.set = function (key, value) {
+		console.debug("BlackBoard::set '" + key + "' : ", value);
+		this.data[key] = value;
+	};
 	
-	/**
-	 * Add infos from the html generator to the current xml dom tree.
-	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
-	 */
-	this.addXMLInfo = function (xmlBuilder) {
-		throw "addXMLInfo method must be overriden !";
+	this.add = function (key, value) {
+		console.debug("BlackBoard::add '" + key + "' : ", value);
+		if (!this.data[key]) {
+			this.data[key] = [];
+		}
+		this.data[key].push(value);
+	};
+	
+	this.isDefined = function (key) {
+		console.debug("BlackBoard::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
+		return (typeof this.data[key] !== "undefined");
+	};
+	
+	this.remove = function (key) {
+		delete this.data[key];
 	};
 };
