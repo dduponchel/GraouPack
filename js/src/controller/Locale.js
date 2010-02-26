@@ -25,18 +25,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.controller");
 
-izpack.generator.Presentation = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+izpack.controller.Locale = function (view, blackBoard) {
+	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
 };
 
-izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
-	
-	/**
-	 * @Override
-	 */
-	addXMLInfo : function (xml) {
-		// does nothing
+izpack.controller.Locale.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+	setBindings : function () {
+		this.bind({
+			view: this.view.selected,
+			model: "locales",
+			defaultValue: [],
+			fromView: this.view.getLocales,
+			toView: this.view.setLocales,
+			constraints : [ "required" ]
+		});
 	}
 });

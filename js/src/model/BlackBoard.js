@@ -25,18 +25,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.model");
 
-izpack.generator.Presentation = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+izpack.model.BlackBoard = function () {
+	this.data = {};
 };
 
-izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.model.BlackBoard.prototype = {
+
+	get : function (key) {
+		console.debug("BlackBoard::get '" + key + "'");
+		return this.data[key];
+	},
 	
-	/**
-	 * @Override
-	 */
-	addXMLInfo : function (xml) {
-		// does nothing
+	set : function (key, value) {
+		console.debug("BlackBoard::set '" + key + "' : ", value);
+		this.data[key] = value;
+	},
+	
+	add : function (key, value) {
+		console.debug("BlackBoard::add '" + key + "' : ", value);
+		if (!this.data[key]) {
+			this.data[key] = [];
+		}
+		this.data[key].push(value);
+	},
+	
+	isDefined : function (key) {
+		console.debug("BlackBoard::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
+		return (typeof this.data[key] !== "undefined");
+	},
+	
+	remove : function (key) {
+		delete this.data[key];
 	}
-});
+};

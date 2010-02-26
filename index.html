@@ -23,6 +23,14 @@
 	<script type="text/javascript" src="js/src/Builder.js"></script>
 	<script type="text/javascript" src="js/src/xml/XMLBuilder.js"></script>
 	
+	<script type="text/javascript" src="js/src/model/BlackBoard.js"></script>
+	
+	<script type="text/javascript" src="js/src/controller/GenericController.js"></script>
+	<script type="text/javascript" src="js/src/controller/Project.js"></script>
+	<script type="text/javascript" src="js/src/controller/Presentation.js"></script>
+	<script type="text/javascript" src="js/src/controller/Locale.js"></script>
+	<script type="text/javascript" src="js/src/controller/Panel.js"></script>
+	
 	<script type="text/javascript" src="js/src/view/GenericView.js"></script>
 	<script type="text/javascript" src="js/src/view/Project.js"></script>
 	<script type="text/javascript" src="js/src/view/Presentation.js"></script>
@@ -64,6 +72,7 @@
 	builder.addPanel({label : "my application",	name : "Project"});
 	builder.addPanel({label : "locales",		name : "Locale"});
 	builder.addPanel({label : "panels",		name : "Panel"});
+	builder.xmlHandlers = [ "Locale", "Presentation", "Project" ];
 	builder.start();
 </script>
 <footer>done with jQuery and vim :D</footer>

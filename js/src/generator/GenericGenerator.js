@@ -29,38 +29,22 @@ $.namespace("izpack.generator");
 
 /**
  * A generic generator.
- * @param {String} name The internal name of the generator.
  */
-izpack.generator.GenericGenerator = function (name) {
+izpack.generator.GenericGenerator = function (blackBoard) {
+	/**
+	 * The black board having all datas.
+	 */
+	this.blackBoard = blackBoard;
+};
 
-	/**
-	 * The name of the generator.
-	 */
-	this.name = name;
-	
-	/**
-	 * The view (izpack.tab) associated with this generator.
-	 */
-	this.view = "";
-
-	/**
-	 * The html id used for this generator.
-	 */
-	this.id = "generator-" + name;
-
-	/**
-	 * Verify if all required infos for this generator are here.
-	 * @return {boolean} true if everything is ok, false otherwise.
-	 */
-	this.validate = function () {
-		return this.view.validate();
-	};
+izpack.generator.GenericGenerator.prototype = {
 
 	/**
 	 * Add infos from the html generator to the current xml dom tree.
 	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
 	 */
-	this.addXMLInfo = function (xmlBuilder) {
+	addXMLInfo : function (xmlBuilder) {
 		throw "addXMLInfo method must be overriden !";
-	};
+	}
 };
+

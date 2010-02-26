@@ -33,9 +33,6 @@ $.namespace("izpack");
  */
 izpack.Builder = function (htmlID) {
 	
-	// 'this' belongs to its context. With 'that', we have a ref to the current Builder object.
-	var that = this;
-	
 	var rootElt = $("#" + htmlID);
 
 	var dialog = $("#GraouXML .dialog").dialog({
@@ -46,6 +43,10 @@ izpack.Builder = function (htmlID) {
 	});
 	
 	var tabs = [];
+	
+	this.xmlHandlers = [];
+	
+	this.blackBoard = new izpack.model.BlackBoard();
 
 	var addErrorTab = function (index) {
 		tabs[index].htmlTab
@@ -76,18 +77,17 @@ izpack.Builder = function (htmlID) {
 		};
 		$.extend(settings, options);
 		
-		var generator = {};
-		var view = {};
+		var controller = null;
+		var view = null;
 		try {
-			generator = new izpack.generator[settings.name]();
-			generator.label = settings.label;
 			view = new izpack.view[settings.name]();
+			controller = new izpack.controller[settings.name](view, this.blackBoard);
+			controller.setBindings();
 		}
-		catch(e) {
+		catch (e) {
 			throw "Creating '" + settings.name + "' tab : " + e;
 		}
 		
-		generator.view = view;
 		
 		var htmlTab = $("<a></a>")
 		.attr("href", view.href)
@@ -103,7 +103,7 @@ izpack.Builder = function (htmlID) {
 		tabs.push({
 			name:		settings.name,
 			view:		view,
-			generator:	generator,
+			controller:	controller,
 			label:		settings.label,
 			htmlTab:	htmlTab
 		});
@@ -116,11 +116,12 @@ izpack.Builder = function (htmlID) {
 		rootElt.tabs({
 			cache : true,
 			load : function (event, ui) {
-				tabs[ui.index].view.load();
+				tabs[ui.index].controller.initView();
 			},
 			show : function (event, ui) {
 				// remove any error / error animation
 				removeErrorTab(ui.index);
+				tabs[ui.index].controller.showView();
 			}
 		});
 	};
@@ -130,7 +131,7 @@ izpack.Builder = function (htmlID) {
 		var fails = [];
 		for (var index  = 0; index < tabs.length; index++) {
 			var tab = tabs[index];
-			if (!tab.generator.validate()) {
+			if (!tab.controller.validate()) {
 				addErrorTab(index);
 				fails.push(tab.name);
 			}
@@ -145,12 +146,12 @@ izpack.Builder = function (htmlID) {
 		return true;
 	};
 	
-	var generateXML = function () {
+	this.generateXML = function () {
 		if (validateAll()) {
 			try {
 				var xml = new izpack.xml.XMLBuilder();
-				for (var i = 0; i < tabs.length; i++) {
-					var generator = tabs[i].generator;
+				for (var i = 0; i < this.xmlHandlers.length; i++) {
+					var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
 					generator.addXMLInfo(xml);
 				}
 				$(".generated-xml", dialog).text(xml.toString());
@@ -160,12 +161,14 @@ izpack.Builder = function (htmlID) {
 				alert("Something went wrong with the xml generation !\n" + e);
 			}
 		}
-		return false;
 	};
 	
 	$("#GraouXML .generateXML button")
 	.addClass("ui-state-default ui-corner-all")
-	.click(generateXML);
+	.bind("click", {builder: this}, function (event) {
+		event.data.builder.generateXML.apply(event.data.builder);
+		return false;
+	});
 	
 
 	$("button", dialog).click(function () {

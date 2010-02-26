@@ -27,7 +27,10 @@
  
 module("Generator General", {
         setup: function(){
-                this.generator = new izpack.generator.Project();
+		this.mockDatas = {};
+		this.mockBlackBoard = Helper.getMockBlackBoardFrom(this.mockDatas);
+		this.mockXmlBuilder = GeneratorHelper.getNewMockXmlBuilder();
+                this.generator = new izpack.generator.Project(this.mockBlackBoard);
         },
         teardown: function(){
                 this.generator = null;
@@ -35,23 +38,31 @@ module("Generator General", {
 });
 
 test("addXMLInfo: no authors", function () {
-	var mockXmlBuilder = {
-		testHolder: {},
-		get: function (path) {
-			this.testHolder[path] = {};
-			return this.testHolder[path];
-		}
-	};
+	this.mockDatas["app.name"] = "appname";
+	this.mockDatas["app.version"] = "appversion";
+	this.mockDatas["authors"] = [];
 	
-	var mockView = {
-		getAppName : function(){return "appname"},
-		getAppVersion : function(){return "appversion"},
-		getAuthors : function(){return {}}
-	};
+	this.generator.addXMLInfo(this.mockXmlBuilder);
 	
-	this.generator.view = mockView;
-	this.generator.addXMLInfo(mockXmlBuilder);
+	equal(this.mockXmlBuilder.testHolder["/installation/info/appname"].textContent, "appname", "appname setted");
+	equal(this.mockXmlBuilder.testHolder["/installation/info/appversion"].textContent, "appversion", "appversion setted");
+	ok(!this.mockXmlBuilder.testHolder["/installation/info/authors"], "no author");
+});
+
+test("addXmlInfo: with authors", function () {
+	this.mockDatas["app.name"] = "appname";
+	this.mockDatas["app.version"] = "appversion";
+	this.mockDatas["authors"] = [
+		{name: "name0", mail: "mail0"},
+		{name: "name1", mail: "mail1"},
+		{name: "name2", mail: "mail2"},
+	];
 	
-	equals(mockXmlBuilder.testHolder["/installation/info/appname"].textContent, "appname", "appname setted");
-	equals(mockXmlBuilder.testHolder["/installation/info/appversion"].textContent, "appversion", "appversion setted");
+	this.generator.addXMLInfo(this.mockXmlBuilder);
+	
+	var authors = this.mockXmlBuilder.testHolder["/installation/info/authors"];
+	for(var i = 0; i < 3; i++) {
+		equal(authors.children[i].attributes["name"], "name" + i, "name for author " + i);
+		equal(authors.children[i].attributes["email"], "mail" + i, "mail for author " + i);
+	}
 });

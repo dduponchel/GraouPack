@@ -25,18 +25,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.controller");
 
-izpack.generator.Presentation = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+izpack.controller.Presentation = function (view, blackBoard) {
+	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
 };
 
-izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.controller.Presentation.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+	initView : function () {
+		// nothing to do
+	},
 	
-	/**
-	 * @Override
-	 */
-	addXMLInfo : function (xml) {
-		// does nothing
+	setBindings : function () {
+		// nothing to do
 	}
 });

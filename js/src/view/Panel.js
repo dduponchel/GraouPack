@@ -28,31 +28,27 @@
 $.namespace("izpack.view");
 
 izpack.view.Panel = function () {
+	izpack.view.GenericView.apply(this, [ "panel" ]);
 
-	var availablePanels =	"#" + this.id + " #tab-panel-available div.available-panel";
-	var addButtons =	"#" + this.id + " #tab-panel-available .action .add";
-	var infoButtons =	"#" + this.id + " #tab-panel-available .action .info";
-	var infoDiv =		"#tab-panel-info-dialog"; // special case, outside the tab
+	this.availablePanels =	"#" + this.id + " #tab-panel-available div.available-panel";
+	this.addButtons =	"#" + this.id + " #tab-panel-available .action .add";
+	this.infoButtons =	"#" + this.id + " #tab-panel-available .action .info";
+	this.infoDiv =		"#tab-panel-info-dialog"; // special case, outside the tab
 	
-	var infoDialog = $("<div/>").append('<div id="tab-panel-info-dialog"/>').dialog({
+	this.infoDialog = $("<div/>").append('<div id="tab-panel-info-dialog"/>').dialog({
 		autoOpen : false,
 		width : 510
 	});
+};
+
+izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 	
-	this.initView = function () {
-		$(infoButtons).click(function () {
+	initView : function () {
+		$(this.infoButtons).bind("click", {view: this}, function (event) {
 			var panel = $(this).parents(".available-panel");
-			$(infoDiv).html($(".detail", panel).html());
-			infoDialog.dialog('option', 'title', $(".summary h3", panel).text())
+			$(event.data.view.infoDiv).html($(".detail", panel).html());
+			event.data.view.infoDialog.dialog('option', 'title', $(".summary h3", panel).text())
 			.dialog("open");
 		});
-	};
-
-	this.validate = function () {
-		if (!this.viewLoaded) {
-			return false;
-		}
-		return true;
-	};
-};
-izpack.view.Panel.prototype = new izpack.view.GenericView("panel");
+	}
+});

@@ -24,19 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.generator");
 
-izpack.generator.Presentation = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
-};
-
-izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
-	
-	/**
-	 * @Override
-	 */
-	addXMLInfo : function (xml) {
-		// does nothing
+var GeneratorHelper = {
+	getNewMockXmlBuilder : function () {
+		return {
+       		        testHolder: [],
+       		        get: function (path) {
+				this.testHolder[path] = {
+					attributes: {},
+					setAttribute: function(key, value) {
+						this.attributes[key] = value;
+					}
+				};
+				return this.testHolder[path];
+			},
+			createElement: function (name, xmlParent) {
+				if(!xmlParent.children) xmlParent.children = [];
+				var res = {
+					attributes: {},
+					setAttribute: function(key, value) {
+						this.attributes[key] = value;
+					}
+				};
+				xmlParent.children.push(res);
+				return res;
+			}
+		};
 	}
-});
+};

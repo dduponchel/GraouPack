@@ -25,6 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 (function () {
+	if (typeof console === "undefined") {
+		console = {};
+		console.debug = console.log = console.info = console.warn = console.error = function () {};
+	}
+	
 	var compat = 
 		typeof XMLSerializer !== "undefined" &&
 		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined";

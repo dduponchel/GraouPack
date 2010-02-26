@@ -37,6 +37,9 @@ izpack.xml.XMLBuilder = function () {
 	 */
 	this.xmlDocument = document.implementation.createDocument("", "installation", null);
 	this.xmlDocument.getElementsByTagName("installation")[0].setAttribute("version", "1.0");
+};
+
+izpack.xml.XMLBuilder.prototype = {
 
 	/**
 	 * Returns (and create if it doesn't exist) the element targeted by 'path'.
@@ -44,7 +47,7 @@ izpack.xml.XMLBuilder = function () {
 	 * (/\w+)+ for example /installation/subElement/subSubElement...
 	 * @return {XMLElement} the xml element.
 	 */
-	this.get = function (path) {
+	get : function (path) {
 		
 		if (!path.match(/(\/\w+)+/)) {
 			throw "The path must follwo the pattern (/\\w+)+ !";
@@ -77,13 +80,13 @@ izpack.xml.XMLBuilder = function () {
 			}
 		}
 		return currentNode;
-	};
+	},
 
 	/**
 	 * Generate the xml string.
 	 * @return {String} the string representing the xml.
 	 */
-	this.toString = function () {
+	toString : function () {
 		/*
 		 * It can't pass by an xslt transformation : the effet of indent = "yes" depends of the browser (and firefox doesn't indent).
 		 * @see http://www.w3.org/TR/xslt#output : "indent specifies whether the XSLT processor <strong>may</strong> add additional whitespace when outputting the result tree; the value must be yes or no"
@@ -171,7 +174,7 @@ izpack.xml.XMLBuilder = function () {
 		output = convertToXMLReferences(output);
 		
 		return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' + output;
-	};
+	},
 	
 	/**
 	 * Create a new element on the current xml document.
@@ -179,9 +182,9 @@ izpack.xml.XMLBuilder = function () {
 	 * @Param {XMLElement} xmlParent The parent for the new element.
 	 * @Return {XMLElement} the created xml element.
 	 */
-	this.createElement = function (name, xmlParent) {
+	createElement : function (name, xmlParent) {
 		var newElement = this.xmlDocument.createElement(name);
 		xmlParent.appendChild(newElement);
 		return newElement;
-	};
+	}
 };

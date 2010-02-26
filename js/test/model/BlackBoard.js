@@ -25,18 +25,52 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+module("Model BlackBoard", {
+        setup: function(){
+		this.model = new izpack.model.BlackBoard();
+        },
+        teardown: function(){
+                this.model = null;
+        }
+});
 
-izpack.generator.Presentation = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
-};
 
-izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
-	
-	/**
-	 * @Override
-	 */
-	addXMLInfo : function (xml) {
-		// does nothing
-	}
+
+test("isDefined", function () {
+	ok(!this.model.isDefined("doesn't exist !"), "not defined");
+	this.model.set("exists", "");
+	ok(this.model.isDefined("exists"), "defined");
+});
+
+test("remove", function () {
+	this.model.set("key", "");
+	ok(this.model.isDefined("key"), "defined");
+	this.model.remove("key");
+	ok(!this.model.isDefined("key"), "now undefined");
+});
+
+test("set & get: primitive value", function () {
+	this.model.set("graou", "value");
+	equal(this.model.get("graou"), "value", "get and set are symetrics");
+});
+
+test("set & get: complex value", function () {
+	var value = {
+		toto : "foo",
+		bar : function(){}
+	};
+	this.model.set("graou", value);
+	equal(this.model.get("graou"), value, "get and set are symetrics");
+});
+
+test("add: not defined key", function () {
+	ok(!this.model.isDefined("key"), "not defined");
+	this.model.add("key", "value");
+	deepEqual(this.model.get("key"), ["value"], "value added");
+});
+
+test("add: defined key", function () {
+	this.model.set("key", ["val1", "val2"]);
+	this.model.add("key", "val3");
+	deepEqual(this.model.get("key"), ["val1", "val2", "val3"], "value added");
 });

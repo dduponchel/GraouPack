@@ -25,18 +25,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.controller");
 
-izpack.generator.Presentation = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+izpack.controller.Project = function (view, blackBoard) {
+	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
 };
 
-izpack.generator.Presentation.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
-	
-	/**
-	 * @Override
-	 */
-	addXMLInfo : function (xml) {
-		// does nothing
+izpack.controller.Project.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+
+	setBindings : function () {	
+		
+		this.bind({
+			view: this.view.authors,
+			model: "authors",
+			event: "izpack.change",
+			fromView : this.view.getAuthors,
+			toView : this.view.setAuthors
+		});
+			
+		this.bind({
+			view: this.view.appname,
+			event: "change",
+			model: "app.name",
+			defaultValue: "",
+			fromView : this.view.getAppName,
+			toView : this.view.setAppName,
+			constraints : [ "required" ]
+		});
+		
+		this.bind({
+			view: this.view.appversion,
+			event: "change",
+			model: "app.version",
+			defaultValue: "",
+			fromView : this.view.getAppVersion,
+			toView : this.view.setAppVersion,
+			constraints : [ "required" ]
+		});
 	}
 });

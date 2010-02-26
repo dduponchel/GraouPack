@@ -27,34 +27,10 @@
  
 module("Generator Locale", {
         setup: function(){
-                this.generator = new izpack.generator.Locale();
-
-		this.getNewMockXmlBuilder = function () {
-			return {
-        		        testHolder: [],
-        		        get: function (path) {
-					this.testHolder[path] = {
-						attributes: {},
-						setAttribute: function(key, value) {
-							this.attributes[key] = value;
-						}
-					};
-					return this.testHolder[path];
-				},
-				createElement: function (name, xmlParent) {
-					if(!xmlParent.children) xmlParent.children = [];
-					var res = {
-						attributes: {},
-						setAttribute: function(key, value) {
-							this.attributes[key] = value;
-						}
-					};
-					xmlParent.children.push(res);
-					return res;
-				}
-			};
-
-		};
+		this.mockDatas = {};
+		this.mockBlackBoard = Helper.getMockBlackBoardFrom(this.mockDatas);
+		this.mockXmlBuilder = GeneratorHelper.getNewMockXmlBuilder();
+                this.generator = new izpack.generator.Locale(this.mockBlackBoard);
         },
         teardown: function(){
                 this.generator = null;
@@ -64,35 +40,24 @@ module("Generator Locale", {
 
 
 test("addXMLInfo: one locale", function () {
-	var mockXmlBuilder = this.getNewMockXmlBuilder();
+	this.mockDatas["locales"] = ["locale1"];
+	this.generator.addXMLInfo(this.mockXmlBuilder);
 	
-	var mockView = {
-		getLocales : function(){return ["locale1"];}
-	};
-	
-	this.generator.view = mockView;
-	this.generator.addXMLInfo(mockXmlBuilder);
-	
-	equals(mockXmlBuilder.testHolder["/installation/locale"].children.length, 1, "one child created");
-	var child = mockXmlBuilder.testHolder["/installation/locale"].children[0];
-	equals(child.attributes["iso3"], "locale1", "iso3 code setted");
+	equal(this.mockXmlBuilder.testHolder["/installation/locale"].children.length, 1, "one child created");
+	var child = this.mockXmlBuilder.testHolder["/installation/locale"].children[0];
+	equal(child.attributes["iso3"], "locale1", "iso3 code setted");
 });
 
 test("addXMLInfo: several locales", function () {
-	var mockXmlBuilder = this.getNewMockXmlBuilder();
+	this.mockDatas["locales"] = ["locale1", "locale2", "locale3"];
 	
-	var mockView = {
-		getLocales : function(){return ["locale1", "locale2", "locale3"];}
-	};
+	this.generator.addXMLInfo(this.mockXmlBuilder);
 	
-	this.generator.view = mockView;
-	this.generator.addXMLInfo(mockXmlBuilder);
-	
-	equals(mockXmlBuilder.testHolder["/installation/locale"].children.length, 3, "three children created");
-	var child1 = mockXmlBuilder.testHolder["/installation/locale"].children[0];
-	var child2 = mockXmlBuilder.testHolder["/installation/locale"].children[1];
-	var child3 = mockXmlBuilder.testHolder["/installation/locale"].children[2];
-	equals(child1.attributes["iso3"], "locale1", "iso3 code setted for locale 1");
-	equals(child2.attributes["iso3"], "locale2", "iso3 code setted for locale 2");
-	equals(child3.attributes["iso3"], "locale3", "iso3 code setted for locale 3");
+	equal(this.mockXmlBuilder.testHolder["/installation/locale"].children.length, 3, "three children created");
+	var child1 = this.mockXmlBuilder.testHolder["/installation/locale"].children[0];
+	var child2 = this.mockXmlBuilder.testHolder["/installation/locale"].children[1];
+	var child3 = this.mockXmlBuilder.testHolder["/installation/locale"].children[2];
+	equal(child1.attributes["iso3"], "locale1", "iso3 code setted for locale 1");
+	equal(child2.attributes["iso3"], "locale2", "iso3 code setted for locale 2");
+	equal(child3.attributes["iso3"], "locale3", "iso3 code setted for locale 3");
 });
