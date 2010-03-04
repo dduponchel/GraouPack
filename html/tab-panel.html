@@ -1,36 +1,58 @@
-<form id="tab-panel" class="ui-helper-clearfix ui-corner-all">
-<div>
-
+<div id="tab-panel" class="ui-helper-clearfix ui-corner-all">
 	<div class="tab-panel-available-place">
 		<h2>available panels</h2>
 		<div id="tab-panel-available" class="draggable">
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="HelloPanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
+				
+				<!-- preview -->
 				<img src="img/panel/HelloPanel-small.png" class="preview" alt="HelloPanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
 					<h3>HelloPanel</h3>
 					<p>Welcomes the user with the project name, the version, the URL as well as the authors.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
 					<img src="img/panel/HelloPanel.png" alt="screenshot"/>
 					<p>This panel welcomes the user by displaying the project name, the version, the URL as well as the authors.</p>
 					<p class="other-features">There are also an HTMLHelloPanel (rendering html instead of text) and a CheckedHelloPanel (checking the registry for a previous installation).</p>
 				</div>
+				
+				<!-- configuration form -->
+				<div class="ui-helper-hidden config">
+				<form action="#">
+				<fieldset>
+					<label for="tab-panel-config-hello-file-src">file with the text/html</label><input type="text" id="tab-panel-config-hello-file-src" name="tab-panel-config-hello-file-src" /><br />
+					<label for="tab-panel-config-hello-file-html">use html instead of text</label><input type="checkbox" id="tab-panel-config-hello-file-html" name="tab-panel-config-hello-file-html" />
+				</fieldset>
+				</form>
+				</div>
 			</div>
 			
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="InfoPanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
+				
+				<!-- preview -->
 				<img src="img/panel/InfoPanel-small.png" class="preview" alt="InfoPanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
 					<h3>InfoPanel</h3>
 					<p>This is a kind of 'README' panel.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
 					<img src="img/panel/InfoPanel.png" alt="screenshot"/>
 					<p>This is a kind of 'README' panel. It presents text of any length.</p>
@@ -38,16 +60,23 @@
 				</div>
 			</div>
 			
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="LicencePanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
+				
+				<!-- preview -->
 				<img src="img/panel/LicencePanel-small.png" class="preview" alt="LicencePanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
 					<h3>LicencePanel</h3>
 					<p>Prompt the user to acknowledge a license agreement.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
 					<img src="img/panel/LicencePanel.png" alt="screenshot"/>
 					<p>These panels can prompt the user to acknowledge a license agreement. They block unless the user selects the 'agree' option.</p>
@@ -55,16 +84,23 @@
 				</div>
 			</div>
 			
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="TargetPanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
+				
+				<!-- preview -->
 				<img src="img/panel/TargetPanel-small.png" class="preview" alt="TargetPanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
 					<h3>TargetPanel</h3>
 					<p>Allows the user to select the installation path.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
 					<img src="img/panel/TargetPanel.png" alt="screenshot"/>
 					<p>This panel allows the user to select the installation path.</p>
@@ -72,16 +108,23 @@
 				</div>
 			</div>
 			
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="PacksPanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
+				
+				<!-- preview -->
 				<img src="img/panel/PacksPanel-small.png" class="preview" alt="PacksPanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
 					<h3>PacksPanel</h3>
 					<p>Allows the user to select the packs he wants to install.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
 					<img src="img/panel/PacksPanel.png" alt="screenshot"/>
 					<p>Allows the user to select the packs he wants to install.</p>
@@ -89,16 +132,23 @@
 				</div>
 			</div>
 			
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="InstallPanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
+				
+				<!-- preview -->
 				<img src="img/panel/InstallPanel-small.png" class="preview" alt="InstallPanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
 					<h3>InstallPanel</h3>
 					<p>Launches the installation process.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
 					<img src="img/panel/InstallPanel.png" alt="screenshot"/>
 					<p>You should always have this one as it launches the installation process !</p>
@@ -106,18 +156,25 @@
 				</div>
 			</div>
 			
-			<div class="available-panel ui-helper-clearfix ui-corner-all">
+			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="FinishPanel">
+				<!-- action buttons -->
 				<div class="action">
 					<img src="img/add.png" alt="add" class="add" /><br/>
 					<img src="img/help.png" alt="info" class="info" />
 				</div>
-				<img src="img/panel/SimpleFinishPanel-small.png" class="preview" alt="SimpleFinishPanel"/>
+				
+				<!-- preview -->
+				<img src="img/panel/FinishPanel-small.png" class="preview" alt="FinishPanel"/>
+				
+				<!-- summary -->
 				<div class="summary">
-					<h3>SimpleFinishPanel</h3>
+					<h3>FinishPanel</h3>
 					<p>An ending panel.</p>
 				</div>
+				
+				<!-- full length description -->
 				<div class="ui-helper-hidden detail">
-					<img src="img/panel/SimpleFinishPanel.png" alt="screenshot"/>
+					<img src="img/panel/FinishPanel.png" alt="screenshot"/>
 					<p>An ending panel.</p>
 					<p class="other-features">There is also a FinishPanel able to write automated installer information.</p>
 				</div>
@@ -126,9 +183,20 @@
 	</div>
 
 	<div class="tab-panel-selected-place">
+		<div id="model-for-selected" class="selected-panel ui-helper-clearfix ui-corner-all">
+			<div class="grip"></div>
+			<img src="" class="preview" alt=""/>
+			<div class="right-side">
+				<h3></h3>
+				<div class="action">
+					<img src="img/remove.png" alt="remove" class="remove" />
+					<img src="img/help.png" alt="info" class="info" />
+					<img src="img/configure.png" alt="configure" class="config" />
+				</div>
+			</div>
+		</div>
 		<h2>selected panels</h2>
-		<div id="tab-panel-selected" class="sortable"></div>
+		<div id="tab-panel-selected" class="sortable">
+		</div>
 	</div>
-
 </div>
-</form>

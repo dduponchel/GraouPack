@@ -29,22 +29,23 @@ $.namespace("izpack.model");
 
 izpack.model.BlackBoard = function () {
 	this.data = {};
+	this.name = "BlackBoard";
 };
 
 izpack.model.BlackBoard.prototype = {
 
 	get : function (key) {
-		console.debug("BlackBoard::get '" + key + "'");
+		console.debug(this.name + "::get '" + key + "'");
 		return this.data[key];
 	},
 	
 	set : function (key, value) {
-		console.debug("BlackBoard::set '" + key + "' : ", value);
+		console.debug(this.name + "::set '" + key + "' : ", value);
 		this.data[key] = value;
 	},
 	
 	add : function (key, value) {
-		console.debug("BlackBoard::add '" + key + "' : ", value);
+		console.debug(this.name + "::add '" + key + "' : ", value);
 		if (!this.data[key]) {
 			this.data[key] = [];
 		}
@@ -52,7 +53,7 @@ izpack.model.BlackBoard.prototype = {
 	},
 	
 	isDefined : function (key) {
-		console.debug("BlackBoard::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
+		console.debug(this.name + "::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
 		return (typeof this.data[key] !== "undefined");
 	},
 	

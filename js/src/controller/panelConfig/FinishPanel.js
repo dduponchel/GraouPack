@@ -25,38 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller");
+$.namespace("izpack.controller.panelConfig");
 
-izpack.controller.Panel = function (view, blackBoard) {
-	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
+izpack.controller.panelConfig.FinishPanel = function (view, domGenericPanel) {
+	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
 };
 
-izpack.controller.Panel.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+izpack.controller.panelConfig.FinishPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
 	setBindings : function () {
-		this.bind({
-			view: this.view.selectedPanelsContainer,
-			model: "panels",
-			defaultValue: [],
-			fromView: this.view.getPanels,
-			toView: this.view.setPanels,
-			constraints : [ "required" ]
-		});
-	},
-	afterInitView : function () {
-		var view = this.view;
-		// we need other views/controllers, one for each available panel.
-		$(this.view.availablePanels).each(function (index, domElt) {
-			var availablePanel = $(this);
-			var clazz = availablePanel.attr("data-class");
-			var panelDialog = view.createConfigPanel(availablePanel);
-			var panelView = new izpack.view.panelConfig[clazz](panelDialog);
-			var panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);
-			availablePanel
-			.data("config.controller", panelController)
-			.data("config.dialog", panelDialog)
-			.data("config.view", panelView);
-			panelController.setBindings();
-			panelController.initView();
-		});
+		// nothing yet
 	}
 });

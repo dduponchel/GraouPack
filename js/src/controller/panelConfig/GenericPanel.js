@@ -25,38 +25,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller");
+$.namespace("izpack.controller.panelConfig");
 
-izpack.controller.Panel = function (view, blackBoard) {
-	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
+/**
+ * A generic panel config controller.
+ * @param {GenericView} view the view to use.
+ */
+izpack.controller.panelConfig.GenericPanel = function (view, domGenericPanel) {
+	izpack.controller.GenericController.apply(this, [ view, null ]);
+	this.domGenericPanel = domGenericPanel;
+	this.defaultConfig = null;
 };
 
-izpack.controller.Panel.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
-	setBindings : function () {
-		this.bind({
-			view: this.view.selectedPanelsContainer,
-			model: "panels",
-			defaultValue: [],
-			fromView: this.view.getPanels,
-			toView: this.view.setPanels,
-			constraints : [ "required" ]
-		});
+izpack.controller.panelConfig.GenericPanel.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+	
+	getDefaultConfig : function () {
+		console.debug("GenericPanel::getDefaultConfig");
+		return new izpack.model.PanelConfig($.extend(true, {}, this.defaultConfig));
 	},
-	afterInitView : function () {
-		var view = this.view;
-		// we need other views/controllers, one for each available panel.
-		$(this.view.availablePanels).each(function (index, domElt) {
-			var availablePanel = $(this);
-			var clazz = availablePanel.attr("data-class");
-			var panelDialog = view.createConfigPanel(availablePanel);
-			var panelView = new izpack.view.panelConfig[clazz](panelDialog);
-			var panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);
-			availablePanel
-			.data("config.controller", panelController)
-			.data("config.dialog", panelDialog)
-			.data("config.view", panelView);
-			panelController.setBindings();
-			panelController.initView();
-		});
+	
+	getConfig : function () {
+		console.debug("GenericPanel::getConfig");
+		return this.blackBoard;
+	},
+	
+	setConfig : function (config) {
+		console.debug("GenericPanel::setConfig", config);
+		this.blackBoard = config;
 	}
 });

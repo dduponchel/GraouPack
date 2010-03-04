@@ -55,6 +55,24 @@
 				<include name="*.js" />
 				<exclude name="GenericView.js" />
 			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/controller/panelConfig">
+				<include name="GenericPanel.js" />
+			</fileset>
+			<fileset dir="js/src/controller/panelConfig">
+				<include name="*.js" />
+				<exclude name="GenericPanel.js" />
+			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/view/panelConfig">
+				<include name="GenericPanel.js" />
+			</fileset>
+			<fileset dir="js/src/view/panelConfig">
+				<include name="*.js" />
+				<exclude name="GenericPanel.js" />
+			</fileset>
 		</path>
 
 		<property name="target" value="target"/>

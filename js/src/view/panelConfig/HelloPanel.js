@@ -25,38 +25,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller");
+$.namespace("izpack.view.panelConfig");
 
-izpack.controller.Panel = function (view, blackBoard) {
-	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
+izpack.view.panelConfig.HelloPanel = function (domView) {
+	izpack.view.panelConfig.GenericPanel.apply(this, [ "HelloPanelConfig", domView ]);
+	
+	this.fileSrc = "#tab-panel-config-hello-file-src";
+	this.useHTML = "#tab-panel-config-hello-file-html";
 };
 
-izpack.controller.Panel.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
-	setBindings : function () {
-		this.bind({
-			view: this.view.selectedPanelsContainer,
-			model: "panels",
-			defaultValue: [],
-			fromView: this.view.getPanels,
-			toView: this.view.setPanels,
-			constraints : [ "required" ]
-		});
+izpack.view.panelConfig.HelloPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
+	initView : function () {
+		// nothing to do
 	},
-	afterInitView : function () {
-		var view = this.view;
-		// we need other views/controllers, one for each available panel.
-		$(this.view.availablePanels).each(function (index, domElt) {
-			var availablePanel = $(this);
-			var clazz = availablePanel.attr("data-class");
-			var panelDialog = view.createConfigPanel(availablePanel);
-			var panelView = new izpack.view.panelConfig[clazz](panelDialog);
-			var panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);
-			availablePanel
-			.data("config.controller", panelController)
-			.data("config.dialog", panelDialog)
-			.data("config.view", panelView);
-			panelController.setBindings();
-			panelController.initView();
-		});
+	
+	setFileSrc : function (src) {
+		$(this.fileSrc).val(src);
+	},
+	
+	getFileSrc : function () {
+		return $(this.fileSrc).val();
+	},
+	
+	setUseHTML : function (useHTML) {
+		$(this.useHTML)[0].checked = useHTML;
+	},
+	
+	getUseHTML : function () {
+		return $(this.useHTML)[0].checked;
 	}
 });

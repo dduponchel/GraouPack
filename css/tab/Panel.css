@@ -1,12 +1,22 @@
-#tab-panel div.available-panel {
+#tab-panel div.available-panel,
+#tab-panel div.selected-panel {
 	border: 1px solid #888;
 	background: #eee;
 	margin: 4px 0;
+}
+#tab-panel div.selected-panel {
+	height: 108px; /* bug with firefox */
 }
 
 
 #tab-panel .tab-panel-available-place {
 	width:60%;
+	float:left;
+}
+
+#tab-panel .tab-panel-selected-place {
+		width: 39%;
+		margin-left:61%;
 }
 
 #tab-panel img.preview {
@@ -15,13 +25,18 @@
 	margin: 3px;
 }
 
-#tab-panel #tab-panel-available .summary p,
-#tab-panel #tab-panel-available .summary h3 {
+#tab-panel h2 {
+	text-align: center;
+}
+
+#tab-panel .summary p,
+#tab-panel h2,
+#tab-panel h3 {
 	margin:0;
 	padding:0;
 }
 #tab-panel #tab-panel-available .summary {
-	margin:0 36px 0 208px;
+	margin:0 36px 0 108px;
 	padding: 5px;
 }
 #tab-panel #tab-panel-available .action {
@@ -33,7 +48,7 @@
 	height: 32px;
 }
 #tab-panel #tab-panel-available img {
-	width: 200px;
+	width: 100px;
 	height: 100px;
 }
 
@@ -45,4 +60,24 @@
 	border:1px solid grey;
 	width: 473px;
 	height: 275px;
+}
+
+#tab-panel .selected-panel .right-side img {
+	margin:10px
+}
+
+#tab-panel .selected-panel .right-side {
+	margin-left: 123px;
+	text-align: center;
+}
+
+#tab-panel .selected-panel .grip {
+	height: 100%;
+	width: 15px;
+	float:left;
+	background: url("../../img/grip.png") #ccc;
+}
+
+.tab-panel-selected-place #model-for-selected {
+	display:none;
 }

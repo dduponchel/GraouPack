@@ -84,7 +84,7 @@ izpack.controller.GenericController.prototype = {
 		console.debug("GenericController::bind '", settings.view, "' to '", settings.model + "' on '", settings.event, "'");
 		
 		// default value
-		if (!this.blackBoard.isDefined(settings.model)) {
+		if (this.blackBoard && !this.blackBoard.isDefined(settings.model)) {
 			this.blackBoard.set(settings.model, settings.defaultValue);
 		}
 		
@@ -101,15 +101,31 @@ izpack.controller.GenericController.prototype = {
 		return isValid;
 	},
 	
+	beforeShowView : function () {},
+	
+	afterShowView : function () {},
+	
 	showView : function () {
+		
+		this.beforeShowView();
+		
 		console.debug("GenericController::showView ", this.view.name, ", setting " + this.bindings.length + " view items via binding");
 		for (var i = 0; i < this.bindings.length; i++) {
 			var binding = this.bindings[i];
 			binding.toView.apply(this.view, [this.blackBoard.get(binding.model)]);
 		}
+		
+		this.afterShowView();
 	},
 	
+	beforeInitView : function () {},
+	
+	afterInitView : function () {},
+	
 	initView : function () {
+		
+		this.beforeInitView();
+		
 		console.debug("GenericController::initView ", this.view.name);
 		
 		this.view.load();
@@ -117,7 +133,7 @@ izpack.controller.GenericController.prototype = {
 		var handler = function (event) {
 			var binding = event.data.binding;
 			var controller = event.data.controller;
-			console.debug("GenericController::bind : view '", binding.view, "' has triggered '", binding.event, "'");
+			console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
 			var viewData = binding.fromView.apply(controller.view, [binding.view]);
 			controller.validateBinding(binding.view, viewData, binding.constraints);
 			controller.blackBoard.set(binding.model, viewData);
@@ -130,5 +146,7 @@ izpack.controller.GenericController.prototype = {
 			var binding = this.bindings[i];
 			$(binding.view).bind(binding.event, {binding: binding, controller: this}, handler);
 		}
+		
+		this.afterInitView();
 	}
 };
