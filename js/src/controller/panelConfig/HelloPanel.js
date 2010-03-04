@@ -43,7 +43,6 @@ izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.control
 			model: "fileSrc",
 			fromView: this.view.getFileSrc,
 			toView: this.view.setFileSrc,
-			constraints : [ "required" ],
 			event : "change"
 		});
 		this.bind({
@@ -52,6 +51,16 @@ izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.control
 			fromView: this.view.getUseHTML,
 			toView: this.view.setUseHTML,
 			event : "change"
+		});
+
+		this.addModelConstraint({
+			blame : this.view.fileSrc,
+			constraint : function (model) {
+				if (model.get("useHTML")) {
+					return $.trim(model.get("fileSrc")) ? true : false;
+				}
+				return true;
+			}
 		});
 	}
 });

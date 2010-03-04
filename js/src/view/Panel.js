@@ -62,6 +62,7 @@ izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 	},
 	
 	createConfigPanel : function (availablePanel) {
+		var view = this;
 		return availablePanel.find(".config").dialog({
 			autoOpen : false,
 			modal : true,
@@ -71,9 +72,8 @@ izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 					var isValid = configHandler.validate();
 					if (isValid) {
 						configHandler.setConfig(null);
-						$(this)
-						.dialog('close')
-						.trigger("izpack.change");
+						$(this).dialog('close');
+						$(view.selectedPanelsContainer).trigger("izpack.change");
 						// js uses references : the selected panel has the right config.
 					}
 					else {
@@ -132,7 +132,7 @@ izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 		$(this.selectedPanelsContainer)
 		.sortable({
 			axis: 'y',
-			handle: ".preview, .grip, h3"
+			handle: ".preview, .grip"
 		})
 		.bind("sortupdate", function () {
 			$(this).trigger("izpack.change");
@@ -179,7 +179,7 @@ izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 				configHandler.showView();
 				dialog
 				.dialog('option', 'title', clazz + " configuration")
-        		        .dialog("open");
+				.dialog("open");
 			}
 			return false;
 		});

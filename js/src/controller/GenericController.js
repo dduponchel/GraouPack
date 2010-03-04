@@ -46,6 +46,8 @@ izpack.controller.GenericController = function (view, blackBoard) {
 	};
 
 	this.bindings = [];
+
+	this.modelConstraints = [];
 };
 
 izpack.controller.GenericController.prototype = {
@@ -66,6 +68,14 @@ izpack.controller.GenericController.prototype = {
 			$(view).addClass("error");
 		}
 		return isValid;
+	},
+	
+	validateModelConstraints : function (modelConstraint) {
+		if (modelConstraint.constraint(this.blackBoard)) {
+			return true;
+		}
+		$(modelConstraint.blame).addClass("error");
+		return false;
 	},
 	
 	bind : function (options) {
@@ -91,13 +101,38 @@ izpack.controller.GenericController.prototype = {
 		this.bindings.push(settings);
 	},
 	
+	addModelConstraint : function (options) {
+		var settings = {
+			blame : "",
+			constraint : function (model) {}
+		};
+		
+		$.extend(settings, options);
+		console.debug("GenericController::addModelConstraint, blaming'", settings.blame);
+		this.modelConstraints.push(settings);
+	},
+	
 	validate : function () {
 		var isValid = true;
-		for (var i = 0; i < this.bindings.length; i++) {
+		
+		var i = 0;
+
+		for (i = 0; i < this.modelConstraints.length; i++) {
+			// remove model constraint errors
+			$(this.modelConstraints[i].blame).removeClass("error");
+		}
+
+		for (i = 0; i < this.bindings.length; i++) {
 			var binding = this.bindings[i];
 			var viewData = binding.fromView.apply(this.view, [binding.view]);
 			isValid = this.validateBinding(binding.view, viewData, binding.constraints) && isValid;
 		}
+
+		for (i = 0; i < this.modelConstraints.length; i++) {
+			var modelConstraint = this.modelConstraints[i];
+			isValid = this.validateModelConstraints(modelConstraint) && isValid;
+		}
+
 		return isValid;
 	},
 	

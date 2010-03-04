@@ -36,7 +36,14 @@ izpack.view.panelConfig.HelloPanel = function (domView) {
 
 izpack.view.panelConfig.HelloPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
 	initView : function () {
-		// nothing to do
+		$(this.useHTML).change(function () {
+			if (this.checked) {
+				$(this).parents("fieldset").find(".hideMe").slideDown("fast");
+			}
+			else {
+				$(this).parents("fieldset").find(".hideMe").slideUp("fast");
+			}
+		});
 	},
 	
 	setFileSrc : function (src) {
@@ -49,6 +56,11 @@ izpack.view.panelConfig.HelloPanel.prototype = $.extend({}, izpack.view.panelCon
 	
 	setUseHTML : function (useHTML) {
 		$(this.useHTML)[0].checked = useHTML;
+		if (useHTML) {
+			$(".hideMe", this.domView).show();
+		} else {
+			$(".hideMe", this.domView).hide();
+		}
 	},
 	
 	getUseHTML : function () {

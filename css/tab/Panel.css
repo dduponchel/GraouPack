@@ -46,6 +46,7 @@
 	margin: 8px 2px;
 	width: 32px;
 	height: 32px;
+	cursor: pointer;
 }
 #tab-panel #tab-panel-available img {
 	width: 100px;
@@ -63,7 +64,8 @@
 }
 
 #tab-panel .selected-panel .right-side img {
-	margin:10px
+	margin:10px;
+	cursor: pointer;
 }
 
 #tab-panel .selected-panel .right-side {
@@ -75,7 +77,12 @@
 	height: 100%;
 	width: 15px;
 	float:left;
+	cursor: move;
 	background: url("../../img/grip.png") #ccc;
+}
+
+#tab-panel .selected-panel img.preview {
+	cursor: move;
 }
 
 .tab-panel-selected-place #model-for-selected {
