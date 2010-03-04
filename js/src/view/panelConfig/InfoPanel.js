@@ -29,9 +29,33 @@ $.namespace("izpack.view.panelConfig");
 
 izpack.view.panelConfig.InfoPanel = function (domView) {
 	izpack.view.panelConfig.GenericPanel.apply(this, [ "InfoPanelConfig", domView ]);
+	
+	this.fileSrc = "#tab-panel-config-info-file-src";
+	this.useHTML = "#tab-panel-config-info-file-html";
 };
 
 izpack.view.panelConfig.InfoPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
 	initView : function () {
+	},
+	
+	setFileSrc : function (src) {
+		$(this.fileSrc).val(src);
+	},
+	
+	getFileSrc : function () {
+		return $(this.fileSrc).val();
+	},
+	
+	setUseHTML : function (useHTML) {
+		$(this.useHTML)[0].checked = useHTML;
+		if (useHTML) {
+			$(".hideMe", this.domView).show();
+		} else {
+			$(".hideMe", this.domView).hide();
+		}
+	},
+	
+	getUseHTML : function () {
+		return $(this.useHTML)[0].checked;
 	}
 });
