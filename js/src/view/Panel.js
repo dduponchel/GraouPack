@@ -125,6 +125,10 @@ izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 		
 		model.find("h3").text(clazz);
 		
+		if (! this.getAvailableByClass(clazz).data("config.dialog").length) {
+			model.find(".action .config").remove();
+		}
+		
 		model.appendTo(this.selectedPanelsContainer);
 	},
 	
