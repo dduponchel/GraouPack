@@ -87,7 +87,7 @@ izpack.xml.XMLBuilder.prototype = {
 	 * Generate the xml string.
 	 * @return {String} the string representing the xml.
 	 */
-	toString : function () {
+	toXMLString : function () {
 		/*
 		 * It can't pass by an xslt transformation : the effet of indent = "yes" depends of the browser (and firefox doesn't indent).
 		 * @see http://www.w3.org/TR/xslt#output : "indent specifies whether the XSLT processor <strong>may</strong> add additional whitespace when outputting the result tree; the value must be yes or no"
@@ -107,15 +107,16 @@ izpack.xml.XMLBuilder.prototype = {
 			}
 			return output;
 		};
-
 		var input = this._getXmlString();
 		
 		// we don't always have an xml declaration : we remove it and add our own
 		input = input.replace(/<\?xml[^>]+>\s*/, "");
 		
+		// we sometimes (IE) have extra new lines...
+		input = $.trim(input);
+		
 		var output = "";
-
-
+		
 		// we can use E4X. /!\ don't use CDATA !
 		// see https://developer.mozilla.org/en/Parsing_and_serializing_XML#.22Pretty.22_serialization_of_DOM_trees_to_strings
 		if (typeof XML === "function") {

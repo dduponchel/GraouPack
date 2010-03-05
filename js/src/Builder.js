@@ -154,7 +154,7 @@ izpack.Builder = function (htmlID) {
 					var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
 					generator.addXMLInfo(xml);
 				}
-				$(".generated-xml", dialog).text(xml.toString());
+				$(".generated-xml", dialog).text(xml.toXMLString());
 				dialog.dialog("open");
 			}
 			catch (e) {

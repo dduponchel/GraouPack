@@ -55,7 +55,7 @@ test("addXmlInfo: with authors", function () {
 	this.mockDatas["authors"] = [
 		{name: "name0", mail: "mail0"},
 		{name: "name1", mail: "mail1"},
-		{name: "name2", mail: "mail2"},
+		{name: "name2", mail: "mail2"}
 	];
 	
 	this.generator.addXMLInfo(this.mockXmlBuilder);

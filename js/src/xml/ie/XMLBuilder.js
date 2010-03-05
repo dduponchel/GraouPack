@@ -24,25 +24,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
+$.namespace("izpack.xml.ie");
 
-$.namespace("izpack.compatibility");
+/**
+ * Create an xml DOM document, and make its manipulation easier.
+ */
+izpack.xml.ie.XMLBuilder = function () {
+	izpack.xml.XMLBuilder.apply(this, []);
+	this._elementImplementationClass = izpack.xml.ie.Element;
+};
 
-(function () {
-	if (typeof console === "undefined") {
-		console = {};
-		console.debug = console.log = console.info = console.warn = console.error = function () {};
-	} else if (console.log && !console.debug) {
-		// IE 8 implements console.log in his "developer tools" but not console.debug...
-		console.debug = console.log;
+izpack.xml.ie.XMLBuilder.prototype = $.extend({}, izpack.xml.XMLBuilder.prototype, {
+
+	_createEmptyDocument : function (rootName) {
+		var doc = new ActiveXObject("MSXML2.DOMDocument");
+		doc.loadXML("<" + rootName + "/>");
+		return doc;
+	},
+	_getChildren : function (currentNode) {
+		return currentNode.childNodes;
+	},
+	_getNodeName : function (node) {
+		return node.nodeName;
+	},
+	_createChild : function (nodeName, currentNode) {
+		var newElement = this._xmlDocument.createElement(nodeName);
+		currentNode.appendChild(newElement);
+		return newElement;
+	},
+	_getXmlString : function () {
+		return this._xmlDocument.xml;
+	},
+	getRootElement : function () {
+		return new this._elementImplementationClass(
+			this._xmlDocument.childNodes[0],
+			this
+		);
 	}
-	
-	izpack.compatibility.xml = {
-		w3c : typeof XMLSerializer !== "undefined" &&
-		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined",
-		ie : typeof window.ActiveXObject !== "undefined"
-	};
-
-	if (!izpack.compatibility.xml.w3c && !izpack.compatibility.xml.ie) {
-		alert("this browser doesn't seem to be recent enough to support this app.");
-	}
-})();
+});

@@ -24,25 +24,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
+$.namespace("izpack.xml.ie");
 
-$.namespace("izpack.compatibility");
+izpack.xml.ie.Element = function (xmlNode, xmlBuilder) {
+	izpack.xml.Element.apply(this, [ xmlNode, xmlBuilder ]);
+};
 
-(function () {
-	if (typeof console === "undefined") {
-		console = {};
-		console.debug = console.log = console.info = console.warn = console.error = function () {};
-	} else if (console.log && !console.debug) {
-		// IE 8 implements console.log in his "developer tools" but not console.debug...
-		console.debug = console.log;
+izpack.xml.ie.Element.prototype = $.extend({}, izpack.xml.Element.prototype, {
+
+	getChildren : function () {
+		var children = [];
+		for (var i = 0; i < this.xmlNode.childNodes.length; i++) {
+			children.push(new this.xmlBuilder._elementImplementationClass(
+				this.xmlNode.childNodes[i],
+				this.xmlBuilder)
+			);
+		}
+		return children;
+	},
+	getName : function () {
+		return this.xmlNode.nodeName;
+	},
+	setAttribute : function (key, value) {
+		this.xmlNode.setAttribute(key, value + "");
+	},
+	getAttribute : function (key) {
+		return this.xmlNode.getAttribute(key);
+	},
+	setContent : function (content) {
+		this.xmlNode.text = content;
+	},
+	getContent : function () {
+		return this.xmlNode.nodeValue;
 	}
-	
-	izpack.compatibility.xml = {
-		w3c : typeof XMLSerializer !== "undefined" &&
-		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined",
-		ie : typeof window.ActiveXObject !== "undefined"
-	};
-
-	if (!izpack.compatibility.xml.w3c && !izpack.compatibility.xml.ie) {
-		alert("this browser doesn't seem to be recent enough to support this app.");
-	}
-})();
+});
