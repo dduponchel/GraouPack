@@ -24,17 +24,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+$.namespace("izpack.compatibility");
+
 (function () {
 	if (typeof console === "undefined") {
 		console = {};
 		console.debug = console.log = console.info = console.warn = console.error = function () {};
 	}
 	
-	var compat = 
-		typeof XMLSerializer !== "undefined" &&
-		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined";
+	izpack.compatibility.xml = {
+		w3c : typeof XMLSerializer !== "undefined" &&
+		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined",
+		ie : typeof window.ActiveXObject !== "undefined"
+	};
 
-	if (!compat) {
+	if (!izpack.compatibility.xml.w3c && !izpack.compatibility.xml.ie) {
 		alert("this browser doesn't seem to be recent enough to support this app.");
 	}
 })();

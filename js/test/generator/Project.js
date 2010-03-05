@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-module("Generator General", {
+module("Generator Project", {
         setup: function(){
 		this.mockDatas = {};
 		this.mockBlackBoard = Helper.getMockBlackBoardFrom(this.mockDatas);
@@ -44,8 +44,8 @@ test("addXMLInfo: no authors", function () {
 	
 	this.generator.addXMLInfo(this.mockXmlBuilder);
 	
-	equal(this.mockXmlBuilder.testHolder["/installation/info/appname"].textContent, "appname", "appname setted");
-	equal(this.mockXmlBuilder.testHolder["/installation/info/appversion"].textContent, "appversion", "appversion setted");
+	equal(this.mockXmlBuilder.testHolder["/installation/info/appname"].content, "appname", "appname setted");
+	equal(this.mockXmlBuilder.testHolder["/installation/info/appversion"].content, "appversion", "appversion setted");
 	ok(!this.mockXmlBuilder.testHolder["/installation/info/authors"], "no author");
 });
 

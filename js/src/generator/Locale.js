@@ -40,7 +40,7 @@ izpack.generator.Locale.prototype = $.extend({}, izpack.generator.GenericGenerat
 		var localeXml = xmlBuilder.get("/installation/locale");
 		var locales = this.blackBoard.get("locales");
 		for (var i = 0; i < locales.length; i++) {
-			xmlBuilder.createElement("langpack", localeXml).setAttribute("iso3", locales[i]);
+			localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
 		}
 	}
 });
