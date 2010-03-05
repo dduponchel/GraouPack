@@ -71,10 +71,11 @@ izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 					var configHandler = availablePanel.data("config.controller");
 					var isValid = configHandler.validate();
 					if (isValid) {
+						// js uses references : the selected panel has the right config.
+						configHandler.saveConfig();
 						configHandler.setConfig(null);
 						$(this).dialog('close');
 						$(view.selectedPanelsContainer).trigger("izpack.change");
-						// js uses references : the selected panel has the right config.
 					}
 					else {
 						return false;

@@ -35,6 +35,7 @@ izpack.controller.panelConfig.GenericPanel = function (view, domGenericPanel) {
 	izpack.controller.GenericController.apply(this, [ view, null ]);
 	this.domGenericPanel = domGenericPanel;
 	this.defaultConfig = null;
+	this.notSavedConfig = null;
 };
 
 izpack.controller.panelConfig.GenericPanel.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
@@ -51,6 +52,13 @@ izpack.controller.panelConfig.GenericPanel.prototype = $.extend({}, izpack.contr
 	
 	setConfig : function (config) {
 		console.debug("GenericPanel::setConfig", config);
-		this.blackBoard = config;
+		this.blackBoard = (config) ? config.clone() : null;
+		this.notSavedConfig = config;
+	},
+	
+	saveConfig : function () {
+		console.debug("GenericPanel::saveConfig");
+		// blackBoard -> notSavedConfig
+		this.notSavedConfig.setData(this.blackBoard);
 	}
 });

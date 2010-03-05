@@ -34,4 +34,11 @@ izpack.model.PanelConfig = function (data) {
 };
 
 izpack.model.PanelConfig.prototype = $.extend({}, izpack.model.BlackBoard.prototype, {
+	clone : function () {
+		return new izpack.model.PanelConfig($.extend(true, {}, this.data));
+	},
+	
+	setData : function (otherConfig) {
+		this.data = otherConfig.data;
+	}
 });
