@@ -21,6 +21,9 @@
 			<fileset dir="js/src">
 				<include name="*.js" />
 			</fileset>
+			<fileset dir="js/src/zip">
+				<include name="*.js" />
+			</fileset>
 			<fileset dir="js/src/xml">
 				<include name="*.js" />
 			</fileset>
