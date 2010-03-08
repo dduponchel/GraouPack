@@ -42,14 +42,14 @@ izpack.generator.Project.prototype = $.extend({}, izpack.generator.GenericGenera
 			var authorsXml = xmlBuilder.get("/installation/info/authors");
 			for (var i = 0; i < authors.length; i++) {
 				var author = authors[i];
-				var authorXml = xmlBuilder.createElement("author", authorsXml);
+				var authorXml = authorsXml.createChild("author");
 				authorXml.setAttribute("name", author.name);
 				authorXml.setAttribute("email", author.mail);
 			}
 		}
 
-		xmlBuilder.get("/installation/info/appname").textContent = this.blackBoard.get("app.name");
-		xmlBuilder.get("/installation/info/appversion").textContent = this.blackBoard.get("app.version");
+		xmlBuilder.get("/installation/info/appname").setContent(this.blackBoard.get("app.name"));
+		xmlBuilder.get("/installation/info/appversion").setContent(this.blackBoard.get("app.version"));
 	}
 });
 

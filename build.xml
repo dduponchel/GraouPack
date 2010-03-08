@@ -24,6 +24,12 @@
 			<fileset dir="js/src/xml">
 				<include name="*.js" />
 			</fileset>
+			<fileset dir="js/src/xml/w3c">
+				<include name="*.js" />
+			</fileset>
+			<fileset dir="js/src/xml/ie">
+				<include name="*.js" />
+			</fileset>
 
 			<!-- we want first the mother class -->
 			<fileset dir="js/src/generator">

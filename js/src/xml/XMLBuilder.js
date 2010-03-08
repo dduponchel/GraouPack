@@ -29,14 +29,17 @@ $.namespace("izpack.xml");
 
 /**
  * Create an xml DOM document, and make its manipulation easier.
+ * Use the factory method to create an XmlBuilder !
  */
 izpack.xml.XMLBuilder = function () {
 	
 	/**
 	 * The xml document.
 	 */
-	this.xmlDocument = document.implementation.createDocument("", "installation", null);
-	this.xmlDocument.getElementsByTagName("installation")[0].setAttribute("version", "1.0");
+	this._xmlDocument = this._createEmptyDocument("installation");
+	this._xmlDocument.getElementsByTagName("installation")[0].setAttribute("version", "1.0");
+	
+	this._elementImplementationClass = null;
 };
 
 izpack.xml.XMLBuilder.prototype = {
@@ -58,35 +61,33 @@ izpack.xml.XMLBuilder.prototype = {
 		// get rid of the first / (creates a "")
 		nodeNames.shift();
 
-		var currentNode = this.xmlDocument;
+		var currentNode = this._xmlDocument;
 		// for each level
 		for (var depth = 0; depth < nodeNames.length; depth++) {
 			var nodeName = nodeNames[depth];
-			var xmlChildren = currentNode.childNodes;
+			var xmlChildren = this._getChildren(currentNode);
 			var childNb = 0;
 			var found = false;
 			// looking for an existing node
 			while (!found && childNb < xmlChildren.length) {
 				var xmlChild = xmlChildren[childNb++];
-				if (xmlChild.localName.toLowerCase() === nodeName.toLowerCase()) {
+				if (this._getNodeName(xmlChild).toLowerCase() === nodeName.toLowerCase()) {
 					found = true;
 					currentNode = xmlChild;
 				}
 			}
 			if (!found) {
-				var newNode = this.createElement(nodeName, currentNode);
-				currentNode.appendChild(newNode);
-				currentNode = newNode;
+				currentNode = this._createChild(nodeName, currentNode);
 			}
 		}
-		return currentNode;
+		return new this._elementImplementationClass(currentNode, this);
 	},
 
 	/**
 	 * Generate the xml string.
 	 * @return {String} the string representing the xml.
 	 */
-	toString : function () {
+	toXMLString : function () {
 		/*
 		 * It can't pass by an xslt transformation : the effet of indent = "yes" depends of the browser (and firefox doesn't indent).
 		 * @see http://www.w3.org/TR/xslt#output : "indent specifies whether the XSLT processor <strong>may</strong> add additional whitespace when outputting the result tree; the value must be yes or no"
@@ -98,7 +99,7 @@ izpack.xml.XMLBuilder.prototype = {
 			for (var n = 0; n < input.length; n++) {
 				var c = input.charCodeAt(n);
 				if (c < 128) {
-					output += input[n];
+					output += input.charAt(n);
 				}
 				else if (c > 127) {
 					output += ("&#" + c + ";");
@@ -106,85 +107,100 @@ izpack.xml.XMLBuilder.prototype = {
 			}
 			return output;
 		};
-
-		var input = new XMLSerializer().serializeToString(this.xmlDocument);
+		var input = this._getXmlString();
 		
 		// we don't always have an xml declaration : we remove it and add our own
 		input = input.replace(/<\?xml[^>]+>\s*/, "");
 		
+		// we sometimes (IE) have extra new lines...
+		input = $.trim(input);
+		
 		var output = "";
-
-
-		// we can use E4X. /!\ don't use CDATA !
+		
+		// other way : we can use E4X. /!\ don't use CDATA !
 		// see https://developer.mozilla.org/en/Parsing_and_serializing_XML#.22Pretty.22_serialization_of_DOM_trees_to_strings
-		if (typeof XML === "function") {
-			output = XML(input).toXMLString();
-		}
-		else { // without E4X, we must indent manually
-			var depth = 0;
-			var sameLine = false; // used when </foo> goes after <foo>bar
-			var fragments = input.match(/<[^>]+>[^<]*/gi);
-			var append = function (fragment) {
-				output += fragment;
-			};
-			var indent = function (depth) {
-				for (var i = 0; i < depth; i++) {
-					output += "  ";
-				}
-			};
-			var newLine = function () {
-				output += "\n";
-			};
-			for (var i = 0; i < fragments.length - 1; i++) {
-				var fragment = fragments[i];
-				if (fragment.match(/>.+/)) { // <---->blabla
-					indent(depth);
-					sameLine = true;
+		// output = XML(input).toXMLString();
+		
+		
+		var depth = 0;
+		var sameLine = false; // used when </foo> goes after <foo>bar
+		var fragments = input.match(/<[^>]+>[^<]*/gi);
+		var append = function (fragment) {
+			output += fragment;
+		};
+		var indent = function (depth) {
+			for (var i = 0; i < depth; i++) {
+				output += "  ";
+			}
+		};
+		var newLine = function () {
+			output += "\r\n"; // damn windows
+		};
+		
+		output += '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>';
+		newLine();
+		
+		for (var i = 0; i < fragments.length - 1; i++) {
+			var fragment = fragments[i];
+			if (fragment.match(/>.+/)) { // <---->blabla
+				indent(depth);
+				sameLine = true;
+				append(fragment);
+			}
+			else if (fragment.match(/\/>$/)) { // <----/>
+				indent(depth);
+				append(fragment);
+				newLine();
+			}
+			else if (fragment.match(/<[^\/]+>/)) { // <---->
+				indent(depth++);
+				append(fragment);
+				newLine();
+			}
+			else if (fragment.match(/<\//)) { // </---->
+				if (sameLine) {
 					append(fragment);
-				}
-				else if (fragment.match(/\/>$/)) { // <----/>
-					indent(depth);
-					append(fragment);
+					sameLine = false;
 					newLine();
 				}
-				else if (fragment.match(/<[^\/]+>/)) { // <---->
-					indent(depth++);
+				else {
+					indent(--depth);
 					append(fragment);
 					newLine();
-				}
-				else if (fragment.match(/<\//)) { // </---->
-					if (sameLine) {
-						append(fragment);
-						sameLine = false;
-						newLine();
-					}
-					else {
-						indent(--depth);
-						append(fragment);
-						newLine();
-					}
-				}
-				else { // should not happen
-					append(fragment);
 				}
 			}
-			append(fragments[fragments.length - 1]); // no \n for the last one
+			else { // should not happen
+				append(fragment);
+			}
 		}
-
+		append(fragments[fragments.length - 1]); // no \n for the last one
+		
 		output = convertToXMLReferences(output);
 		
-		return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' + output;
+		return output;
 	},
 	
-	/**
-	 * Create a new element on the current xml document.
-	 * @Param {String} name The name of the new element.
-	 * @Param {XMLElement} xmlParent The parent for the new element.
-	 * @Return {XMLElement} the created xml element.
-	 */
-	createElement : function (name, xmlParent) {
-		var newElement = this.xmlDocument.createElement(name);
-		xmlParent.appendChild(newElement);
-		return newElement;
+	_createEmtyDocument : function (rootName) {
+		throw "_createEmtyDocument must be overrided !";
+	},
+	_getChildren : function (currentNode) {
+		throw "_getChildren must be overrided !";
+	},
+	_getNodeName : function (node) {
+		throw "_getNodeName must be overrided !";
+	},
+	_createChild : function (nodeName, currentNode) {
+		throw "_createChild must be overrided !";
+	},
+	_getXmlString : function () {
+		throw "_getXmlString must be overrided !";
+	},
+	getRootElement : function () {
+		throw "getRootElement must be overrided !";
 	}
+};
+
+izpack.xml.XMLBuilder.createInstance = function () {
+	var implementation = izpack.compatibility.xml.w3c ? izpack.xml.w3c : izpack.xml.ie;
+	return new implementation.XMLBuilder();
 };

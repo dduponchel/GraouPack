@@ -25,14 +25,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var GeneratorHelper = {
-	getNewMockXmlBuilder : function () {
-		return {
-       		        testHolder: [],
-       		        get: function (path) {
-				this.testHolder[path] = new MockXmlElement();
-				return this.testHolder[path];
-			}
-		};
-	}
+var MockXmlElement = function (name) {
+	this.name = name;
+	this.children = [];
+	this.attributes = {};
+	this.content = "";
 };
+
+MockXmlElement.prototype = $.extend({}, izpack.xml.Element, {
+	createChild : function (name) {
+		var child = new MockXmlElement(name);
+		this.children.push(child);
+		return child;
+	},
+	getName : function () {
+		return this.name;
+	},
+	getChildren : function () {
+		return this.children;
+	},
+	setAttribute : function (key, value) {
+		this.attributes[key] = value;
+	},
+	getAttribute : function (key) {
+		return this.attributes[key];
+	},
+	setContent : function (content) {
+		this.content = content;
+	},
+	getContent : function () {
+		return this.content;
+	}
+});

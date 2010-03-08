@@ -24,15 +24,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
+$.namespace("izpack.xml.w3c");
 
-var GeneratorHelper = {
-	getNewMockXmlBuilder : function () {
-		return {
-       		        testHolder: [],
-       		        get: function (path) {
-				this.testHolder[path] = new MockXmlElement();
-				return this.testHolder[path];
-			}
-		};
-	}
+/**
+ * Create an xml DOM document, and make its manipulation easier.
+ */
+izpack.xml.w3c.XMLBuilder = function () {
+	izpack.xml.XMLBuilder.apply(this, []);
+	this._elementImplementationClass = izpack.xml.w3c.Element;
 };
+
+izpack.xml.w3c.XMLBuilder.prototype = $.extend({}, izpack.xml.XMLBuilder.prototype, {
+
+	_createEmptyDocument : function (rootName) {
+		return document.implementation.createDocument("", rootName, null);
+	},
+	_getChildren : function (currentNode) {
+		return currentNode.childNodes;
+	},
+	_getNodeName : function (node) {
+		return node.localName;
+	},
+	_createChild : function (nodeName, currentNode) {
+		var newElement = this._xmlDocument.createElement(nodeName);
+		currentNode.appendChild(newElement);
+		return newElement;
+	},
+	_getXmlString : function () {
+		return new XMLSerializer().serializeToString(this._xmlDocument);
+	},
+	getRootElement : function () {
+		return new this._elementImplementationClass(
+			this._xmlDocument.childNodes[0],
+			this
+		);
+	}
+});

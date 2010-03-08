@@ -173,7 +173,7 @@ izpack.controller.GenericController.prototype = {
 			controller.validateBinding(binding.view, viewData, binding.constraints);
 			controller.blackBoard.set(binding.model, viewData);
 			
-			return false;
+			return true; // don't block on changes !
 		};
 		
 		// binding to the real elements
