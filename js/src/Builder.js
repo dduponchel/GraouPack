@@ -49,20 +49,19 @@ izpack.Builder = function (htmlID) {
 	this.blackBoard = new izpack.model.BlackBoard();
 
 	var addErrorTab = function (index) {
+		// should be in css, but `switchClass("error-tab-highlight", "error-tab", "slow")` doesn't work in IE...
+		var fromColor = "#f55";
+		var toColor   = "#ee8";
+		
 		tabs[index].htmlTab
-			.stop()
-			.css("background-color", "")
-			.removeClass("error-tab")
-			.addClass("error-tab-highlight")
-			.switchClass("error-tab-highlight", "error-tab", "slow");
+			.css("background-color", fromColor)
+			.animate({
+				backgroundColor : toColor
+			}, "slow");
 	};
 	
 	var removeErrorTab = function (index) {
-		tabs[index].htmlTab
-			.stop()
-			.removeClass("error-tab")
-			.removeClass("error-tab-highlight")
-			.css("background-color", "transparent");
+		tabs[index].htmlTab.css("background-color", "transparent");
 	};
 	
 	/**
@@ -147,19 +146,24 @@ izpack.Builder = function (htmlID) {
 	};
 	
 	this.generateXML = function () {
-		if (validateAll()) {
-			try {
-				var xml = new izpack.xml.XMLBuilder();
-				for (var i = 0; i < this.xmlHandlers.length; i++) {
-					var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
-					generator.addXMLInfo(xml);
+		try {
+			if (validateAll()) {
+				try {
+					var xml = izpack.xml.XMLBuilder.createInstance();
+					for (var i = 0; i < this.xmlHandlers.length; i++) {
+						var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
+						generator.addXMLInfo(xml);
+					}
+					$(".generated-xml", dialog).text(xml.toXMLString());
+					dialog.dialog("open");
 				}
-				$(".generated-xml", dialog).text(xml.toString());
-				dialog.dialog("open");
+				catch (xmlException) {
+					alert("Something went wrong with the xml generation !\n" + xmlException);
+				}
 			}
-			catch (e) {
-				alert("Something went wrong with the xml generation !\n" + e);
-			}
+		}
+		catch (validationException) {
+			alert("Something went wrong with the validation !\n" + validationException);
 		}
 	};
 	

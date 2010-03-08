@@ -26,13 +26,13 @@
  */
  
 function checkXMLElt(xml, name, children) {
-	equal(xml.childNodes.length, children, "number of children for " + name);
-	equal(xml.localName, name, "elt name for " + name);
+	equal(xml.getChildren().length, children, "number of children for " + name);
+	equal(xml.getName(), name, "elt name for " + name);
 }
 
 module("XMLBuilder", {
 	setup: function(){
-		this.xmlBuilder = new izpack.xml.XMLBuilder();
+		this.xmlBuilder = izpack.xml.XMLBuilder.createInstance();
 	},
 	teardown: function(){
 		this.xmlBuilder = null;
@@ -52,20 +52,20 @@ test("get: empty", function() {
 
 test("get: root elt", function() {
 	var res = this.xmlBuilder.get("/installation");
-	equal(res.localName, "installation");
+	equal(res.getName(), "installation");
 });
 
 test("get: sub sub elt", function() {
 	var res = this.xmlBuilder.get("/installation/sub/sub2");
 	checkXMLElt(res, "sub2", 0);
 
-	var installation = this.xmlBuilder.xmlDocument.childNodes[0];
+	var installation = this.xmlBuilder.getRootElement();
 	checkXMLElt(installation, "installation", 1);
 
-	var sub = installation.childNodes[0];
+	var sub = installation.getChildren()[0];
 	checkXMLElt(sub, "sub", 1);
 
-	var sub2 = sub.childNodes[0];
+	var sub2 = sub.getChildren()[0];
 	checkXMLElt(sub2, "sub2", 0);
 });
 
@@ -76,58 +76,58 @@ test("get: multiple runs", function() {
 	checkXMLElt(res1, "b", 0);
 	checkXMLElt(res2, "c", 0);
 	
-	var installation = this.xmlBuilder.xmlDocument.childNodes[0];
+	var installation = this.xmlBuilder.getRootElement();
 	checkXMLElt(installation, "installation", 1);
 	
-	var a = installation.childNodes[0];
+	var a = installation.getChildren()[0];
 	checkXMLElt(a, "a", 2);
 	
-	var b = a.childNodes[0];
+	var b = a.getChildren()[0];
 	checkXMLElt(b, "b", 0);
 	
-	var c = a.childNodes[1];
+	var c = a.getChildren()[1];
 	checkXMLElt(c, "c", 0);
 });
 
-test("toString: empty xml", function(){
-	equal(this.xmlBuilder.toString(), 
-		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' +
+test("toXMLString: empty xml", function(){
+	equal(this.xmlBuilder.toXMLString(), 
+		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\r\n' +
 		'<installation version="1.0"/>');
 });
 
-test("toString: linear tree, indented xml", function(){
+test("toXMLString: linear tree, indented xml", function(){
 	var appname = this.xmlBuilder.get("/installation/info/appname");
 	appname.setAttribute("test", true);
-	appname.textContent = "IzPack Js Builder";
-	equal(this.xmlBuilder.toString(), 
-		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' +
-		'<installation version="1.0">\n' +
-		'  <info>\n' +
-		'    <appname test="true">IzPack Js Builder</appname>\n' +
-		'  </info>\n' +
+	appname.setContent("IzPack Js Builder");
+	equal(this.xmlBuilder.toXMLString(), 
+		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\r\n' +
+		'<installation version="1.0">\r\n' +
+		'  <info>\r\n' +
+		'    <appname test="true">IzPack Js Builder</appname>\r\n' +
+		'  </info>\r\n' +
 		'</installation>');
 });
 
-test("toString: non linear tree, indented xml", function(){
+test("toXMLString: non linear tree, indented xml", function(){
 	var appname = this.xmlBuilder.get("/installation/info/appname");
 	appname.setAttribute("test", true);
-	appname.textContent = "IzPack Js Builder";
+	appname.setContent("IzPack Js Builder");
 	var appversion = this.xmlBuilder.get("/installation/info/appversion");
 	appversion.setAttribute("foo", "baz");
-	equal(this.xmlBuilder.toString(), 
-		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' +
-		'<installation version="1.0">\n' +
-		'  <info>\n' +
-		'    <appname test="true">IzPack Js Builder</appname>\n' +
-		'    <appversion foo="baz"/>\n' + 
-		'  </info>\n' +
+	equal(this.xmlBuilder.toXMLString(), 
+		'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\r\n' +
+		'<installation version="1.0">\r\n' +
+		'  <info>\r\n' +
+		'    <appname test="true">IzPack Js Builder</appname>\r\n' +
+		'    <appversion foo="baz"/>\r\n' + 
+		'  </info>\r\n' +
 		'</installation>');
 });
 
 test("createElement: create a new element", function(){
 	var info = this.xmlBuilder.get("/installation/info");
-	equal(0, info.childNodes.length, "no child");
-	var appname = this.xmlBuilder.createElement("appname", info);
-	equal(1, info.childNodes.length, "a new child");
+	equal(0, info.getChildren().length, "no child");
+	var appname = info.createChild("appname");
+	equal(1, info.getChildren().length, "a new child");
 	checkXMLElt(appname, "appname", 0);
 });
