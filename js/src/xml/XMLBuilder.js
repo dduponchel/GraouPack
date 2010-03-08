@@ -99,7 +99,7 @@ izpack.xml.XMLBuilder.prototype = {
 			for (var n = 0; n < input.length; n++) {
 				var c = input.charCodeAt(n);
 				if (c < 128) {
-					output += input[n];
+					output += input.charAt(n);
 				}
 				else if (c > 127) {
 					output += ("&#" + c + ";");
@@ -117,65 +117,67 @@ izpack.xml.XMLBuilder.prototype = {
 		
 		var output = "";
 		
-		// we can use E4X. /!\ don't use CDATA !
+		// other way : we can use E4X. /!\ don't use CDATA !
 		// see https://developer.mozilla.org/en/Parsing_and_serializing_XML#.22Pretty.22_serialization_of_DOM_trees_to_strings
-		if (typeof XML === "function") {
-			output = XML(input).toXMLString();
-		}
-		else { // without E4X, we must indent manually
-			var depth = 0;
-			var sameLine = false; // used when </foo> goes after <foo>bar
-			var fragments = input.match(/<[^>]+>[^<]*/gi);
-			var append = function (fragment) {
-				output += fragment;
-			};
-			var indent = function (depth) {
-				for (var i = 0; i < depth; i++) {
-					output += "  ";
-				}
-			};
-			var newLine = function () {
-				output += "\n";
-			};
-			for (var i = 0; i < fragments.length - 1; i++) {
-				var fragment = fragments[i];
-				if (fragment.match(/>.+/)) { // <---->blabla
-					indent(depth);
-					sameLine = true;
+		// output = XML(input).toXMLString();
+		
+		
+		var depth = 0;
+		var sameLine = false; // used when </foo> goes after <foo>bar
+		var fragments = input.match(/<[^>]+>[^<]*/gi);
+		var append = function (fragment) {
+			output += fragment;
+		};
+		var indent = function (depth) {
+			for (var i = 0; i < depth; i++) {
+				output += "  ";
+			}
+		};
+		var newLine = function () {
+			output += "\r\n"; // damn windows
+		};
+		
+		output += '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>';
+		newLine();
+		
+		for (var i = 0; i < fragments.length - 1; i++) {
+			var fragment = fragments[i];
+			if (fragment.match(/>.+/)) { // <---->blabla
+				indent(depth);
+				sameLine = true;
+				append(fragment);
+			}
+			else if (fragment.match(/\/>$/)) { // <----/>
+				indent(depth);
+				append(fragment);
+				newLine();
+			}
+			else if (fragment.match(/<[^\/]+>/)) { // <---->
+				indent(depth++);
+				append(fragment);
+				newLine();
+			}
+			else if (fragment.match(/<\//)) { // </---->
+				if (sameLine) {
 					append(fragment);
-				}
-				else if (fragment.match(/\/>$/)) { // <----/>
-					indent(depth);
-					append(fragment);
+					sameLine = false;
 					newLine();
 				}
-				else if (fragment.match(/<[^\/]+>/)) { // <---->
-					indent(depth++);
+				else {
+					indent(--depth);
 					append(fragment);
 					newLine();
-				}
-				else if (fragment.match(/<\//)) { // </---->
-					if (sameLine) {
-						append(fragment);
-						sameLine = false;
-						newLine();
-					}
-					else {
-						indent(--depth);
-						append(fragment);
-						newLine();
-					}
-				}
-				else { // should not happen
-					append(fragment);
 				}
 			}
-			append(fragments[fragments.length - 1]); // no \n for the last one
+			else { // should not happen
+				append(fragment);
+			}
 		}
-
+		append(fragments[fragments.length - 1]); // no \n for the last one
+		
 		output = convertToXMLReferences(output);
 		
-		return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>\n' + output;
+		return output;
 	},
 	
 	_createEmtyDocument : function (rootName) {
