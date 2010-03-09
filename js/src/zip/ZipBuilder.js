@@ -27,6 +27,21 @@
  
 $.namespace("izpack.zip.ZipBuilder");
 
+/**
+ * Allow the creation of a zip containing the specified files.
+ * A way to use it : 
+ * window.open("data:application/zip;base64," + zipBuilder.createZIP())
+ * This solution has known issues : 
+ * - It more-or-less works on firefox, unknown on other browsers (IE < 8 doesn't support the data: uri scheme,
+ *   IE 8 supports it only for images).
+ * - on firefox (last : 3.6), the browser asks to download <random name>.zip.part.
+ * 
+ * @see https://bugzilla.mozilla.org/show_bug.cgi?id=367231
+ * @see https://bugzilla.mozilla.org/show_bug.cgi?id=532230
+ * 
+ * An other way to do that is to use flash (yerk)
+ * @see http://www.downloadify.info/
+ */
 izpack.zip.ZipBuilder = function (files) {
 	
 	this.files = files;
