@@ -25,31 +25,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+$.namespace("izpack.generator.panel");
 
-izpack.generator.Project = function (blackBoard) {
+izpack.generator.panel.PacksPanel = function (blackBoard) {
 	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
 };
 
-izpack.generator.Project.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.generator.panel.PacksPanel.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
 	
 	/**
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		var authors = this.blackBoard.get("authors");
-		if (authors.length) {
-			var authorsXml = xmlBuilder.get("/installation/info/authors");
-			for (var i = 0; i < authors.length; i++) {
-				var author = authors[i];
-				var authorXml = authorsXml.createChild("author");
-				authorXml.setAttribute("name", author.name);
-				authorXml.setAttribute("email", author.mail);
-			}
-		}
-
-		xmlBuilder.get("/installation/info/appname").setContent(this.blackBoard.get("app.name"));
-		xmlBuilder.get("/installation/info/appversion").setContent(this.blackBoard.get("app.version"));
+		// does nothing
 	}
 });
-

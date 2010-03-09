@@ -36,7 +36,12 @@ izpack.generator.Panel.prototype = $.extend({}, izpack.generator.GenericGenerato
 	/**
 	 * @Override
 	 */
-	addGeneratedInfo : function (xml) {
-		// does nothing
+	addGeneratedInfo : function (xmlBuilder, files) {
+		var panels = this.blackBoard.get("panels");
+		for (var i = 0; i < panels.length; i++) {
+			var panel = panels[i];
+			var generator = new izpack.generator.panel[panel.clazz](panel.config);
+			generator.addGeneratedInfo(xmlBuilder, files);
+		}
 	}
 });

@@ -53,7 +53,7 @@ izpack.xml.XMLBuilder.prototype = {
 	get : function (path) {
 		
 		if (!path.match(/(\/\w+)+/)) {
-			throw "The path must follwo the pattern (/\\w+)+ !";
+			throw "The path must follow the pattern (/\\w+)+ !";
 		}
 		
 		var nodeNames = path.split("/");
@@ -197,6 +197,9 @@ izpack.xml.XMLBuilder.prototype = {
 	},
 	getRootElement : function () {
 		throw "getRootElement must be overrided !";
+	},
+	count : function (xpath) {
+		throw "count must be overrided !";
 	}
 };
 

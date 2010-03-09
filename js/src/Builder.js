@@ -150,20 +150,23 @@ izpack.Builder = function (htmlID) {
 			if (validateAll()) {
 				try {
 					var xml = izpack.xml.XMLBuilder.createInstance();
+					var files = [];
 					for (var i = 0; i < this.xmlHandlers.length; i++) {
 						var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
-						generator.addGeneratedInfo(xml);
+						generator.addGeneratedInfo(xml, files);
 					}
 					$(".generated-xml", dialog).text(xml.toXMLString());
 					dialog.dialog("open");
 				}
 				catch (xmlException) {
 					alert("Something went wrong with the xml generation !\n" + xmlException);
+					console.error("Something went wrong with the xml generation !", xmlException);
 				}
 			}
 		}
 		catch (validationException) {
 			alert("Something went wrong with the validation !\n" + validationException);
+			console.error("Something went wrong with the validation !", validationException);
 		}
 	};
 	

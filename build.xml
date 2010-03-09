@@ -39,6 +39,9 @@
 				<include name="*.js" />
 				<exclude name="GenericGenerator.js" />
 			</fileset>
+			<fileset dir="js/src/generator/panel">
+				<include name="*.js" />
+			</fileset>
 			
 			<fileset dir="js/src/model">
 				<include name="*.js" />

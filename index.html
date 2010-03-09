@@ -64,7 +64,14 @@
 	<script type="text/javascript" src="js/src/generator/Project.js"></script>
 	<script type="text/javascript" src="js/src/generator/Locale.js"></script>
 	<script type="text/javascript" src="js/src/generator/Panel.js"></script>
-
+	<script type="text/javascript" src="js/src/generator/panel/FinishPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/HelloPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/InfoPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/InstallPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/LicencePanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/PacksPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/TargetPanel.js"></script>
+	
 	<!--
 	<script type="text/javascript" src="target/izpack.min.js"></script>
 	-->
@@ -95,7 +102,7 @@
 	builder.addPanel({label : "my application",	name : "Project"});
 	builder.addPanel({label : "locales",		name : "Locale"});
 	builder.addPanel({label : "panels",		name : "Panel"});
-	builder.xmlHandlers = [ "Locale", "Project" ];
+	builder.xmlHandlers = [ "Locale", "Project", "Panel" ];
 	builder.start();
 </script>
 <footer>done with jQuery and vim :D</footer>

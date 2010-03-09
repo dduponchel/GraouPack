@@ -61,5 +61,8 @@ izpack.xml.ie.XMLBuilder.prototype = $.extend({}, izpack.xml.XMLBuilder.prototyp
 			this._xmlDocument.childNodes[0],
 			this
 		);
+	},
+	count : function (xpath) {
+		return this._xmlDocument.selectNodes(xpath).length;
 	}
 });
