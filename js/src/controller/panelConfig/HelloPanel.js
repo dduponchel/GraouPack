@@ -38,6 +38,7 @@ izpack.controller.panelConfig.HelloPanel = function (view, domGenericPanel) {
 
 izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
 	setBindings : function () {
+		/*
 		this.bind({
 			view: this.view.fileSrc,
 			model: "fileSrc",
@@ -45,6 +46,7 @@ izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.control
 			toView: this.view.setFileSrc,
 			event : "change"
 		});
+		*/
 		this.bind({
 			view: this.view.useHTML,
 			model: "useHTML",
@@ -52,7 +54,7 @@ izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.control
 			toView: this.view.setUseHTML,
 			event : "change"
 		});
-
+		/*
 		this.addModelConstraint({
 			blame : this.view.fileSrc,
 			constraint : function (model) {
@@ -62,5 +64,6 @@ izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.control
 				return true;
 			}
 		});
+		*/
 	}
 });

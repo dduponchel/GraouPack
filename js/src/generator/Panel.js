@@ -36,7 +36,7 @@ izpack.generator.Panel.prototype = $.extend({}, izpack.generator.GenericGenerato
 	/**
 	 * @Override
 	 */
-	addXMLInfo : function (xml) {
+	addGeneratedInfo : function (xml) {
 		// does nothing
 	}
 });

@@ -29,10 +29,20 @@ $.namespace("izpack.controller.panelConfig");
 
 izpack.controller.panelConfig.FinishPanel = function (view, domGenericPanel) {
 	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
+	
+	this.defaultConfig = {
+		"addAutomated" : false
+	};
 };
 
 izpack.controller.panelConfig.FinishPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
 	setBindings : function () {
-		// nothing yet
+		this.bind({
+			view : this.view.addAutomated,
+			model : "addAutomated",
+			fromView : this.view.getAddAutomated,
+			toView : this.view.setAddAutomated,
+			event : "change"
+		});
 	}
 });

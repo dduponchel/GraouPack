@@ -39,6 +39,9 @@ izpack.controller.GenericController = function (view, blackBoard) {
 			if (typeof data === "string") {
 				return (data) ? true : false;
 			}
+			else if (typeof data === "boolean") {
+				return data;
+			}
 			else {
 				return data.length !== 0;
 			}
@@ -91,7 +94,14 @@ izpack.controller.GenericController.prototype = {
 		
 		$.extend(settings, options);
 		
-		console.debug("GenericController::bind '", settings.view, "' to '", settings.model + "' on '", settings.event, "'");
+		if (!settings.view) {
+			throw "GenericController::bind : the associated view must be defined !";
+		}
+		if (!settings.model) {
+			throw "GenericController::bind : the associated model must be defined !";
+		}
+		
+		console.debug("GenericController::bind '", settings.view, "' to '", settings.model + "' on '", settings.event, "', ", settings.constraints.length, " constraints");
 		
 		// default value
 		if (this.blackBoard && !this.blackBoard.isDefined(settings.model)) {

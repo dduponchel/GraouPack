@@ -29,9 +29,16 @@ $.namespace("izpack.view.panelConfig");
 
 izpack.view.panelConfig.FinishPanel = function (domView) {
 	izpack.view.panelConfig.GenericPanel.apply(this, [ "FinishPanelConfig", domView ]);
+	this.addAutomated = "#tab-panel-config-finish-automated";
 };
 
 izpack.view.panelConfig.FinishPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
 	initView : function () {
+	},
+	getAddAutomated : function () {
+		return $(this.addAutomated)[0].checked;
+	},
+	setAddAutomated : function (automated) {
+		$(this.addAutomated)[0].checked = automated;
 	}
 });

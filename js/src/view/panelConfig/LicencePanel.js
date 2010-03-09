@@ -30,14 +30,14 @@ $.namespace("izpack.view.panelConfig");
 izpack.view.panelConfig.LicencePanel = function (domView) {
 	izpack.view.panelConfig.GenericPanel.apply(this, [ "LicencePanelConfig", domView ]);
 	
-	this.fileSrc = "#tab-panel-config-licence-file-src";
+	//this.fileSrc = "#tab-panel-config-licence-file-src";
 	this.useHTML = "#tab-panel-config-licence-file-html";
 };
 
 izpack.view.panelConfig.LicencePanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
 	initView : function () {
 	},
-
+	/*
 	setFileSrc : function (src) {
 		$(this.fileSrc).val(src);
 	},
@@ -45,7 +45,7 @@ izpack.view.panelConfig.LicencePanel.prototype = $.extend({}, izpack.view.panelC
 	getFileSrc : function () {
 		return $(this.fileSrc).val();
 	},
-	
+	*/
 	setUseHTML : function (useHTML) {
 		$(this.useHTML)[0].checked = useHTML;
 		if (useHTML) {

@@ -29,9 +29,17 @@ $.namespace("izpack.view.panelConfig");
 
 izpack.view.panelConfig.PacksPanel = function (domView) {
 	izpack.view.panelConfig.GenericPanel.apply(this, [ "PacksPanelConfig", domView ]);
+	this.useTree = "#tab-panel-config-packs-tree";
 };
 
 izpack.view.panelConfig.PacksPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
 	initView : function () {
+	},
+	getUseTree : function () {
+		return $(this.useTree)[0].checked;
+	},
+	setUseTree : function (useTree) {
+		$(this.useTree)[0].checked = useTree;
 	}
+
 });

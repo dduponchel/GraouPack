@@ -49,6 +49,7 @@ izpack.controller.Panel.prototype = $.extend({}, izpack.controller.GenericContro
 			var availablePanel = $(this);
 			var clazz = availablePanel.attr("data-class");
 			var panelDialog = view.createConfigPanel(availablePanel);
+			console.debug("Panel controller::afterInitView : creating view/controller for " + clazz);
 			var panelView = new izpack.view.panelConfig[clazz](panelDialog);
 			var panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);
 			availablePanel

@@ -38,6 +38,7 @@ izpack.controller.panelConfig.LicencePanel = function (view, domGenericPanel) {
 
 izpack.controller.panelConfig.LicencePanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
 	setBindings : function () {
+		/*
 		this.bind({
 			view: this.view.fileSrc,
 			model: "fileSrc",
@@ -46,6 +47,7 @@ izpack.controller.panelConfig.LicencePanel.prototype = $.extend({}, izpack.contr
 			constraints: [ "required" ],
 			event : "change"
 		});
+		*/
 		this.bind({
 			view: this.view.useHTML,
 			model: "useHTML",

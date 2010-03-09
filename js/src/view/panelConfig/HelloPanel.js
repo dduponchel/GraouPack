@@ -30,22 +30,14 @@ $.namespace("izpack.view.panelConfig");
 izpack.view.panelConfig.HelloPanel = function (domView) {
 	izpack.view.panelConfig.GenericPanel.apply(this, [ "HelloPanelConfig", domView ]);
 	
-	this.fileSrc = "#tab-panel-config-hello-file-src";
+	//this.fileSrc = "#tab-panel-config-hello-file-src";
 	this.useHTML = "#tab-panel-config-hello-file-html";
 };
 
 izpack.view.panelConfig.HelloPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
 	initView : function () {
-		$(this.useHTML).change(function () {
-			if (this.checked) {
-				$(this).parents("fieldset").find(".hideMe").slideDown("fast");
-			}
-			else {
-				$(this).parents("fieldset").find(".hideMe").slideUp("fast");
-			}
-		});
 	},
-	
+	/*
 	setFileSrc : function (src) {
 		$(this.fileSrc).val(src);
 	},
@@ -53,7 +45,7 @@ izpack.view.panelConfig.HelloPanel.prototype = $.extend({}, izpack.view.panelCon
 	getFileSrc : function () {
 		return $(this.fileSrc).val();
 	},
-	
+	*/
 	setUseHTML : function (useHTML) {
 		$(this.useHTML)[0].checked = useHTML;
 		if (useHTML) {

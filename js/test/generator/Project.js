@@ -37,12 +37,12 @@ module("Generator Project", {
         }
 });
 
-test("addXMLInfo: no authors", function () {
+test("addGeneratedInfo: no authors", function () {
 	this.mockDatas["app.name"] = "appname";
 	this.mockDatas["app.version"] = "appversion";
 	this.mockDatas["authors"] = [];
 	
-	this.generator.addXMLInfo(this.mockXmlBuilder);
+	this.generator.addGeneratedInfo(this.mockXmlBuilder);
 	
 	equal(this.mockXmlBuilder.testHolder["/installation/info/appname"].content, "appname", "appname setted");
 	equal(this.mockXmlBuilder.testHolder["/installation/info/appversion"].content, "appversion", "appversion setted");
@@ -58,7 +58,7 @@ test("addXmlInfo: with authors", function () {
 		{name: "name2", mail: "mail2"}
 	];
 	
-	this.generator.addXMLInfo(this.mockXmlBuilder);
+	this.generator.addGeneratedInfo(this.mockXmlBuilder);
 	
 	var authors = this.mockXmlBuilder.testHolder["/installation/info/authors"];
 	for(var i = 0; i < 3; i++) {

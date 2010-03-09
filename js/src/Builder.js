@@ -152,7 +152,7 @@ izpack.Builder = function (htmlID) {
 					var xml = izpack.xml.XMLBuilder.createInstance();
 					for (var i = 0; i < this.xmlHandlers.length; i++) {
 						var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
-						generator.addXMLInfo(xml);
+						generator.addGeneratedInfo(xml);
 					}
 					$(".generated-xml", dialog).text(xml.toXMLString());
 					dialog.dialog("open");

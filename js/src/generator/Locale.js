@@ -36,7 +36,7 @@ izpack.generator.Locale.prototype = $.extend({}, izpack.generator.GenericGenerat
 	/**
 	 * @Override
 	 */
-	addXMLInfo : function (xmlBuilder) {
+	addGeneratedInfo : function (xmlBuilder) {
 		var localeXml = xmlBuilder.get("/installation/locale");
 		var locales = this.blackBoard.get("locales");
 		for (var i = 0; i < locales.length; i++) {

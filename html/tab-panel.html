@@ -29,10 +29,10 @@
 				<div class="ui-helper-hidden config">
 				<form action="#">
 				<fieldset>
-					<label for="tab-panel-config-hello-file-html">use an html file</label><input type="checkbox" id="tab-panel-config-hello-file-html" name="tab-panel-config-hello-file-html" /><br />
-					<div class="hideMe">
+					<label for="tab-panel-config-hello-file-html">use an html file instead of the default text</label><input type="checkbox" id="tab-panel-config-hello-file-html" name="tab-panel-config-hello-file-html" />
+					<!--<div class="expert">
 					<label for="tab-panel-config-hello-file-src">html file</label><input type="text" id="tab-panel-config-hello-file-src" name="tab-panel-config-hello-file-src" />
-					</div>
+					</div>-->
 				</fieldset>
 				</form>
 				</div>
@@ -65,8 +65,10 @@
 				<div class="ui-helper-hidden config">
 				<form action="#">
 				<fieldset>
-					<label for="tab-panel-config-info-file-src">text/html file</label><input type="text" id="tab-panel-config-info-file-src" name="tab-panel-config-info-file-src" /><br />
 					<label for="tab-panel-config-info-file-html">is html</label><input type="checkbox" id="tab-panel-config-info-file-html" name="tab-panel-config-info-file-html" />
+					<!--<div class="expert">
+						<label for="tab-panel-config-info-file-src">text/html file</label><input type="text" id="tab-panel-config-info-file-src" name="tab-panel-config-info-file-src" />
+					</div>-->
 				</fieldset>
 				</form>
 				</div>
@@ -99,8 +101,10 @@
 				<div class="ui-helper-hidden config">
 				<form action="#">
 				<fieldset>
-					<label for="tab-panel-config-licence-file-src">text/html file</label><input type="text" id="tab-panel-config-licence-file-src" name="tab-panel-config-licence-file-src" /><br />
 					<label for="tab-panel-config-licence-file-html">is html</label><input type="checkbox" id="tab-panel-config-licence-file-html" name="tab-panel-config-licence-file-html" />
+					<!--<div class="expert">
+						<label for="tab-panel-config-licence-file-src">text/html file</label><input type="text" id="tab-panel-config-licence-file-src" name="tab-panel-config-licence-file-src" />
+					</div>-->
 				</fieldset>
 				</form>
 				</div>
@@ -128,6 +132,19 @@
 					<p>This panel allows the user to select the installation path.</p>
 					<p class="other-features">The installation path can be customized and the "target directory will be created" dialog can be suppressed.</p>
 				</div>
+					
+				<!-- configuration form 
+				<div class="ui-helper-hidden config">
+				<form action="#">
+				<fieldset>
+					<label for="tab-panel-config-target-dir-mac">prefered dir on mac</label><input type="checkbox" id="tab-panel-config-target-dir-mac" name="tab-panel-config-target-dir-mac" />
+					<label for="tab-panel-config-target-dir-macosx">prefered dir on macosx</label><input type="checkbox" id="tab-panel-config-target-dir-macosx" name="tab-panel-config-target-dir-macosx" />
+					<label for="tab-panel-config-target-dir-windows">prefered dir on windows</label><input type="checkbox" id="tab-panel-config-target-dir-windows" name="tab-panel-config-target-dir-windows" />
+					<label for="tab-panel-config-target-dir-unix">prefered dir on unix/linux</label><input type="checkbox" id="tab-panel-config-target-dir-unix" name="tab-panel-config-target-dir-unix" />
+					<label for="tab-panel-config-target-allow">Allow the user to choose an other location</label><input type="text" id="tab-panel-config-target-allow" name="tab-panel-config-target-allow" />
+				</fieldset>
+				</form>
+				</div>-->
 			</div>
 			
 			<div class="available-panel ui-helper-clearfix ui-corner-all" data-class="PacksPanel">
@@ -151,6 +168,16 @@
 					<img src="img/panel/PacksPanel.png" alt="screenshot"/>
 					<p>Allows the user to select the packs he wants to install.</p>
 					<p class="other-features">The packs can be required/optionnal and be grouped into installGroups. There are also an ImgPacksPanel (each pack has a different picture), a TreePacksPanel (uses a tree-like list instead of a simple list).</p>
+				</div>
+				
+				<!-- configuration form -->
+				<div class="ui-helper-hidden config">
+				<form action="#">
+				<fieldset>
+					<label for="tab-panel-config-packs-tree">use a tree-like list</label><input type="checkbox" id="tab-panel-config-packs-tree" name="tab-panel-config-packs-tree" />
+					<p>For more informations, see the "packs" tab</p>
+				</fieldset>
+				</form>
 				</div>
 			</div>
 			
@@ -199,6 +226,15 @@
 					<img src="img/panel/FinishPanel.png" alt="screenshot"/>
 					<p>An ending panel.</p>
 					<p class="other-features">There is also a FinishPanel able to write automated installer information.</p>
+				</div>
+					
+				<!-- configuration form -->
+				<div class="ui-helper-hidden config">
+				<form action="#">
+				<fieldset>
+					<label for="tab-panel-config-finish-automated">Propose an automated installer</label><input type="checkbox" id="tab-panel-config-finish-automated" name="tab-panel-config-finish-automated" />
+				</fieldset>
+				</form>
 				</div>
 			</div>
 		</div>

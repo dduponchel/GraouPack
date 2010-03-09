@@ -29,10 +29,20 @@ $.namespace("izpack.controller.panelConfig");
 
 izpack.controller.panelConfig.PacksPanel = function (view, domGenericPanel) {
 	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
+	
+	this.defaultConfig = {
+		useTree : false
+	};
 };
 
 izpack.controller.panelConfig.PacksPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
 	setBindings : function () {
-		// nothing yet
+		this.bind({
+			view : this.view.useTree,
+			model : "useTree",
+			fromView : this.view.getUseTree,
+			toView : this.view.setUseTree,
+			event : "change"
+		});
 	}
 });

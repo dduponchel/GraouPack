@@ -43,8 +43,8 @@ izpack.generator.GenericGenerator.prototype = {
 	 * Add infos from the html generator to the current xml dom tree.
 	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
 	 */
-	addXMLInfo : function (xmlBuilder) {
-		throw "addXMLInfo method must be overriden !";
+	addGeneratedInfo : function (xmlBuilder) {
+		throw "addGeneratedInfo method must be overriden !";
 	}
 };
 
