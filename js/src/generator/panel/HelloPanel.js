@@ -37,11 +37,8 @@ izpack.generator.panel.HelloPanel.prototype = $.extend({}, izpack.generator.pane
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
 		if (this.blackBoard.get("useHTML")) {
-			panel.setAttribute("classname", "HTMLHelloPanel");
-			var addedResource = this.addResourceForPanel({
-				panel      : panel,
+			var addedData = this.createPanelWithResource({
 				clazz      : "HTMLHelloPanel",
 				xmlBuilder : xmlBuilder,
 				defaultID  : "HTMLHelloPanel.info",
@@ -51,11 +48,12 @@ izpack.generator.panel.HelloPanel.prototype = $.extend({}, izpack.generator.pane
 				prefixID   : "HTMLHelloPanel.hello"
 			});
 			files.push({
-				name : addedResource.name,
-				content : "HTML for HelloPanel n°" + (addedResource.index + 1)
+				name : addedData.name,
+				content : "HTML for HelloPanel n°" + (addedData.index + 1)
 			});
 		}
 		else {
+			var panel = xmlBuilder.get("/installation/panels").createChild("panel");
 			panel.setAttribute("classname", "HelloPanel");
 		}
 	}

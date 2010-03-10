@@ -44,9 +44,8 @@ izpack.generator.panel.GenericPanel.prototype = $.extend({}, izpack.generator.Ge
 	 * 	index : the index of this resource, for this class (0 based)
 	 * }
 	 */
-	addResourceForPanel : function (options) {
+	createPanelWithResource : function (options) {
 		var settings = {
-			panel      : null,	// xml element representing the panel
 			clazz      : "",	// the name of the IzPack class handling the panel
 			xmlBuider  : null,	// the xml builder
 			forcedSrc  : "",	// will use this src if setted. If not, using default rules
@@ -59,9 +58,14 @@ izpack.generator.panel.GenericPanel.prototype = $.extend({}, izpack.generator.Ge
 		};
 		$.extend(settings, options);
 		settings.forcedSrc = $.trim(settings.forcedSrc);
+		
 		var otherPanels = settings.xmlBuilder.count("/installation/panels/panel[@classname='" + settings.clazz + "']");
 		var resource = settings.xmlBuilder.get("/installation/resources").createChild("res");
 		var fileName = "";
+		
+		var panel = settings.xmlBuilder.get("/installation/panels").createChild("panel");
+		panel.setAttribute("classname", settings.clazz);
+		
 		// no other panel, we use the defaults
 		if (otherPanels === 0) {
 			if (!settings.forcedSrc) {
@@ -77,9 +81,11 @@ izpack.generator.panel.GenericPanel.prototype = $.extend({}, izpack.generator.Ge
 			}
 			resource.setAttribute("id", id);
 			resource.setAttribute("src", fileName);
-			settings.panel.setAttribute("id", id);
+			panel.setAttribute("id", id);
 		}
+		
 		return {
+			panel : panel,
 			name : fileName,
 			index : otherPanels
 		};

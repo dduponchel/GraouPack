@@ -37,10 +37,8 @@ izpack.generator.panel.LicencePanel.prototype = $.extend({}, izpack.generator.pa
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
 		var resourceOptions = {
 			//forcedSrc  : this.blackBoard.get("fileSrc"),
-			panel      : panel,
 			xmlBuilder : xmlBuilder
 		};
 		var fileContent = "";
@@ -66,11 +64,10 @@ izpack.generator.panel.LicencePanel.prototype = $.extend({}, izpack.generator.pa
 			});
 			fileContent = "text";
 		}
-		panel.setAttribute("classname", resourceOptions.clazz);
-		var addedResource = this.addResourceForPanel(resourceOptions);
+		var addedData = this.createPanelWithResource(resourceOptions);
 		files.push({
-			name : addedResource.name,
-			content : fileContent + " for LicencePanel n°" + (addedResource.index + 1)
+			name : addedData.name,
+			content : fileContent + " for LicencePanel n°" + (addedData.index + 1)
 		});
 	}
 });
