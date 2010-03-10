@@ -29,6 +29,15 @@ $.namespace("izpack.zip.ZipBuilder");
 
 /**
  * Allow the creation of a zip containing the specified files.
+ * @param {Array} files The files to put in the zip
+ * @param {String} rootFolder The root folder, which will contains all files.
+ *
+ * each file have a name and a content. Example : 
+ * files = [
+ * 	{ name : "readme.txt", content : "this is a readme" },
+ * 	{ name : "img/logo.png", content : "" }
+ * ];
+ *
  * A way to use it : 
  * window.open("data:application/zip;base64," + zipBuilder.createZIP())
  * This solution has known issues : 
@@ -42,20 +51,17 @@ $.namespace("izpack.zip.ZipBuilder");
  * An other way to do that is to use flash (yerk)
  * @see http://www.downloadify.info/
  */
-izpack.zip.ZipBuilder = function (files) {
+izpack.zip.ZipBuilder = function (files, rootFolder) {
 	
-	this.files = files;
-	/* = [
-		{
-			name : "readme.txt",
-			content : "this is a readme"
-		},
-		{
-			name : "logo.png",
-			content : ""
-		}
-	];
-	*/
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i];
+		file.name = rootFolder + "/" + file.name;
+	}
+	this.files = this.getFilesAndFolders(files);
+
+	this.rootFolder = rootFolder;
+
+	this.createdSubFolders = [];
 };
 
 izpack.zip.ZipBuilder.prototype = {
@@ -78,6 +84,32 @@ izpack.zip.ZipBuilder.prototype = {
 		DOSDate = DOSDate | now.getDate();
 
 		return 	String.fromCharCode(DOSTime & 0xFF, (DOSTime & 0xFF00) >> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >> 8);
+	},
+	
+	getFilesAndFolders : function (files) {
+		var filesAndFolders	= [];
+		var createdFolders 	= [];
+		var foldersRegex 	= /[^\/]+\//g;
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			var subFolders = file.name.match(foldersRegex);
+			if (subFolders) {
+				// create folders, if not already done
+				var path = "";
+				for (var folderIndex = 0; folderIndex < subFolders.length; folderIndex++) {
+					path += subFolders[folderIndex];
+					if ($.inArray(path, createdFolders) === -1) { // doesn't exist
+						filesAndFolders.push({
+							name : path,
+							content : ""
+						});
+						createdFolders.push(path);
+					}
+				}
+			}
+			filesAndFolders.push(file);
+		}
+		return filesAndFolders;
 	},
 	
 	intToBytes : function (integer, bytesNb) {
@@ -150,7 +182,7 @@ izpack.zip.ZipBuilder.prototype = {
 		var now = new Date();
 		var zero = String.fromCharCode(0x0);
 		return String.fromCharCode(0x50, 0x4b, 0x01, 0x02) + // central file header signature, 4bytes
-			String.fromCharCode(0x1E, 0x3) + // version made by, 2 bytes. Here : UNIX, zip version 1.0 or above.
+			String.fromCharCode(0x14, 0xFF) + // version made by, 2 bytes. 'Javascript VM' doesn't exist, so 0xFF, zip version 2.0 or above.
 			String.fromCharCode(0x0a, 0x0) + // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
 			zero + zero + // general purpose bit flag, 2 bytes. Here : nothing special
 			zero + zero + // compression method, 2 bytes. Here : STORE
@@ -199,10 +231,10 @@ izpack.zip.ZipBuilder.prototype = {
 			zipComment; // zip file comment, variable size
 	},
 
-
 	createZIP : function () {
 		var i, file;
 		var zip = ""; // yes, a bunch of bits in a string. It works and the base64 function needs a string...
+
 		var centralDirectoryStart = 0;
 		var centralDirectoryEnd = 0;
 		for (i = 0; i < this.files.length; i++) {
@@ -225,7 +257,7 @@ izpack.zip.ZipBuilder.prototype = {
 			currentOffsetFromStart += file.sizeLocalFile;
 		}
 		// end of central directory record
-		zip += this.getEndOfCentralDirectory(files, centralDirectoryStart, centralDirectoryEnd);
+		zip += this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd);
 		return $.base64.encode(zip);
 	}
 };
