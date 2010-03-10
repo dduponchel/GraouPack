@@ -28,10 +28,16 @@
 var GeneratorHelper = {
 	getNewMockXmlBuilder : function () {
 		return {
+			countCases : {},
        		        testHolder: [],
        		        get: function (path) {
-				this.testHolder[path] = new MockXmlElement();
+				if (! this.testHolder[path]) {
+					this.testHolder[path] = new MockXmlElement();
+				}
 				return this.testHolder[path];
+			},
+			count : function (xpath) {
+				return this.countCases[xpath].shift();
 			}
 		};
 	}

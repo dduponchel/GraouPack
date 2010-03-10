@@ -28,15 +28,49 @@
 $.namespace("izpack.generator.panel");
 
 izpack.generator.panel.LicencePanel = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
 };
 
-izpack.generator.panel.LicencePanel.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.generator.panel.LicencePanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
 	
 	/**
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		// does nothing
+		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+		var resourceOptions = {
+			//forcedSrc  : this.blackBoard.get("fileSrc"),
+			panel      : panel,
+			xmlBuilder : xmlBuilder
+		};
+		var fileContent = "";
+		if (this.blackBoard.get("useHTML")) {
+			$.extend(resourceOptions, {
+				clazz      : "HTMLLicencePanel",
+				defaultID  : "HTMLLicencePanel.info",
+				defaultSrc : "license.html",
+				prefixSrc  : "license-",
+				suffixSrc  : ".html",
+				prefixID   : "HTMLLicencePanel.info"
+			});
+			fileContent = "html";
+		}
+		else {
+			$.extend(resourceOptions, {
+				clazz      : "LicencePanel",
+				defaultID  : "LicencePanel.info",
+				defaultSrc : "license.txt",
+				prefixSrc  : "license-",
+				suffixSrc  : ".txt",
+				prefixID   : "LicencePanel.info"
+			});
+			fileContent = "text";
+		}
+		panel.setAttribute("classname", resourceOptions.clazz);
+		var addedResource = this.addResourceForPanel(resourceOptions);
+		files.push({
+			name : addedResource.name,
+			content : fileContent + " for LicencePanel n°" + (addedResource.index + 1)
+		});
 	}
 });

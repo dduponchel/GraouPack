@@ -28,10 +28,10 @@
 $.namespace("izpack.generator.panel");
 
 izpack.generator.panel.HelloPanel = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
 };
 
-izpack.generator.panel.HelloPanel.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.generator.panel.HelloPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
 	
 	/**
 	 * @Override
@@ -39,25 +39,21 @@ izpack.generator.panel.HelloPanel.prototype = $.extend({}, izpack.generator.Gene
 	addGeneratedInfo : function (xmlBuilder, files) {
 		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
 		if (this.blackBoard.get("useHTML")) {
-			var otherHTMLHelloPanels = xmlBuilder.count("/installation/panels/panel[@classname='HTMLHelloPanel']");
-			var resource = xmlBuilder.get("/installation/resources").createChild("res");
 			panel.setAttribute("classname", "HTMLHelloPanel");
-			// no other HelloPanel, we use the resource 'HTMLHelloPanel.info'
-			if (otherHTMLHelloPanels === 0) {
-				resource.setAttribute("id", "HTMLHelloPanel.info");
-				resource.setAttribute("src", "hello.html");
-				files.push({
-					name : "hello.html"
-				});
-			}
-			else { // else, we must use id
-				resource.setAttribute("id", "HTMLHelloPanel.hello" + otherHTMLHelloPanels);
-				resource.setAttribute("src", "hello" + otherHTMLHelloPanels + ".html");
-				panel.setAttribute("id", "hello" + otherHTMLHelloPanels);
-				files.push({
-					name : "hello" + otherHTMLHelloPanels + ".html"
-				});
-			}
+			var addedResource = this.addResourceForPanel({
+				panel      : panel,
+				clazz      : "HTMLHelloPanel",
+				xmlBuilder : xmlBuilder,
+				defaultID  : "HTMLHelloPanel.info",
+				defaultSrc : "hello.html",
+				prefixSrc  : "hello-",
+				suffixSrc  : ".html",
+				prefixID   : "HTMLHelloPanel.hello"
+			});
+			files.push({
+				name : addedResource.name,
+				content : "HTML for HelloPanel n°" + (addedResource.index + 1)
+			});
 		}
 		else {
 			panel.setAttribute("classname", "HelloPanel");

@@ -28,10 +28,10 @@
 $.namespace("izpack.generator.panel");
 
 izpack.generator.panel.PacksPanel = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
 };
 
-izpack.generator.panel.PacksPanel.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.generator.panel.PacksPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
 	
 	/**
 	 * @Override

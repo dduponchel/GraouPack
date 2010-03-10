@@ -28,15 +28,49 @@
 $.namespace("izpack.generator.panel");
 
 izpack.generator.panel.InfoPanel = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
+	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
 };
 
-izpack.generator.panel.InfoPanel.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+izpack.generator.panel.InfoPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
 	
 	/**
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		// does nothing
+		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+		var resourceOptions = {
+			//forcedSrc  : this.blackBoard.get("fileSrc"),
+			panel      : panel,
+			xmlBuilder : xmlBuilder
+		};
+		var fileContent = "";
+		if (this.blackBoard.get("useHTML")) {
+			$.extend(resourceOptions, {
+				clazz      : "HTMLInfoPanel",
+				defaultID  : "HTMLInfoPanel.info",
+				defaultSrc : "info.html",
+				prefixSrc  : "info-",
+				suffixSrc  : ".html",
+				prefixID   : "HTMLInfoPanel.info"
+			});
+			fileContent = "html";
+		}
+		else {
+			$.extend(resourceOptions, {
+				clazz      : "InfoPanel",
+				defaultID  : "InfoPanel.info",
+				defaultSrc : "info.txt",
+				prefixSrc  : "info-",
+				suffixSrc  : ".txt",
+				prefixID   : "InfoPanel.info"
+			});
+			fileContent = "text";
+		}
+		panel.setAttribute("classname", resourceOptions.clazz);
+		var addedResource = this.addResourceForPanel(resourceOptions);
+		files.push({
+			name : addedResource.name,
+			content : fileContent + " for InfoPanel n°" + (addedResource.index + 1)
+		});
 	}
 });

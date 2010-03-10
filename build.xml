@@ -40,7 +40,11 @@
 				<exclude name="GenericGenerator.js" />
 			</fileset>
 			<fileset dir="js/src/generator/panel">
+				<include name="GenericPanel.js" />
+			</fileset>
+			<fileset dir="js/src/generator/panel">
 				<include name="*.js" />
+				<exclude name="GenericPanel.js" />
 			</fileset>
 			
 			<fileset dir="js/src/model">
