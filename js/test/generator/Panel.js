@@ -418,6 +418,28 @@ test("LicencePanel: multiple panels", function () {
 
 
 /*---------------------------------------------------------------------------*/
+/*------------------------------- TargetPanel -------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+test("TargetPanel: add the panel", function () {
+	this.mockDatas["panels"] = [
+		{
+			clazz : "TargetPanel"
+		}
+	];
+	
+	this.generator.addGeneratedInfo(this.mockXmlBuilder, this.mockFiles);
+	
+	equal(this.mockXmlBuilder.testHolder["/installation/panels"].children.length, 1, "1 panel created");
+	var child = this.mockXmlBuilder.testHolder["/installation/panels"].children[0];
+	equal(child.content, "", "no content");
+	equal(child.attributes["classname"], "TargetPanel", "TargetPanel");
+	
+	equals(this.mockFiles.length, 0, "no file");
+});
+
+
+/*---------------------------------------------------------------------------*/
 /*------------------------------- InstallPanel ------------------------------*/
 /*---------------------------------------------------------------------------*/
 
@@ -437,7 +459,6 @@ test("InstallPanel: add the panel", function () {
 	
 	equals(this.mockFiles.length, 0, "no file");
 });
-
 
 
 /*---------------------------------------------------------------------------*/

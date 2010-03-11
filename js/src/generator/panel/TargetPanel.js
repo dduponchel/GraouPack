@@ -37,6 +37,7 @@ izpack.generator.panel.TargetPanel.prototype = $.extend({}, izpack.generator.pan
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		// does nothing
+		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+		panel.setAttribute("classname", "TargetPanel");
 	}
 });
