@@ -32,11 +32,13 @@
 	<script type="text/javascript" src="js/src/controller/Project.js"></script>
 	<script type="text/javascript" src="js/src/controller/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/controller/Locale.js"></script>
+	<script type="text/javascript" src="js/src/controller/Pack.js"></script>
 	
 	<script type="text/javascript" src="js/src/view/GenericView.js"></script>
 	<script type="text/javascript" src="js/src/view/Project.js"></script>
 	<script type="text/javascript" src="js/src/view/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/view/Locale.js"></script>
+	<script type="text/javascript" src="js/src/view/Pack.js"></script>
 	
 	<script type="text/javascript" src="js/src/generator/GenericGenerator.js"></script>
 	<script type="text/javascript" src="js/src/generator/Project.js"></script>
@@ -71,6 +73,7 @@
 	builder.addPanel({label : "Presentation",	name : "Presentation"});
 	builder.addPanel({label : "my application",	name : "Project"});
 	builder.addPanel({label : "locales",		name : "Locale"});
+	builder.addPanel({label : "packs",		name : "Pack"});
 	builder.xmlHandlers = [ "Locale", "Project" ];
 	builder.start();
 </script>
