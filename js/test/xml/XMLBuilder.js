@@ -131,3 +131,23 @@ test("createElement: create a new element", function(){
 	equal(1, info.getChildren().length, "a new child");
 	checkXMLElt(appname, "appname", 0);
 });
+
+test("count: simple xpath request", function(){
+	var info = this.xmlBuilder.get("/installation/info");
+	equal(0, this.xmlBuilder.count("/installation/info/sub"), "first, no element");
+	info.createChild("sub");
+	info.createChild("sub");
+	info.createChild("sub");
+	equal(3, this.xmlBuilder.count("/installation/info/sub"), "elements found");
+});
+
+test("count: complex xpath request", function(){
+	var info = this.xmlBuilder.get("/installation/info");
+	equal(0, this.xmlBuilder.count("/installation/info/sub[@id='foo']"), "first, no element");
+	info.createChild("sub");
+	var futureChange = info.createChild("sub");
+	info.createChild("sub");
+	equal(0, this.xmlBuilder.count("/installation/info/sub[@id='foo']"), "no element matching the condition");
+	futureChange.setAttribute("id", "foo");
+	equal(1, this.xmlBuilder.count("/installation/info/sub[@id='foo']"), "only one elt matches");
+});

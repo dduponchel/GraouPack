@@ -6,7 +6,10 @@ textarea.generated-xml {
 	text-align : center;
 }
 
-form.aligned-form label, .aligned-form form label {
+.aligned-form input {
+	display: block;
+}
+.aligned-form label {
 	width: 8em;
 	float: left;
 	margin-right: 0.5em;

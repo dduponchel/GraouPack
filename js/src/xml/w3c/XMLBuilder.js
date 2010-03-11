@@ -59,5 +59,8 @@ izpack.xml.w3c.XMLBuilder.prototype = $.extend({}, izpack.xml.XMLBuilder.prototy
 			this._xmlDocument.childNodes[0],
 			this
 		);
+	},
+	count : function (xpath) {
+		return this._xmlDocument.evaluate("count(" + xpath + ")", this._xmlDocument, null, XPathResult.NUMBER_TYPE, null).numberValue;
 	}
 });

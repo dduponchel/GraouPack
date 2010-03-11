@@ -34,9 +34,5 @@ izpack.view.Presentation = function () {
 izpack.view.Presentation.prototype = $.extend({}, izpack.view.GenericView.prototype, {
 	initView : function () {
 		// nothing to do
-	},
-	
-	validate : function () {
-		return true; // no required field
 	}
 });
