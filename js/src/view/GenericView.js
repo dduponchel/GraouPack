@@ -55,14 +55,6 @@ izpack.view.GenericView = function (name) {
 };
 
 izpack.view.GenericView.prototype = {
-        /**
-         * Verify if all required infos for this generator are here.
-         * @return {boolean} true if everything is ok, false otherwise.
-         */
-	validate : function () {
-		throw "validate must be overriden !";
-	},
-	
 	/**
 	 * This method is called when the view (html) is loaded.
 	 * It calls then the method initView.

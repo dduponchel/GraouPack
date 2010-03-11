@@ -36,7 +36,7 @@ izpack.generator.Project.prototype = $.extend({}, izpack.generator.GenericGenera
 	/**
 	 * @Override
 	 */
-	addXMLInfo : function (xmlBuilder) {
+	addGeneratedInfo : function (xmlBuilder, files) {
 		var authors = this.blackBoard.get("authors");
 		if (authors.length) {
 			var authorsXml = xmlBuilder.get("/installation/info/authors");

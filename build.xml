@@ -42,6 +42,13 @@
 				<include name="*.js" />
 				<exclude name="GenericGenerator.js" />
 			</fileset>
+			<fileset dir="js/src/generator/panel">
+				<include name="GenericPanel.js" />
+			</fileset>
+			<fileset dir="js/src/generator/panel">
+				<include name="*.js" />
+				<exclude name="GenericPanel.js" />
+			</fileset>
 			
 			<fileset dir="js/src/model">
 				<include name="*.js" />
@@ -63,6 +70,24 @@
 			<fileset dir="js/src/view">
 				<include name="*.js" />
 				<exclude name="GenericView.js" />
+			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/controller/panelConfig">
+				<include name="GenericPanel.js" />
+			</fileset>
+			<fileset dir="js/src/controller/panelConfig">
+				<include name="*.js" />
+				<exclude name="GenericPanel.js" />
+			</fileset>
+
+			<!-- we want first the mother class -->
+			<fileset dir="js/src/view/panelConfig">
+				<include name="GenericPanel.js" />
+			</fileset>
+			<fileset dir="js/src/view/panelConfig">
+				<include name="*.js" />
+				<exclude name="GenericPanel.js" />
 			</fileset>
 		</path>
 
