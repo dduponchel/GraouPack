@@ -37,6 +37,12 @@ izpack.generator.panel.PacksPanel.prototype = $.extend({}, izpack.generator.pane
 	 * @Override
 	 */
 	addGeneratedInfo : function (xmlBuilder, files) {
-		// does nothing
+		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+		if (this.blackBoard.get("useTree")) {
+			panel.setAttribute("classname", "TreePacksPanel");
+		}
+		else {
+			panel.setAttribute("classname", "PacksPanel");
+		}
 	}
 });

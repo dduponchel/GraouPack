@@ -440,6 +440,50 @@ test("TargetPanel: add the panel", function () {
 
 
 /*---------------------------------------------------------------------------*/
+/*-------------------------------- PacksPanel -------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+test("PacksPanel: PacksPanel", function () {
+	this.mockDatas["panels"] = [
+		{
+			clazz : "PacksPanel",
+			config : new izpack.model.PanelConfig({
+				"useTree" : false
+			})
+		}
+	];
+	
+	this.generator.addGeneratedInfo(this.mockXmlBuilder, this.mockFiles);
+	
+	equal(this.mockXmlBuilder.testHolder["/installation/panels"].children.length, 1, "1 panel created");
+	var child = this.mockXmlBuilder.testHolder["/installation/panels"].children[0];
+	equal(child.content, "", "no content");
+	equal(child.attributes["classname"], "PacksPanel", "PacksPanel");
+	
+	equals(this.mockFiles.length, 0, "no file");
+});
+
+test("PacksPanel: TreePacksPanel", function () {
+	this.mockDatas["panels"] = [
+		{
+			clazz : "PacksPanel",
+			config : new izpack.model.PanelConfig({
+				"useTree" : true
+			})
+		}
+	];
+	
+	this.generator.addGeneratedInfo(this.mockXmlBuilder, this.mockFiles);
+	
+	equal(this.mockXmlBuilder.testHolder["/installation/panels"].children.length, 1, "1 panel created");
+	var child = this.mockXmlBuilder.testHolder["/installation/panels"].children[0];
+	equal(child.content, "", "no content");
+	equal(child.attributes["classname"], "TreePacksPanel", "TreePacksPanel");
+	
+	equals(this.mockFiles.length, 0, "no file");
+});
+
+/*---------------------------------------------------------------------------*/
 /*------------------------------- InstallPanel ------------------------------*/
 /*---------------------------------------------------------------------------*/
 
