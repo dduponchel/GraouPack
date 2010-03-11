@@ -32,10 +32,6 @@ izpack.controller.Presentation = function (view, blackBoard) {
 };
 
 izpack.controller.Presentation.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
-	initView : function () {
-		// nothing to do
-	},
-	
 	setBindings : function () {
 		// nothing to do
 	}

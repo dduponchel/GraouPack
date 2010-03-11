@@ -9,8 +9,9 @@
 
 	<link type="text/css" href="css/tab/Locale.css" rel="stylesheet" />
 	<link type="text/css" href="css/tab/Project.css" rel="stylesheet" />
+	<link type="text/css" href="css/tab/Panel.css" rel="stylesheet" />
 	
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/lib/jQuery.validity/jquery.validity.js"></script>
 	<script type="text/javascript" src="js/lib/jQuery.namespace.js"></script>
@@ -27,21 +28,51 @@
 	<script type="text/javascript" src="js/src/xml/ie/Element.js"></script>
 	
 	<script type="text/javascript" src="js/src/model/BlackBoard.js"></script>
+	<script type="text/javascript" src="js/src/model/PanelConfig.js"></script>
 	
 	<script type="text/javascript" src="js/src/controller/GenericController.js"></script>
 	<script type="text/javascript" src="js/src/controller/Project.js"></script>
 	<script type="text/javascript" src="js/src/controller/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/controller/Locale.js"></script>
+	<script type="text/javascript" src="js/src/controller/Panel.js"></script>
 	
 	<script type="text/javascript" src="js/src/view/GenericView.js"></script>
 	<script type="text/javascript" src="js/src/view/Project.js"></script>
 	<script type="text/javascript" src="js/src/view/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/view/Locale.js"></script>
+	<script type="text/javascript" src="js/src/view/Panel.js"></script>
+	
+	<script type="text/javascript" src="js/src/view/panelConfig/GenericPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/FinishPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/HelloPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/InfoPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/InstallPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/LicencePanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/PacksPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/panelConfig/TargetPanel.js"></script>
+	
+	<script type="text/javascript" src="js/src/controller/panelConfig/GenericPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/FinishPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/HelloPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/InfoPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/InstallPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/LicencePanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/PacksPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/panelConfig/TargetPanel.js"></script>
 	
 	<script type="text/javascript" src="js/src/generator/GenericGenerator.js"></script>
 	<script type="text/javascript" src="js/src/generator/Project.js"></script>
 	<script type="text/javascript" src="js/src/generator/Locale.js"></script>
-
+	<script type="text/javascript" src="js/src/generator/Panel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/GenericPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/FinishPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/HelloPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/InfoPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/InstallPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/LicencePanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/PacksPanel.js"></script>
+	<script type="text/javascript" src="js/src/generator/panel/TargetPanel.js"></script>
+	
 	<!--
 	<script type="text/javascript" src="target/izpack.min.js"></script>
 	-->
@@ -71,7 +102,8 @@
 	builder.addPanel({label : "Presentation",	name : "Presentation"});
 	builder.addPanel({label : "my application",	name : "Project"});
 	builder.addPanel({label : "locales",		name : "Locale"});
-	builder.xmlHandlers = [ "Locale", "Project" ];
+	builder.addPanel({label : "panels",		name : "Panel"});
+	builder.xmlHandlers = [ "Locale", "Project", "Panel" ];
 	builder.start();
 </script>
 <footer>done with jQuery and vim :D</footer>

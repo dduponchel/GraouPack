@@ -39,19 +39,19 @@ module("Generator Locale", {
 
 
 
-test("addXMLInfo: one locale", function () {
+test("addGeneratedInfo: one locale", function () {
 	this.mockDatas["locales"] = ["locale1"];
-	this.generator.addXMLInfo(this.mockXmlBuilder);
+	this.generator.addGeneratedInfo(this.mockXmlBuilder);
 	
 	equal(this.mockXmlBuilder.testHolder["/installation/locale"].children.length, 1, "one child created");
 	var child = this.mockXmlBuilder.testHolder["/installation/locale"].children[0];
 	equal(child.attributes["iso3"], "locale1", "iso3 code setted");
 });
 
-test("addXMLInfo: several locales", function () {
+test("addGeneratedInfo: several locales", function () {
 	this.mockDatas["locales"] = ["locale1", "locale2", "locale3"];
 	
-	this.generator.addXMLInfo(this.mockXmlBuilder);
+	this.generator.addGeneratedInfo(this.mockXmlBuilder);
 	
 	equal(this.mockXmlBuilder.testHolder["/installation/locale"].children.length, 3, "three children created");
 	var child1 = this.mockXmlBuilder.testHolder["/installation/locale"].children[0];
