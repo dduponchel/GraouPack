@@ -81,7 +81,7 @@ izpack.zip.ZipBuilder.prototype = {
 		DOSDate = DOSDate << 5;
 		DOSDate = DOSDate | now.getDate();
 
-		return 	String.fromCharCode(DOSTime & 0xFF, (DOSTime & 0xFF00) >> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >> 8);
+		return 	[ DOSTime & 0xFF, (DOSTime & 0xFF00) >> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >> 8 ];
 	},
 	
 	getFilesAndFolders : function (files) {
@@ -110,10 +110,10 @@ izpack.zip.ZipBuilder.prototype = {
 		return filesAndFolders;
 	},
 	
-	dumpHex : function (stringBytes, message) {
+	dumpHex : function (arrayBytes, message) {
 		res = "";
-		for (var i = 0; i < stringBytes.length; i++) {
-			res += stringBytes.charCodeAt(i).toString(16) + " ";
+		for (var i = 0; i < arrayBytes.length; i++) {
+			res += arrayBytes[i].toString(16) + " ";
 		}
 		console.debug("ZipBuilder::dumpHex : ",res, message);
 		return res;
@@ -128,7 +128,15 @@ izpack.zip.ZipBuilder.prototype = {
 			mask = mask << 8;
 			offset += 8;
 		}
-		return  String.fromCharCode.apply(String, res);
+		return res;
+	},
+	
+	stringToBytes : function (myString) {
+		var res = [];
+		for (var i = 0; i < myString.length; i++) {
+			res.push(myString.charCodeAt(i));
+		}
+		return res;
 	},
 	
 	/*
@@ -148,19 +156,18 @@ izpack.zip.ZipBuilder.prototype = {
 	 */
 	getLocalFileHeader : function (file) {
 		var now = new Date();
-		var zero = String.fromCharCode(0x0);
-		return String.fromCharCode(0x50, 0x4b, 0x03, 0x04) + // magic number, 4 bytes. Here : a zip file :)
-			String.fromCharCode(0x0a, 0x0) + // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
-			zero + zero + // general purpose bit flag, 2 bytes. Here : nothing special
-			zero + zero + // compression method, 2 bytes. Here : STORE
-			this.msdosTime(now) + // last mod file time/date, 2+2 bytes
-			this.intToBytes($.crc32(file.content), 4) + // crc-32, 4 bytes
-			this.intToBytes(file.content.length, 4) + // compressed-size, 4 bytes (no compression, same as uncompressed)
-			this.intToBytes(file.content.length, 4) + // uncompressed-size, 4 bytes
-			this.intToBytes(file.name.length, 2) + // file name length, 2 bytes
-			zero + zero + // extra field length, 2 bytes
-			file.name + // file name, variable size
-			""; // extra field, variable size
+		return [0x50, 0x4b, 0x03, 0x04].concat( // magic number, 4 bytes. Here : a zip file :)
+			[0x0a, 0x0], // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
+			[0x0, 0x0], // general purpose bit flag, 2 bytes. Here : nothing special
+			[0x0, 0x0], // compression method, 2 bytes. Here : STORE
+			this.msdosTime(now), // last mod file time/date, 2+2 bytes
+			this.intToBytes($.crc32(file.content), 4), // crc-32, 4 bytes
+			this.intToBytes(file.content.length, 4), // compressed-size, 4 bytes (no compression, same as uncompressed)
+			this.intToBytes(file.content.length, 4), // uncompressed-size, 4 bytes
+			this.intToBytes(file.name.length, 2), // file name length, 2 bytes
+			[0x0, 0x0], // extra field length, 2 bytes
+			this.stringToBytes(file.name), // file name, variable size
+			[]); // extra field, variable size
 	},
 
 	/*
@@ -187,26 +194,25 @@ izpack.zip.ZipBuilder.prototype = {
 	 */
 	getCentralDirectoryFileHeader : function (file, offsetFromStart) {
 		var now = new Date();
-		var zero = String.fromCharCode(0x0);
-		return String.fromCharCode(0x50, 0x4b, 0x01, 0x02) + // central file header signature, 4bytes
-			String.fromCharCode(0x14, 0xFF) + // version made by, 2 bytes. 'Javascript VM' doesn't exist, so 0xFF, zip version 2.0 or above.
-			String.fromCharCode(0x0a, 0x0) + // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
-			zero + zero + // general purpose bit flag, 2 bytes. Here : nothing special
-			zero + zero + // compression method, 2 bytes. Here : STORE
-			this.msdosTime(now) + // last mod file time/date, 2+2 bytes
-			this.intToBytes($.crc32(file.content), 4) + // crc-32, 4 bytes
-			this.intToBytes(file.content.length, 4) + // compressed-size, 4 bytes (no compression, same as uncompressed)
-			this.intToBytes(file.content.length, 4) + // uncompressed-size, 4 bytes
-			this.intToBytes(file.name.length, 2) + // file name length, 2 bytes
-			zero + zero + // extra field length, 2 bytes
-			zero + zero + // file comment length, 2 bytes
-			zero + zero + // disk number start, 2 bytes
-			zero + zero + // internal file attributes, 2 bytes
-			zero + zero + zero + zero + // external file attributes, 4 bytes
-			this.intToBytes(offsetFromStart, 4) + // relative offset of the local header, 4 bytes
-			file.name + // file name, variable size
-			"" + // extra field, variable size
-			""; // file comment, variable size
+		return [0x50, 0x4b, 0x01, 0x02].concat( // central file header signature, 4bytes
+			[0x14, 0xFF], // version made by, 2 bytes. 'Javascript VM' doesn't exist, so 0xFF, zip version 2.0 or above.
+			[0x0a, 0x0], // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
+			[0x0, 0x0], // general purpose bit flag, 2 bytes. Here : nothing special
+			[0x0, 0x0], // compression method, 2 bytes. Here : STORE
+			this.msdosTime(now), // last mod file time/date, 2+2 bytes
+			this.intToBytes($.crc32(file.content), 4), // crc-32, 4 bytes
+			this.intToBytes(file.content.length, 4), // compressed-size, 4 bytes (no compression, same as uncompressed)
+			this.intToBytes(file.content.length, 4), // uncompressed-size, 4 bytes
+			this.intToBytes(file.name.length, 2), // file name length, 2 bytes
+			[0x0, 0x0], // extra field length, 2 bytes
+			[0x0, 0x0], // file comment length, 2 bytes
+			[0x0, 0x0], // disk number start, 2 bytes
+			[0x0, 0x0], // internal file attributes, 2 bytes
+			[0x0, 0x0, 0x0, 0x0], // external file attributes, 4 bytes
+			this.intToBytes(offsetFromStart, 4), // relative offset of the local header, 4 bytes
+			this.stringToBytes(file.name), // file name, variable size
+			[], // extra field, variable size
+			[]); // file comment, variable size
 	},
 
 	/*
@@ -227,32 +233,31 @@ izpack.zip.ZipBuilder.prototype = {
 	 */			
 	getEndOfCentralDirectory : function (files, centralDirectoryStart, centralDirectoryEnd) {
 		var zipComment = "Created by GraouPack";
-		return String.fromCharCode(0x50, 0x4b, 0x05, 0x06) + // end of central dir signature, 4 bytes
-			this.intToBytes(0, 2) + // number of this disk, 2 bytes
-			this.intToBytes(0, 2) + // number of the disk with the start of the central directory, 2 bytes
-			this.intToBytes(files.length, 2) + // total number of entries in the central directory on this disk, 2 bytes
-			this.intToBytes(files.length, 2) + // total number of entries in the central directory, 2 bytes
-			this.intToBytes(centralDirectoryEnd - centralDirectoryStart, 4) + // size of the central directory, 4 bytes
-			this.intToBytes(centralDirectoryStart, 4) + // offset of start of central directory with respect to the starting disk number, 4 bytes
-			this.intToBytes(zipComment.length, 2) + // zip file comment length, 2 bytes
-			zipComment; // zip file comment, variable size
+		return [0x50, 0x4b, 0x05, 0x06].concat( // end of central dir signature, 4 bytes
+			this.intToBytes(0, 2), // number of this disk, 2 bytes
+			this.intToBytes(0, 2), // number of the disk with the start of the central directory, 2 bytes
+			this.intToBytes(files.length, 2), // total number of entries in the central directory on this disk, 2 bytes
+			this.intToBytes(files.length, 2), // total number of entries in the central directory, 2 bytes
+			this.intToBytes(centralDirectoryEnd - centralDirectoryStart, 4), // size of the central directory, 4 bytes
+			this.intToBytes(centralDirectoryStart, 4), // offset of start of central directory with respect to the starting disk number, 4 bytes
+			this.intToBytes(zipComment.length, 2), // zip file comment length, 2 bytes
+			this.stringToBytes(zipComment)); // zip file comment, variable size
 	},
 
 	createZIP : function () {
 		var i, file;
-		var zip = ""; // yes, a bunch of bits in a string. It works and the base64 function needs a string...
+		var zip = []; // array of bytes
 
 		var centralDirectoryStart = 0;
 		var centralDirectoryEnd = 0;
+		
 		for (i = 0; i < this.files.length; i++) {
 			// write the header + content
 			file = this.files[i];
-			var header = this.getLocalFileHeader(file);
+			var header = this.getLocalFileHeader(file).concat(this.stringToBytes(file.content));
 			this.dumpHex(header, "header for " + file.name);
-			zip += header;
-			zip += file.content;
-			file.sizeLocalFile = header.length + file.content.length;
-			centralDirectoryStart += file.sizeLocalFile;
+			zip = zip.concat(header);
+			centralDirectoryStart += header.length;
 		}
 		var currentOffsetFromStart = 0;
 		centralDirectoryEnd = centralDirectoryStart;
@@ -261,12 +266,12 @@ izpack.zip.ZipBuilder.prototype = {
 			file = this.files[i];
 			var directoryHeader = this.getCentralDirectoryFileHeader(file, currentOffsetFromStart);
 			this.dumpHex(directoryHeader, "directory header for " + file.name);
-			zip += directoryHeader;
+			zip = zip.concat(directoryHeader);
 			centralDirectoryEnd += directoryHeader.length;
 			currentOffsetFromStart += file.sizeLocalFile;
 		}
 		// end of central directory record
-		zip += this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd);
+		zip = zip.concat(this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd));
 		this.dumpHex(zip, "final zip");
 		return $.base64.encode(zip);
 	}
