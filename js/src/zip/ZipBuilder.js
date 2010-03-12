@@ -111,11 +111,11 @@ izpack.zip.ZipBuilder.prototype = {
 	},
 	
 	dumpHex : function (arrayBytes, message) {
-		res = "";
+		var res = "";
 		for (var i = 0; i < arrayBytes.length; i++) {
 			res += arrayBytes[i].toString(16) + " ";
 		}
-		console.debug("ZipBuilder::dumpHex : ",res, message);
+		console.debug("ZipBuilder::dumpHex : ", res, message);
 		return res;
 	},
 	
@@ -255,9 +255,10 @@ izpack.zip.ZipBuilder.prototype = {
 			// write the header + content
 			file = this.files[i];
 			var header = this.getLocalFileHeader(file).concat(this.stringToBytes(file.content));
-			this.dumpHex(header, "header for " + file.name);
+			//this.dumpHex(header, "header for " + file.name);
 			zip = zip.concat(header);
 			centralDirectoryStart += header.length;
+			file.sizeLocalFile = header.length;
 		}
 		var currentOffsetFromStart = 0;
 		centralDirectoryEnd = centralDirectoryStart;
@@ -265,14 +266,14 @@ izpack.zip.ZipBuilder.prototype = {
 			// write the header for central directory
 			file = this.files[i];
 			var directoryHeader = this.getCentralDirectoryFileHeader(file, currentOffsetFromStart);
-			this.dumpHex(directoryHeader, "directory header for " + file.name);
+			//this.dumpHex(directoryHeader, "directory header for " + file.name);
 			zip = zip.concat(directoryHeader);
 			centralDirectoryEnd += directoryHeader.length;
 			currentOffsetFromStart += file.sizeLocalFile;
 		}
 		// end of central directory record
 		zip = zip.concat(this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd));
-		this.dumpHex(zip, "final zip");
+		//this.dumpHex(zip, "final zip");
 		return $.base64.encode(zip);
 	}
 };
