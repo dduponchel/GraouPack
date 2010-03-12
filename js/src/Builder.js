@@ -40,7 +40,7 @@ izpack.Builder = function (htmlID) {
 		title : "generated XML",
 		width : 700,
 		height : 500
-	});
+	}).tabs();
 	
 	var tabs = [];
 	

@@ -93,12 +93,29 @@
 </div>
 <form target="#" id="GraouXML">
 <div class="generateXML">
-	<button>generate XML</button>
+	<button>generate !</button>
 </div>
 <div class="dialog">
-	<!-- rows and cols because old browsers fail with css -->
-	<textarea readonly="readonly" class="generated-xml" rows="17" cols="54"></textarea>
-	<button>save</button>
+	<ul>
+		<li><a href="#graoupack-generated-download">download</a></li>
+		<li><a href="#graoupack-generated-xml">xml</a></li>
+		<li><a href="#graoupack-generated-files">files</a></li>
+	</ul>
+	<div id="graoupack-generated-download">
+		<p>You can now download a zip containing the xml for IzPack and all the files you need.
+		All you have to do is replacing the files&nbsp;!</p>
+		Flash based download : (button with downloadify)<br/>
+		Alternative flash-less <button>save</button> (doesn't work properly)<br/>
+		You might also be interested in the content of the zip file, found if the 
+		tabs "xml" and "files".
+	</div>
+	<div id="graoupack-generated-xml">
+		<!-- rows and cols because old browsers fail with css -->
+		<textarea readonly="readonly" class="generated-xml" rows="13" cols="54"></textarea>
+	</div>
+	<div id="graoupack-generated-files">
+		here, all the files needed and a short description
+	</div>
 </div>
 </form>
 <script type="text/javascript">
