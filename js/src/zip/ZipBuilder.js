@@ -81,7 +81,7 @@ izpack.zip.ZipBuilder.prototype = {
 		DOSDate = DOSDate << 5;
 		DOSDate = DOSDate | now.getDate();
 
-		return 	[ DOSTime & 0xFF, (DOSTime & 0xFF00) >> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >> 8 ];
+		return 	[ DOSTime & 0xFF, (DOSTime & 0xFF00) >>> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >>> 8 ];
 	},
 	
 	getFilesAndFolders : function (files) {
@@ -124,7 +124,7 @@ izpack.zip.ZipBuilder.prototype = {
 		var offset = 0;
 		var res = [];
 		for (var i = 0; i < bytesNb; i++) {
-			res.push((integer & mask) >> offset);
+			res.push((integer & mask) >>> offset);
 			mask = mask << 8;
 			offset += 8;
 		}
