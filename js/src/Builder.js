@@ -155,8 +155,11 @@ izpack.Builder = function (htmlID) {
 						var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
 						generator.addGeneratedInfo(xml, files);
 					}
-					$(".generated-xml", dialog).text(xml.toXMLString());
-					dialog.dialog("open");
+					var xmlString = xml.toXMLString();
+					$(".generated-xml", dialog).text(xmlString);
+					dialog
+					.data("zip", new izpack.zip.ZipBuilder(files).createZIP())
+					.dialog("open");
 				}
 				catch (xmlException) {
 					alert("Something went wrong with the xml generation !\n" + xmlException);
@@ -179,9 +182,12 @@ izpack.Builder = function (htmlID) {
 	
 
 	$("button", dialog).click(function () {
+		/*
 		var b64 = $.base64.encode($(".generated-xml", dialog).text());
 		var win = window.open("data:application/xml;base64," + b64);
 		win.alert('Select "Save As..." in your browser to save this xml as an XML file.');
+		*/
+		window.open("data:application/zip;base64," + $(this).parents(".dialog").data("zip"));
 		return false;
 	});
 };
