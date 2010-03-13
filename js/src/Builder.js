@@ -41,6 +41,26 @@ izpack.Builder = function (htmlID) {
 		width : 700,
 		height : 500
 	}).tabs();
+	$("#graoupack-generated-download .flash").downloadify({
+		swf : "js/lib/downloadify/downloadify.swf",
+		downloadImage : "js/lib/downloadify/download.png",
+		width: 100,
+		height: 30,
+		filename : "GraouPack.zip",
+		data : function () {
+			return $(".dialog").data("zip");
+		},
+		dataType: "base64",
+		onError : function () {
+			console.log("downloadify::error callback");
+		},
+		onCancel : function () {
+			console.log("downloadify::cancel callback");
+		},
+		onComplete : function () {
+			console.log("downloadify::complete callback");
+		}
+	});
 	
 	var tabs = [];
 	
@@ -157,6 +177,7 @@ izpack.Builder = function (htmlID) {
 					}
 					var xmlString = xml.toXMLString();
 					$(".generated-xml", dialog).text(xmlString);
+					// here fill in the files
 					dialog
 					.data("zip", new izpack.zip.ZipBuilder(files).createZIP())
 					.dialog("open");
