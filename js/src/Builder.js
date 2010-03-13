@@ -176,6 +176,10 @@ izpack.Builder = function (htmlID) {
 						generator.addGeneratedInfo(xml, files);
 					}
 					var xmlString = xml.toXMLString();
+					files.push({
+						name : "install.xml",
+						content : xmlString
+					});
 					$(".generated-xml", dialog).text(xmlString);
 					// here fill in the files
 					dialog
