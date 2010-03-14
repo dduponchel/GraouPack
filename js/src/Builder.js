@@ -181,7 +181,10 @@ izpack.Builder = function (htmlID) {
 						content : xmlString
 					});
 					$(".generated-xml", dialog).text(xmlString);
-					// here fill in the files
+					for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+						
+						$("#graoupack-generated-files ul", dialog).append($("<li/>").text(files[fileIndex].name));
+					}
 					dialog
 					.data("zip", new izpack.zip.ZipBuilder(files).createZIP())
 					.dialog("open");
