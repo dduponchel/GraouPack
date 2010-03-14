@@ -1,6 +1,6 @@
 globalObjOptions = {
 adsafe: false, 		// true if ADsafe.org rules should be enforced
-bitwise: true,	 	// true if bitwise operators should not be allowed
+bitwise: false,	 	// true if bitwise operators should not be allowed
 browser: true,	 	// true if the standard browser globals should be predefined
 cap: false, 		// true if upper case HTML should be allowed
 debug: false, 		// true if debugger statements should be allowed

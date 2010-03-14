@@ -40,6 +40,26 @@ izpack.Builder = function (htmlID) {
 		title : "generated XML",
 		width : 700,
 		height : 500
+	}).tabs();
+	$("#graoupack-generated-download .flash").downloadify({
+		swf : "js/lib/downloadify/downloadify.swf",
+		downloadImage : "js/lib/downloadify/download.png",
+		width: 100,
+		height: 30,
+		filename : "GraouPack.zip",
+		data : function () {
+			return $(".dialog").data("zip");
+		},
+		dataType: "base64",
+		onError : function () {
+			console.log("downloadify::error callback");
+		},
+		onCancel : function () {
+			console.log("downloadify::cancel callback");
+		},
+		onComplete : function () {
+			console.log("downloadify::complete callback");
+		}
 	});
 	
 	var tabs = [];
@@ -155,8 +175,19 @@ izpack.Builder = function (htmlID) {
 						var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
 						generator.addGeneratedInfo(xml, files);
 					}
-					$(".generated-xml", dialog).text(xml.toXMLString());
-					dialog.dialog("open");
+					var xmlString = xml.toXMLString();
+					files.push({
+						name : "install.xml",
+						content : xmlString
+					});
+					$(".generated-xml", dialog).text(xmlString);
+					for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+						
+						$("#graoupack-generated-files ul", dialog).append($("<li/>").text(files[fileIndex].name));
+					}
+					dialog
+					.data("zip", new izpack.zip.ZipBuilder(files).createZIP())
+					.dialog("open");
 				}
 				catch (xmlException) {
 					alert("Something went wrong with the xml generation !\n" + xmlException);
@@ -179,9 +210,12 @@ izpack.Builder = function (htmlID) {
 	
 
 	$("button", dialog).click(function () {
+		/*
 		var b64 = $.base64.encode($(".generated-xml", dialog).text());
 		var win = window.open("data:application/xml;base64," + b64);
 		win.alert('Select "Save As..." in your browser to save this xml as an XML file.');
+		*/
+		window.open("data:application/zip;base64," + $(this).parents(".dialog").data("zip"));
 		return false;
 	});
 };
