@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
