@@ -38,6 +38,8 @@ izpack.generator.panel.GenericPanel.prototype = $.extend({}, izpack.generator.Ge
 	 * @param {Object} options The options to use.
 	 * @return {Object} an object containing informations on the creation.
 	 * 
+	 * This will correctly work in IzPack 5, see http://jira.codehaus.org/browse/IZPACK-543
+	 * 
 	 * The returned object has the following form :
 	 * {
 	 * 	name : the name used for the file's src
