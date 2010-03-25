@@ -1,7 +1,7 @@
 #tab-project .add span {
 	display: block;
-	background: url("../../img/add.png") no-repeat;
-	padding: 5px 5px 5px 32px;
+	background: url("../../img/add.png") no-repeat scroll 2px center transparent;
+	padding-left: 36px;
 }
 
 #tab-project .trash {

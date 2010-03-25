@@ -82,7 +82,8 @@ izpack.view.Project.prototype = $.extend({}, izpack.view.GenericView.prototype, 
 			$(view.addAuthorFields).val("");
 			
 			return false;
-		});
+		})
+		.button();
 		
 		$(this.trash)
 		.droppable({

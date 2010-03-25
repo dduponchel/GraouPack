@@ -203,7 +203,7 @@ izpack.Builder = function (htmlID) {
 	};
 	
 	$("#GraouXML .generateXML button")
-	.addClass("ui-state-default ui-corner-all")
+	.button()
 	.bind("click", {builder: this}, function (event) {
 		event.data.builder.generateXML.apply(event.data.builder);
 		return false;
