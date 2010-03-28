@@ -26,24 +26,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator.panel");
+"use strict";
 
-izpack.generator.panel.PacksPanel = function (blackBoard) {
-	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
-};
+$.Class("izpack.generator.panel", "PacksPanel", {
+	isa : "GenericPanel",
 
-izpack.generator.panel.PacksPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
 	
-	/**
-	 * @Override
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
-		if (this.blackBoard.get("useTree")) {
-			panel.setAttribute("classname", "TreePacksPanel");
-		}
-		else {
-			panel.setAttribute("classname", "PacksPanel");
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+			if (this.blackBoard.get("useTree")) {
+				panel.setAttribute("classname", "TreePacksPanel");
+			}
+			else {
+				panel.setAttribute("classname", "PacksPanel");
+			}
 		}
 	}
 });

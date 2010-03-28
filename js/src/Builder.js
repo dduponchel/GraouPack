@@ -32,191 +32,194 @@ $.namespace("izpack");
  * The main class for starting the app.
  * @param {String} htmlID The id of the html element where we will put our app.
  */
-izpack.Builder = function (htmlID) {
-	
-	var rootElt = $("#" + htmlID);
+$.Class("izpack", "Builder", {
+	init : function (htmlID) {
+		this.tabs = [];
+		this.xmlHandlers = [];
+		this.rootElt = $("#" + htmlID);
+		this.blackBoard = new izpack.model.BlackBoard();
+		this.dialog = $("#GraouXML .dialog").dialog({
+			autoOpen : false,
+			title : "generated XML",
+			width : 700,
+			height : 500
+		}).tabs();
 
-	var dialog = $("#GraouXML .dialog").dialog({
-		autoOpen : false,
-		title : "generated XML",
-		width : 700,
-		height : 500
-	}).tabs();
-	$("#graoupack-generated-download .flash").downloadify({
-		swf : "js/lib/downloadify/downloadify.swf",
-		downloadImage : "js/lib/downloadify/download.png",
-		width: 100,
-		height: 30,
-		filename : "GraouPack.zip",
-		data : function () {
-			return $(".dialog").data("zip");
-		},
-		dataType: "base64",
-		onError : function () {
-			console.log("downloadify::error callback");
-		},
-		onCancel : function () {
-			console.log("downloadify::cancel callback");
-		},
-		onComplete : function () {
-			console.log("downloadify::complete callback");
-		}
-	});
-	
-	var tabs = [];
-	
-	this.xmlHandlers = [];
-	
-	this.blackBoard = new izpack.model.BlackBoard();
-
-	var addErrorTab = function (index) {
-		// should be in css, but `switchClass("error-tab-highlight", "error-tab", "slow")` doesn't work in IE...
-		var fromColor = "#f55";
-		var toColor   = "#ee8";
-		
-		tabs[index].htmlTab
-			.css("background-color", fromColor)
-			.animate({
-				backgroundColor : toColor
-			}, "slow");
-	};
-	
-	var removeErrorTab = function (index) {
-		tabs[index].htmlTab.css("background-color", "transparent");
-	};
-	
-	/**
-	 * Add a panel for more functionalities !
-	 * @param {Object} options The options to configure the new tab.
-	 */
-	this.addPanel = function (options) {
-		var settings = {
-			label: undefined,
-			name: undefined,
-			optional : false
-		};
-		$.extend(settings, options);
-		
-		var controller = null;
-		var view = null;
-		try {
-			view = new izpack.view[settings.name]();
-			controller = new izpack.controller[settings.name](view, this.blackBoard);
-			controller.setBindings();
-		}
-		catch (e) {
-			throw "Creating '" + settings.name + "' tab : " + e;
-		}
-		
-		
-		var htmlTab = $("<a></a>")
-		.attr("href", view.href)
-		.attr("title", settings.name)
-		.append(
-			$("<span/>").text(settings.label)
-		);
-
-		$(" > ul", rootElt).append(
-			$("<li></li>").data("optional", settings.optional).append(htmlTab)
-		);
-		
-		tabs.push({
-			name:		settings.name,
-			view:		view,
-			controller:	controller,
-			label:		settings.label,
-			htmlTab:	htmlTab
-		});
-	};
-	
-	/**
-	 * Start the application !
-	 */
-	this.start = function () {
-		rootElt.tabs({
-			cache : true,
-			load : function (event, ui) {
-				tabs[ui.index].controller.initView();
+		$("#graoupack-generated-download .flash").downloadify({
+			swf : "js/lib/downloadify/downloadify.swf",
+			downloadImage : "js/lib/downloadify/download.png",
+			width: 100,
+			height: 30,
+			filename : "GraouPack.zip",
+			data : function () {
+				return $(".dialog").data("zip");
 			},
-			show : function (event, ui) {
-				// remove any error / error animation
-				removeErrorTab(ui.index);
-				tabs[ui.index].controller.showView();
+			dataType: "base64",
+			onError : function () {
+				console.log("downloadify::error callback");
+			},
+			onCancel : function () {
+				console.log("downloadify::cancel callback");
+			},
+			onComplete : function () {
+				console.log("downloadify::complete callback");
 			}
 		});
-	};
-
-
-	var validateAll = function () {
-		var fails = [];
-		for (var index  = 0; index < tabs.length; index++) {
-			var tab = tabs[index];
-			if (!tab.controller.validate()) {
-				addErrorTab(index);
-				fails.push(tab.name);
-			}
-			else {
-				removeErrorTab(index);
-			}
-		}
-		if (fails.length) {
-			//alert("tab(s) '" + fails + "' have errors");
+	
+		$("#GraouXML .generateXML button")
+		.addClass("ui-state-default ui-corner-all")
+		.bind("click", {builder: this}, function (event) {
+			event.data.builder.generateXML.apply(event.data.builder);
 			return false;
-		}
-		return true;
-	};
+		});
 	
-	this.generateXML = function () {
-		try {
-			if (validateAll()) {
-				try {
-					var xml = izpack.xml.XMLBuilder.createInstance();
-					var files = [];
-					for (var i = 0; i < this.xmlHandlers.length; i++) {
-						var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
-						generator.addGeneratedInfo(xml, files);
-					}
-					var xmlString = xml.toXMLString();
-					files.push({
-						name : "install.xml",
-						content : xmlString
-					});
-					$(".generated-xml", dialog).text(xmlString);
-					for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
-						
-						$("#graoupack-generated-files ul", dialog).append($("<li/>").text(files[fileIndex].name));
-					}
-					dialog
-					.data("zip", new izpack.zip.ZipBuilder(files).createZIP())
-					.dialog("open");
+		$("button", this.dialog).click(function () {
+			/*
+			var b64 = $.base64.encode($(".generated-xml", dialog).text());
+			var win = window.open("data:application/xml;base64," + b64);
+			win.alert('Select "Save As..." in your browser to save this xml as an XML file.');
+			*/
+			window.open("data:application/zip;base64," + $(this).parents(".dialog").data("zip"));
+			return false;
+		});
+	},
+
+	methods : {
+
+		addErrorTab : function (index) {
+			// should be in css, but `switchClass("error-tab-highlight", "error-tab", "slow")` doesn't work in IE...
+			var fromColor = "#f55";
+			var toColor   = "#ee8";
+			
+			this.tabs[index].htmlTab
+				.css("background-color", fromColor)
+				.animate({
+					backgroundColor : toColor
+				}, "slow");
+		},
+		
+		removeErrorTab : function (index) {
+			this.tabs[index].htmlTab.css("background-color", "transparent");
+		},
+		
+		/**
+		 * Add a panel for more functionalities !
+		 * @param {Object} options The options to configure the new tab.
+		 */
+		addPanel : function (options) {
+			var settings = {
+				label: undefined,
+				name: undefined,
+				optional : false
+			};
+			$.extend(settings, options);
+			
+			var controller = null;
+			var view = null;
+			try {
+				view = new izpack.view[settings.name]();
+				controller = new izpack.controller[settings.name](view, this.blackBoard);
+				controller.setBindings();
+			}
+			catch (e) {
+				throw "Creating '" + settings.name + "' tab : " + e;
+			}
+			
+			
+			var htmlTab = $("<a></a>")
+			.attr("href", view.href)
+			.attr("title", settings.name)
+			.append(
+				$("<span/>").text(settings.label)
+			);
+	
+			$(" > ul", this.rootElt).append(
+				$("<li></li>").data("optional", settings.optional).append(htmlTab)
+			);
+			
+			this.tabs.push({
+				name:		settings.name,
+				view:		view,
+				controller:	controller,
+				label:		settings.label,
+				htmlTab:	htmlTab
+			});
+		},
+		
+		/**
+		 * Start the application !
+		 */
+		start : function () {
+			this.rootElt.tabs({
+				cache : true
+			})
+			.bind("tabsload", {builder : this}, function (event, ui) {
+				event.data.builder.tabs[ui.index].controller.initView();
+			})
+			.bind("tabsshow", {builder : this}, function (event, ui) {
+				var builder = event.data.builder;
+				// remove any error / error animation
+				builder.removeErrorTab(ui.index);
+				builder.tabs[ui.index].controller.showView();
+			});
+		},
+	
+	
+		validateAll : function () {
+			var fails = [];
+			for (var index  = 0; index < this.tabs.length; index++) {
+				var tab = this.tabs[index];
+				if (!tab.controller.validate()) {
+					this.addErrorTab(index);
+					fails.push(tab.name);
 				}
-				catch (xmlException) {
-					alert("Something went wrong with the xml generation !\n" + xmlException);
-					console.error("Something went wrong with the xml generation !", xmlException);
+				else {
+					this.removeErrorTab(index);
 				}
 			}
+			if (fails.length) {
+				//alert("tab(s) '" + fails + "' have errors");
+				return false;
+			}
+			return true;
+		},
+		
+		generateXML : function () {
+			try {
+				if (this.validateAll()) {
+					try {
+						var xml = izpack.xml.XMLBuilder.createInstance();
+						var files = [];
+						for (var i = 0; i < this.xmlHandlers.length; i++) {
+							var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
+							generator.addGeneratedInfo(xml, files);
+						}
+						var xmlString = xml.toXMLString();
+						files.push({
+							name : "install.xml",
+							content : xmlString
+						});
+						$(".generated-xml", this.dialog).text(xmlString);
+						for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+							
+							$("#graoupack-generated-files ul", this.dialog)
+							.append($("<li/>")
+							.text(files[fileIndex].name));
+						}
+						this.dialog
+						.data("zip", new izpack.zip.ZipBuilder(files).createZIP())
+						.dialog("open");
+					}
+					catch (xmlException) {
+						alert("Something went wrong with the xml generation !\n" + xmlException);
+						console.error("Something went wrong with the xml generation !", xmlException);
+					}
+				}
+			}
+			catch (validationException) {
+				alert("Something went wrong with the validation !\n" + validationException);
+				console.error("Something went wrong with the validation !", validationException);
+			}
 		}
-		catch (validationException) {
-			alert("Something went wrong with the validation !\n" + validationException);
-			console.error("Something went wrong with the validation !", validationException);
-		}
-	};
-	
-	$("#GraouXML .generateXML button")
-	.addClass("ui-state-default ui-corner-all")
-	.bind("click", {builder: this}, function (event) {
-		event.data.builder.generateXML.apply(event.data.builder);
-		return false;
-	});
-	
-
-	$("button", dialog).click(function () {
-		/*
-		var b64 = $.base64.encode($(".generated-xml", dialog).text());
-		var win = window.open("data:application/xml;base64," + b64);
-		win.alert('Select "Save As..." in your browser to save this xml as an XML file.');
-		*/
-		window.open("data:application/zip;base64," + $(this).parents(".dialog").data("zip"));
-		return false;
-	});
-};
+	}	
+});

@@ -26,21 +26,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller");
+"use strict";
 
-izpack.controller.Locale = function (view, blackBoard) {
-	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
-};
-
-izpack.controller.Locale.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
-	setBindings : function () {
-		this.bind({
-			view: this.view.selected,
-			model: "locales",
-			defaultValue: [],
-			fromView: this.view.getLocales,
-			toView: this.view.setLocales,
-			constraints : [ "required" ]
-		});
+$.Class("izpack.controller", "Locale", {
+	isa : "GenericController",
+	init : function (view, blackBoard) {
+		this._super(view, blackBoard);
+	},
+	methods : {
+		setBindings : function () {
+			this.bind({
+				view: this.view.selected,
+				model: "locales",
+				defaultValue: [],
+				fromView: this.view.getLocales,
+				toView: this.view.setLocales,
+				constraints : [ "required" ]
+			});
+		}
 	}
 });

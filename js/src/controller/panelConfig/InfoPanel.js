@@ -26,35 +26,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller.panelConfig");
+"use strict";
 
-izpack.controller.panelConfig.InfoPanel = function (view, domGenericPanel) {
-	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
-	
-	this.defaultConfig = {
-		"fileSrc" : "",
-		"useHTML" : false
-	};
-};
+$.Class("izpack.controller.panelConfig", "InfoPanel", {
+	isa : "GenericPanel",
+	init : function (view, domGenericPanel) {
+		this._super(view, domGenericPanel);
+		this.defaultConfig = {
+			"fileSrc" : "",
+			"useHTML" : false
+		};
+	},
 
-izpack.controller.panelConfig.InfoPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
-	setBindings : function () {
-		/*
-		this.bind({
-			view: this.view.fileSrc,
-			model: "fileSrc",
-			fromView: this.view.getFileSrc,
-			toView: this.view.setFileSrc,
-			constraints: [ "required" ],
-			event : "change"
-		});
-		*/
-		this.bind({
-			view: this.view.useHTML,
-			model: "useHTML",
-			fromView: this.view.getUseHTML,
-			toView: this.view.setUseHTML,
-			event : "change"
-		});
+	methods : {
+
+		setBindings : function () {
+			/*
+			this.bind({
+				view: this.view.fileSrc,
+				model: "fileSrc",
+				fromView: this.view.getFileSrc,
+				toView: this.view.setFileSrc,
+				constraints: [ "required" ],
+				event : "change"
+			});
+			*/
+			this.bind({
+				view: this.view.useHTML,
+				model: "useHTML",
+				fromView: this.view.getUseHTML,
+				toView: this.view.setUseHTML,
+				event : "change"
+			});
+		}
 	}
 });

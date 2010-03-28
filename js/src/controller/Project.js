@@ -26,42 +26,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller");
+"use strict";
 
-izpack.controller.Project = function (view, blackBoard) {
-	izpack.controller.GenericController.apply(this, [ view, blackBoard ]);
-};
+$.Class("izpack.controller", "Project", {
+	isa : "GenericController",
 
-izpack.controller.Project.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
+	init : function (view, blackBoard) {
+		this._super(view, blackBoard);
+	},
 
-	setBindings : function () {	
-		
-		this.bind({
-			view: this.view.authors,
-			model: "authors",
-			event: "izpack.change",
-			fromView : this.view.getAuthors,
-			toView : this.view.setAuthors
-		});
+	methods : {
+		setBindings : function () {	
 			
-		this.bind({
-			view: this.view.appname,
-			event: "change",
-			model: "app.name",
-			defaultValue: "",
-			fromView : this.view.getAppName,
-			toView : this.view.setAppName,
-			constraints : [ "required" ]
-		});
-		
-		this.bind({
-			view: this.view.appversion,
-			event: "change",
-			model: "app.version",
-			defaultValue: "",
-			fromView : this.view.getAppVersion,
-			toView : this.view.setAppVersion,
-			constraints : [ "required" ]
-		});
+			this.bind({
+				view: this.view.authors,
+				model: "authors",
+				event: "izpack.change",
+				fromView : this.view.getAuthors,
+				toView : this.view.setAuthors
+			});
+				
+			this.bind({
+				view: this.view.appname,
+				event: "change",
+				model: "app.name",
+				defaultValue: "",
+				fromView : this.view.getAppName,
+				toView : this.view.setAppName,
+				constraints : [ "required" ]
+			});
+			
+			this.bind({
+				view: this.view.appversion,
+				event: "change",
+				model: "app.version",
+				defaultValue: "",
+				fromView : this.view.getAppVersion,
+				toView : this.view.setAppVersion,
+				constraints : [ "required" ]
+			});
+		}
 	}
 });

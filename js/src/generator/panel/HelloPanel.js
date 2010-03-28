@@ -26,36 +26,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator.panel");
+"use strict";
 
-izpack.generator.panel.HelloPanel = function (blackBoard) {
-	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
-};
+$.Class("izpack.generator.panel", "HelloPanel", {
+	isa : "GenericPanel",
 
-izpack.generator.panel.HelloPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
 	
-	/**
-	 * @Override
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		if (this.blackBoard.get("useHTML")) {
-			var addedData = this.createPanelWithResource({
-				clazz      : "HTMLHelloPanel",
-				xmlBuilder : xmlBuilder,
-				defaultID  : "HTMLHelloPanel.info",
-				defaultSrc : "hello.html",
-				prefixSrc  : "hello-",
-				suffixSrc  : ".html",
-				prefixID   : "HTMLHelloPanel.hello"
-			});
-			files.push({
-				name : addedData.name,
-				content : "HTML for HelloPanel n°" + (addedData.index + 1)
-			});
-		}
-		else {
-			var panel = xmlBuilder.get("/installation/panels").createChild("panel");
-			panel.setAttribute("classname", "HelloPanel");
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			if (this.blackBoard.get("useHTML")) {
+				var addedData = this.createPanelWithResource({
+					clazz      : "HTMLHelloPanel",
+					xmlBuilder : xmlBuilder,
+					defaultID  : "HTMLHelloPanel.info",
+					defaultSrc : "hello.html",
+					prefixSrc  : "hello-",
+					suffixSrc  : ".html",
+					prefixID   : "HTMLHelloPanel.hello"
+				});
+				files.push({
+					name : addedData.name,
+					content : "HTML for HelloPanel n°" + (addedData.index + 1)
+				});
+			}
+			else {
+				var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+				panel.setAttribute("classname", "HelloPanel");
+			}
 		}
 	}
 });

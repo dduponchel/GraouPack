@@ -26,13 +26,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.view.panelConfig");
+"use strict";
 
-izpack.view.panelConfig.TargetPanel = function (domView) {
-	izpack.view.panelConfig.GenericPanel.apply(this, [ "TargetPanelConfig", domView ]);
-};
-
-izpack.view.panelConfig.TargetPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
-	initView : function () {
+$.Class("izpack.view.panelConfig", "TargetPanel", {
+	isa : "GenericPanel",
+	init : function (domView) {
+		this._super("TargetPanelConfig", domView);
+	},
+	methods : {
+		initView : function () {
+		}
 	}
 });
