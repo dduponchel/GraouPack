@@ -25,18 +25,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.view.panelConfig");
+
+"use strict";
 
 /**
  * A generic panel config controller.
  * @param {GenericView} view the view to use.
  */
-izpack.view.panelConfig.GenericPanel = function (name, domView) {
-	izpack.view.GenericView.apply(this, [ name ]);
-	this.domView = domView;
-	this.href = null; // irrelevant here
-};
-
-izpack.view.panelConfig.GenericPanel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
+$.Class("izpack.view.panelConfig", "GenericPanel", {
+	isa : izpack.view.GenericView,
+	init : function (name, domView) {
+		this._super(name);
+		this.href = null; // irrelevant here
+		this.domView = domView;
+	}
 });

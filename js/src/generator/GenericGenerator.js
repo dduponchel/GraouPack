@@ -26,27 +26,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
-
+"use strict";
+ 
 /**
  * A generic generator.
  */
-izpack.generator.GenericGenerator = function (blackBoard) {
-	/**
-	 * The black board having all datas.
-	 */
-	this.blackBoard = blackBoard;
-};
+$.Class("izpack.generator", "GenericGenerator", {
 
-izpack.generator.GenericGenerator.prototype = {
+	init : function (blackBoard) {
+		/**
+		 * The black board having all datas.
+		 */
+		this.blackBoard = blackBoard;
+	},
 
-	/**
-	 * Add infos from the html generator to the current xml dom tree.
-	 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
-	 * @param {Array} files The additional files the user will need.
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		throw "addGeneratedInfo method must be overriden !";
+	methods : {
+
+		/**
+		 * Add infos from the html generator to the current xml dom tree.
+			 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
+		 * @param {Array} files The additional files the user will need.
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			throw "addGeneratedInfo method must be overriden !";
+		}
 	}
-};
-
+});

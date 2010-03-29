@@ -26,71 +26,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator.panel");
+"use strict";
 
-izpack.generator.panel.GenericPanel = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
-};
+$.Class("izpack.generator.panel", "GenericPanel", {
+	isa : izpack.generator.GenericGenerator,
 
-izpack.generator.panel.GenericPanel.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
 	
-	/**
-	 * Add a resource and bind it to the specified panel.
-	 * @param {Object} options The options to use.
-	 * @return {Object} an object containing informations on the creation.
-	 * 
-	 * This will correctly work in IzPack 5, see http://jira.codehaus.org/browse/IZPACK-543
-	 * 
-	 * The returned object has the following form :
-	 * {
-	 * 	name : the name used for the file's src
-	 * 	index : the index of this resource, for this class (0 based)
-	 * }
-	 */
-	createPanelWithResource : function (options) {
-		var settings = {
-			clazz      : "",	// the name of the IzPack class handling the panel
-			xmlBuider  : null,	// the xml builder
-			forcedSrc  : "",	// will use this src if setted. If not, using default rules
-			defaultID  : "",	// the id to use when there is no other file
-			defaultSrc : "",	// the src to use when there is no other file
-			prefixSrc  : "",	// the src prefix to use if many files
-			suffixSrc  : "",	// the src suffix to use if many files
-			prefixID   : "",	// the id prefix to use if many files
-			suffixID   : ""		// the id suffix to use if many files
-		};
-		$.extend(settings, options);
-		settings.forcedSrc = $.trim(settings.forcedSrc);
+	methods : {
 		
-		var otherPanels = settings.xmlBuilder.count("/installation/panels/panel[@classname='" + settings.clazz + "']");
-		var resource = settings.xmlBuilder.get("/installation/resources").createChild("res");
-		var fileName = "";
-		
-		var panel = settings.xmlBuilder.get("/installation/panels").createChild("panel");
-		panel.setAttribute("classname", settings.clazz);
-		
-		// no other panel, we use the defaults
-		if (otherPanels === 0) {
-			if (!settings.forcedSrc) {
-				fileName = settings.defaultSrc;
+		/**
+		 * Add a resource and bind it to the specified panel.
+		 * @param {Object} options The options to use.
+		 * @return {Object} an object containing informations on the creation.
+		 * 
+		 * This will correctly work in IzPack 5, see http://jira.codehaus.org/browse/IZPACK-543
+		 * 
+		 * The returned object has the following form :
+		 * {
+		 * 	name : the name used for the file's src
+		 * 	index : the index of this resource, for this class (0 based)
+		 * }
+		 */
+		createPanelWithResource : function (options) {
+			var settings = {
+				clazz      : "",	// the name of the IzPack class handling the panel
+				xmlBuider  : null,	// the xml builder
+				forcedSrc  : "",	// will use this src if setted. If not, using default rules
+				defaultID  : "",	// the id to use when there is no other file
+				defaultSrc : "",	// the src to use when there is no other file
+				prefixSrc  : "",	// the src prefix to use if many files
+				suffixSrc  : "",	// the src suffix to use if many files
+				prefixID   : "",	// the id prefix to use if many files
+				suffixID   : ""		// the id suffix to use if many files
+			};
+			$.extend(settings, options);
+			settings.forcedSrc = $.trim(settings.forcedSrc);
+			
+			var otherPanels = settings.xmlBuilder.count("/installation/panels/panel[@classname='" + settings.clazz + "']"),
+				resource = settings.xmlBuilder.get("/installation/resources").createChild("res"),
+				fileName = "",
+				panel = settings.xmlBuilder.get("/installation/panels").createChild("panel");
+			panel.setAttribute("classname", settings.clazz);
+			
+			// no other panel, we use the defaults
+			if (otherPanels === 0) {
+				if (!settings.forcedSrc) {
+					fileName = settings.defaultSrc;
+				}
+				resource.setAttribute("id", settings.defaultID);
+				resource.setAttribute("src", fileName);
 			}
-			resource.setAttribute("id", settings.defaultID);
-			resource.setAttribute("src", fileName);
-		}
-		else { // else, we must use id
-			var id = settings.prefixID + otherPanels + settings.suffixID;
-			if (!settings.forcedSrc) {
-				fileName = settings.prefixSrc + otherPanels + settings.suffixSrc;
+			else { // else, we must use id
+				var id = settings.prefixID + otherPanels + settings.suffixID;
+				if (!settings.forcedSrc) {
+					fileName = settings.prefixSrc + otherPanels + settings.suffixSrc;
+				}
+				resource.setAttribute("id", id);
+				resource.setAttribute("src", fileName);
+				panel.setAttribute("id", id);
 			}
-			resource.setAttribute("id", id);
-			resource.setAttribute("src", fileName);
-			panel.setAttribute("id", id);
+			
+			return {
+				panel : panel,
+				name : fileName,
+				index : otherPanels
+			};
 		}
-		
-		return {
-			panel : panel,
-			name : fileName,
-			index : otherPanels
-		};
 	}
 });

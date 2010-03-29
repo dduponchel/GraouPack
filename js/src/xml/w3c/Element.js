@@ -26,37 +26,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.xml.w3c");
+"use strict";
 
-izpack.xml.w3c.Element = function (xmlNode, xmlBuilder) {
-	izpack.xml.Element.apply(this, [ xmlNode, xmlBuilder ]);
-};
+$.Class("izpack.xml.w3c", "Element", {
+	isa : izpack.xml.Element,
 
-izpack.xml.w3c.Element.prototype = $.extend({}, izpack.xml.Element.prototype, {
+	init : function (xmlNode, xmlBuilder) {
+		this._super(xmlNode, xmlBuilder);
+	},
 
-	getChildren : function () {
-		var children = [];
-		for (var i = 0; i < this.xmlNode.childNodes.length; i++) {
-			children.push(new this.xmlBuilder._elementImplementationClass(
-				this.xmlNode.childNodes[i],
-				this.xmlBuilder)
-			);
+	methods : {
+		getChildren : function () {
+			var children = [];
+			for (var i = 0; i < this.xmlNode.childNodes.length; i++) {
+				children.push(new this.xmlBuilder._elementImplementationClass(
+					this.xmlNode.childNodes[i],
+					this.xmlBuilder)
+				);
+			}
+			return children;
+		},
+		getName : function () {
+			return this.xmlNode.localName;
+		},
+		setAttribute : function (key, value) {
+			this.xmlNode.setAttribute(key, value);
+		},
+		getAttribute : function (key) {
+			return this.xmlNode.getAttribute(key);
+		},
+		setContent : function (content) {
+			this.xmlNode.textContent = content;
+		},
+		getContent : function () {
+			return this.xmlNode.textContent;
 		}
-		return children;
-	},
-	getName : function () {
-		return this.xmlNode.localName;
-	},
-	setAttribute : function (key, value) {
-		this.xmlNode.setAttribute(key, value);
-	},
-	getAttribute : function (key) {
-		return this.xmlNode.getAttribute(key);
-	},
-	setContent : function (content) {
-		this.xmlNode.textContent = content;
-	},
-	getContent : function () {
-		return this.xmlNode.textContent;
 	}
 });

@@ -26,37 +26,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.xml.ie");
+"use strict";
 
-izpack.xml.ie.Element = function (xmlNode, xmlBuilder) {
-	izpack.xml.Element.apply(this, [ xmlNode, xmlBuilder ]);
-};
+$.Class("izpack.xml.ie", "Element", {
+	isa : izpack.xml.Element,
+	init : function (xmlNode, xmlBuilder) {
+		this._super(xmlNode, xmlBuilder);
+	},
+	methods : {
 
-izpack.xml.ie.Element.prototype = $.extend({}, izpack.xml.Element.prototype, {
-
-	getChildren : function () {
-		var children = [];
-		for (var i = 0; i < this.xmlNode.childNodes.length; i++) {
-			children.push(new this.xmlBuilder._elementImplementationClass(
-				this.xmlNode.childNodes[i],
-				this.xmlBuilder)
-			);
+		getChildren : function () {
+			var children = [];
+			for (var i = 0; i < this.xmlNode.childNodes.length; i++) {
+				children.push(new this.xmlBuilder._elementImplementationClass(
+					this.xmlNode.childNodes[i],
+					this.xmlBuilder)
+				);
+			}
+			return children;
+		},
+		getName : function () {
+			return this.xmlNode.nodeName;
+		},
+		setAttribute : function (key, value) {
+			this.xmlNode.setAttribute(key, value + "");
+		},
+		getAttribute : function (key) {
+			return this.xmlNode.getAttribute(key);
+		},
+		setContent : function (content) {
+			this.xmlNode.text = content;
+		},
+		getContent : function () {
+			return this.xmlNode.nodeValue;
 		}
-		return children;
-	},
-	getName : function () {
-		return this.xmlNode.nodeName;
-	},
-	setAttribute : function (key, value) {
-		this.xmlNode.setAttribute(key, value + "");
-	},
-	getAttribute : function (key) {
-		return this.xmlNode.getAttribute(key);
-	},
-	setContent : function (content) {
-		this.xmlNode.text = content;
-	},
-	getContent : function () {
-		return this.xmlNode.nodeValue;
 	}
 });

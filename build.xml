@@ -1,12 +1,12 @@
 <project name="IzPack Js Builder" default="build" basedir=".">
 	
 	<target name="build"
-		depends="load.properties, clean, js.check.all, js.minify.all"
+		depends="load.properties, clean, check, minify"
 		description="Release builder">
 	</target>
 	
 	<target name="quickbuild"
-		depends="load.properties, clean, js.minify.all"
+		depends="load.properties, clean, minify"
 		description="Release builder">
 	</target>
 	
@@ -90,10 +90,22 @@
 				<exclude name="GenericPanel.js" />
 			</fileset>
 		</path>
+		
+		<!-- lib files -->
+		<path id="js.libFiles">
+			<fileset dir="js/lib">
+				<include name="jQuery.validity/jquery.validity.js" />
+				<include name="Class.js" />
+				<include name="jQuery.namespace.js" />
+				<include name="jQuery.base64.js" />
+				<include name="jQuery.crc32.js" />
+				<include name="downloadify/downloadify.min.js" />
+			</fileset>
+		</path>
 
 		<property name="target" value="target"/>
-		<property name="target.concatFile.path" value="${target}/izpack.js"/>
-		<property name="target.minFile.path" value="${target}/izpack.min.js"/>
+		<property name="target.concatFile.path" value="${target}/graoupack.js"/>
+		<property name="target.minFile.path" value="${target}/graoupack.min.js"/>
 		<path id="target.concatFile">
 			<fileset dir=".">
 				<include name="${target.concatFile.path}"/>
@@ -134,12 +146,13 @@
 	<!--                            -->
 	<target
 		description="JavaScript concatenation"
-		name="js.concatenate"
+		name="concat"
 		depends="load.properties">
 		
 		<mkdir dir="${target}" />
 		<concat destfile="${target.concatFile.path}">
 			<path refid="js.srcFiles" />
+			<path refid="js.libFiles" />
 		</concat>
 	</target>
 	
@@ -149,7 +162,7 @@
 	<!--                            -->
 	<target
 		description="JavaScript each file syntax check"
-		name="js.check.all"
+		name="check"
 		depends="load.properties">
 		
 		<apply executable="java" parallel="false">
@@ -174,8 +187,8 @@
 	<!--                            -->
 	<target
 		description="JavaScript minification"
-		name="js.minify.all"
-		depends="load.properties, js.concatenate">
+		name="minify"
+		depends="load.properties, concat">
 	
 		<apply executable="java" parallel="false">
 			
@@ -184,6 +197,7 @@
 			<arg line="-jar" />
 			<arg path="${yui.compressor}" />
 			<!--<arg line="${target.concatFile}" />-->
+			<!--<arg line="-v" />-->
 			<srcfile />
 			<arg line="-o" />
 			<mapper type="glob"

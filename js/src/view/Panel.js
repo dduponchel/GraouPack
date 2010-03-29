@@ -25,169 +25,174 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.view");
 
-izpack.view.Panel = function () {
-	izpack.view.GenericView.apply(this, [ "panel" ]);
+"use strict";
 
-	this.availablePanelsContainer =	"#" + this.id + " #tab-panel-available";
-	this.availablePanels =	this.availablePanelsContainer + " div.available-panel";
-	this.selectedPanelsContainer =	"#" + this.id + " #tab-panel-selected";
-	this.selectedPanels =	this.selectedPanelsContainer + "  div.selected-panel";
-	this.addButtons =	"#" + this.id + " #tab-panel-available .action .add";
-	this.infoButtons =	"#" + this.id + " #tab-panel-available .action .info";
-	this.infoButtonsSelected =	"#" + this.id + " #tab-panel-selected .action .info";
-	this.removeButtonsSelected =	"#" + this.id + " #tab-panel-selected .action .remove";
-	this.configButtonsSelected =	"#" + this.id + " #tab-panel-selected .action .config";
-	this.infoDiv =		"#tab-panel-info-dialog"; // special case, outside the tab
-	this.modelForSelected =	"#" + this.id + " #model-for-selected";
-	
-	this.infoDialog = $("<div/>").append('<div id="tab-panel-info-dialog"/>').dialog({
-		autoOpen : false,
-		width : 510
-	});
-};
-
-izpack.view.Panel.prototype = $.extend({}, izpack.view.GenericView.prototype, {
-	
-	getAvailableByClass : function (clazz) {
-		return $(this.availablePanelsContainer).find("div[data-class=" + clazz + "]");
-	},
-	
-	showHelp : function (clazz) {
-		var panel = this.getAvailableByClass(clazz);
-		$(this.infoDiv).html($(".detail", panel).html());
-		this.infoDialog.dialog('option', 'title', $(".summary h3", panel).text())
-		.dialog("open");
-	},
-	
-	createConfigPanel : function (availablePanel) {
-		var view = this;
-		return availablePanel.find(".config").dialog({
+$.Class("izpack.view", "Panel", {
+	isa : "GenericView",
+	init : function () {
+		this._super("panel");
+		this.availablePanelsContainer =	"#tab-panel-available";
+		this.availablePanels =			"#tab-panel-available div.available-panel";
+		this.selectedPanelsContainer =	"#tab-panel-selected";
+		this.selectedPanels =			"#tab-panel-selected div.selected-panel";
+		this.addButtons =				"#tab-panel-available .action .add";
+		this.infoButtons =				"#tab-panel-available .action .info";
+		this.infoButtonsSelected =		"#tab-panel-selected .action .info";
+		this.removeButtonsSelected =	"#tab-panel-selected .action .remove";
+		this.configButtonsSelected =	"#tab-panel-selected .action .config";
+		this.infoDiv =					"#tab-panel-info-dialog"; // special case; outside the tab
+		this.modelForSelected =			"#model-for-selected";
+		this.infoDialog = 				null;
+		this.infoDialog = $("<div/>").append('<div id="tab-panel-info-dialog"/>').dialog({
 			autoOpen : false,
-			modal : true,
-			buttons : {
-				"ok" : function (event) {
-					var configHandler = availablePanel.data("config.controller");
-					var isValid = configHandler.validate();
-					if (isValid) {
-						// js uses references : the selected panel has the right config.
-						configHandler.saveConfig();
-						configHandler.setConfig(null);
+			width : 510
+		});
+	},
+	methods : {
+		
+		getAvailableByClass : function (clazz) {
+			return $(this.availablePanelsContainer).find("div[data-class=" + clazz + "]");
+		},
+		
+		showHelp : function (clazz) {
+			var panel = this.getAvailableByClass(clazz);
+			$(this.infoDiv).html($(".detail", panel).html());
+			this.infoDialog.dialog('option', 'title', $(".summary h3", panel).text())
+			.dialog("open");
+		},
+		
+		createConfigPanel : function (availablePanel) {
+			var view = this;
+			return availablePanel.find(".config").dialog({
+				autoOpen : false,
+				modal : true,
+				buttons : {
+					"ok" : function (event) {
+						var configHandler = availablePanel.data("config.controller");
+						var isValid = configHandler.validate();
+						if (isValid) {
+							// js uses references : the selected panel has the right config.
+							configHandler.saveConfig();
+							configHandler.setConfig(null);
+							$(this).dialog('close');
+							$(view.selectedPanelsContainer).trigger("izpack.change");
+						}
+						else {
+							return false;
+						}
+					},
+					"cancel" : function (event) {
 						$(this).dialog('close');
-						$(view.selectedPanelsContainer).trigger("izpack.change");
-					}
-					else {
-						return false;
+						availablePanel.data("config.controller").setConfig(null);
 					}
 				},
-				"cancel" : function (event) {
-					$(this).dialog('close');
+				close : function () {
 					availablePanel.data("config.controller").setConfig(null);
-				}
-			},
-			width : 510
-		});	
-	},
-	
-	getPanels : function () {
-		var panels = [];
-		$(this.selectedPanels).each(function (index, domElt) {
-			var $domElt = $(domElt);
-			panels.push({
-				clazz : $domElt.attr("data-class"),
-				config : $domElt.data("config")
+				},
+				width : 510
+			});	
+		},
+		
+		getPanels : function () {
+			var panels = [];
+			$(this.selectedPanels).each(function (index, domElt) {
+				var $domElt = $(domElt);
+				panels.push({
+					clazz : $domElt.attr("data-class"),
+					config : $domElt.data("config")
+				});
 			});
-		});
-		return panels;
-	},
-	
-	setPanels : function (data) {
+			return panels;
+		},
 		
-		$(this.selectedPanels).each(function () {
-			$(this).data("config", null);
-		}).remove();
+		setPanels : function (data) {
+			
+			$(this.selectedPanels).each(function () {
+				$(this).data("config", null);
+			}).remove();
+			
+			for (var i = 0; i < data.length; i++) {
+				var panel = data[i];
+				this.addPanel(panel.clazz, panel.config);
+			}
+		},
 		
-		for (var i = 0; i < data.length; i++) {
-			var panel = data[i];
-			this.addPanel(panel.clazz, panel.config);
-		}
-	},
-	
-	addPanel : function (clazz, config) {
-		var model = $(this.modelForSelected).clone();
-		model
-		.attr("data-class", clazz)
-		.attr("id", "")
-		.data("config", config)
-		.find(".preview")
-		.attr("alt", clazz)
-		.attr("src", "img/panel/" + clazz + "-small.png");
+		addPanel : function (clazz, config) {
+			var model = $(this.modelForSelected).clone();
+			model
+			.attr("data-class", clazz)
+			.attr("id", "")
+			.data("config", config)
+			.find(".preview")
+			.attr("alt", clazz)
+			.attr("src", "img/panel/" + clazz + "-small.png");
+			
+			model.find("h3").text(clazz);
+			
+			if (! this.getAvailableByClass(clazz).data("config.dialog").length) {
+				model.find(".action .config").remove();
+			}
+			
+			model.appendTo(this.selectedPanelsContainer);
+		},
 		
-		model.find("h3").text(clazz);
-		
-		if (! this.getAvailableByClass(clazz).data("config.dialog").length) {
-			model.find(".action .config").remove();
-		}
-		
-		model.appendTo(this.selectedPanelsContainer);
-	},
-	
-	initView : function () {
-		$(this.selectedPanelsContainer)
-		.sortable({
-			axis: 'y',
-			handle: ".preview, .grip"
-		})
-		.bind("sortupdate", function () {
-			$(this).trigger("izpack.change");
-		});
+		initView : function () {
+			$(this.selectedPanelsContainer)
+			.sortable({
+				axis: 'y',
+				handle: ".preview, .grip"
+			})
+			.bind("sortupdate", function () {
+				$(this).trigger("izpack.change");
+			});
 
-		$(this.infoButtons).bind("click", {view: this}, function (event) {
-			var clazz = $(this).parents(".available-panel").attr("data-class");
-			event.data.view.showHelp.apply(event.data.view, [ clazz ]);
-			return false;
-		});
-		
-		$(this.addButtons).bind("click", {view: this}, function (event) {
-			var clazz = $(this).parents(".available-panel").attr("data-class");
-			var view = event.data.view;
-			
-			view.addPanel(clazz, view.getAvailableByClass(clazz).data("config.controller").getDefaultConfig());
-			
-			$(view.selectedPanelsContainer).trigger("izpack.change");
-		});
-		
-		$(this.selectedPanelsContainer).bind("click", {view: this}, function (event) {
-			var target = $(event.target);
-			var currentPanel = target.parents(".selected-panel");
-			var view = event.data.view;
-			var clazz = currentPanel.attr("data-class");
-			
-			// click on "info"
-			if (target.is(view.infoButtonsSelected)) {
+			$(this.infoButtons).bind("click", {view: this}, function (event) {
+				var view = event.data.view;
+				var clazz = $(this).parents(".available-panel").attr("data-class");
 				view.showHelp.apply(view, [ clazz ]);
-			}
-			// click on "remove"
-			else if (target.is(view.removeButtonsSelected)) {
-				currentPanel
-				.data("config", null)
-				.remove();
-				$(event.data.view.selectedPanelsContainer).trigger("izpack.change");
-			}
-			// click on "config"
-			else if (target.is(view.configButtonsSelected)) {
-				var available = view.getAvailableByClass(clazz);
-				var dialog = available.data("config.dialog");
-				var configHandler = available.data("config.controller");
-				configHandler.setConfig(currentPanel.data("config"));
-				configHandler.showView();
-				dialog
-				.dialog('option', 'title', clazz + " configuration")
-				.dialog("open");
-			}
-			return false;
-		});
+				return false;
+			});
+			
+			$(this.addButtons).bind("click", {view: this}, function (event) {
+				var clazz = $(this).parents(".available-panel").attr("data-class");
+				var view = event.data.view;
+				
+				view.addPanel(clazz, view.getAvailableByClass(clazz).data("config.controller").getDefaultConfig());
+				
+				$(view.selectedPanelsContainer).trigger("izpack.change");
+			});
+			
+			$(this.selectedPanelsContainer).bind("click", {view: this}, function (event) {
+				var target = $(event.target);
+				var currentPanel = target.parents(".selected-panel");
+				var view = event.data.view;
+				var clazz = currentPanel.attr("data-class");
+				
+				// click on "info"
+				if (target.is(view.infoButtonsSelected)) {
+					view.showHelp.apply(view, [ clazz ]);
+				}
+				// click on "remove"
+				else if (target.is(view.removeButtonsSelected)) {
+					currentPanel
+					.data("config", null)
+					.remove();
+					$(event.data.view.selectedPanelsContainer).trigger("izpack.change");
+				}
+				// click on "config"
+				else if (target.is(view.configButtonsSelected)) {
+					var available = view.getAvailableByClass(clazz);
+					var dialog = available.data("config.dialog");
+					var configHandler = available.data("config.controller");
+					configHandler.setConfig(currentPanel.data("config"));
+					configHandler.showView();
+					dialog
+					.dialog('option', 'title', clazz + " configuration")
+					.dialog("open");
+				}
+				return false;
+			});
+		}
 	}
 });

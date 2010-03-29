@@ -26,24 +26,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller.panelConfig");
+"use strict";
 
-izpack.controller.panelConfig.PacksPanel = function (view, domGenericPanel) {
-	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
+$.Class("izpack.controller.panelConfig", "PacksPanel", {
+	isa : "GenericPanel",
 	
-	this.defaultConfig = {
-		useTree : false
-	};
-};
+	init : function (view, domGenericPanel) {
+		this._super(view, domGenericPanel);
+		this.defaultConfig = {
+			useTree : false
+		};
+	},
 
-izpack.controller.panelConfig.PacksPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
-	setBindings : function () {
-		this.bind({
-			view : this.view.useTree,
-			model : "useTree",
-			fromView : this.view.getUseTree,
-			toView : this.view.setUseTree,
-			event : "change"
-		});
+	methods : {
+
+		setBindings : function () {
+			this.bind({
+				view : this.view.useTree,
+				model : "useTree",
+				fromView : this.view.getUseTree,
+				toView : this.view.setUseTree,
+				event : "change"
+			});
+		}
 	}
 });

@@ -26,36 +26,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.xml");
+"use strict";
 
-izpack.xml.Element = function (xmlNode, xmlBuilder) {
-	this.xmlNode = xmlNode;
-	this.xmlBuilder = xmlBuilder;
-};
+$.Class("izpack.xml", "Element", {
+	init : function (xmlNode, xmlBuilder) {
+		this.xmlNode = xmlNode;
+		this.xmlBuilder = xmlBuilder;
+	},
+	methods : {
 
-izpack.xml.Element.prototype = {
-
-	createChild : function (name) {
-		return new this.xmlBuilder._elementImplementationClass(
-			this.xmlBuilder._createChild(name, this.xmlNode),
-			this.xmlBuilder);
-	},
-	getName : function () {
-		throw "getName must be overrided";
-	},
-	getChildren : function () {
-		throw "getChildren must be overrided";
-	},
-	setAttribute : function (key, value) {
-		throw "setAttribute must be overrided";
-	},
-	getAttribute : function (key) {
-		throw "getAttribute must be overrided";
-	},
-	setContent : function (content) {
-		throw "setContent must be overrided";
-	},
-	getContent : function () {
-		throw "getContent must be overrided";
+		createChild : function (name) {
+			return new this.xmlBuilder._elementImplementationClass(
+				this.xmlBuilder._createChild(name, this.xmlNode),
+				this.xmlBuilder);
+		},
+		getName : function () {
+			throw "getName must be overrided";
+		},
+		getChildren : function () {
+			throw "getChildren must be overrided";
+		},
+		setAttribute : function (key, value) {
+			throw "setAttribute must be overrided";
+		},
+		getAttribute : function (key) {
+			throw "getAttribute must be overrided";
+		},
+		setContent : function (content) {
+			throw "setContent must be overrided";
+		},
+		getContent : function () {
+			throw "getContent must be overrided";
+		}
 	}
-};
+});
