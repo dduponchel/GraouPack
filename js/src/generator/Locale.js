@@ -41,8 +41,9 @@ $.Class("izpack.generator", "Locale", {
 		 */
 		addGeneratedInfo : function (xmlBuilder, files) {
 			var localeXml = xmlBuilder.get("/installation/locale"),
-				locales = this.blackBoard.get("locales");
-			for (var i = 0; i < locales.length; i++) {
+				locales = this.blackBoard.get("locales"),
+				i;
+			for (i = 0; i < locales.length; i++) {
 				localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
 			}
 		}

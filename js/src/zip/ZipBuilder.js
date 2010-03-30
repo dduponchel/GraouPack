@@ -57,11 +57,14 @@ $.Class("izpack.zip", "ZipBuilder", {
 	
 	init : function (files, rootFolder) {
 		
+		var i, // iterations
+			file; // contained in files
+		
 		this.files = [];
 		
 		if (typeof rootFolder === "string" && rootFolder) {
-			for (var i = 0; i < files.length; i++) {
-				var file = files[i];
+			for (i = 0; i < files.length; i++) {
+				file = files[i];
 				file.name = rootFolder + "/" + file.name;
 			}
 		}
@@ -91,16 +94,22 @@ $.Class("izpack.zip", "ZipBuilder", {
 		},
 		
 		getFilesAndFolders : function (files) {
-			var filesAndFolders = [];
-			var createdFolders  = [];
-			var foldersRegex    = /[^\/]+\//g;
-			for (var i = 0; i < files.length; i++) {
-				var file = files[i];
-				var subFolders = file.name.match(foldersRegex);
+			var filesAndFolders = [], // array of strings
+				createdFolders  = [], // array of strings
+				foldersRegex    = /[^\/]+\//g, // to split folders
+				i, // iteration
+				folderIndex, // iteration
+				file, // contained in files
+				subFolders, // array of strings, [ "root/", "sub/", "subsub/", "file" ] for example
+				path; // complete current path, "root/sub/" for example
+			
+			for (i = 0; i < files.length; i++) {
+				file = files[i];
+				subFolders = file.name.match(foldersRegex);
 				if (subFolders) {
 					// create folders, if not already done
-					var path = "";
-					for (var folderIndex = 0; folderIndex < subFolders.length; folderIndex++) {
+					path = "";
+					for (folderIndex = 0; folderIndex < subFolders.length; folderIndex++) {
 						path += subFolders[folderIndex];
 						if ($.inArray(path, createdFolders) === -1) { // doesn't exist
 							filesAndFolders.push({
@@ -117,8 +126,9 @@ $.Class("izpack.zip", "ZipBuilder", {
 		},
 		
 		dumpHex : function (arrayBytes, message) {
-			var res = "";
-			for (var i = 0; i < arrayBytes.length; i++) {
+			var res = "",
+				i = 0;
+			for (i = 0; i < arrayBytes.length; i++) {
 				res += arrayBytes[i].toString(16) + " ";
 			}
 			console.debug("ZipBuilder::dumpHex : ", res, message);
@@ -126,10 +136,11 @@ $.Class("izpack.zip", "ZipBuilder", {
 		},
 		
 		intToBytes : function (integer, bytesNb) {
-			var mask = 0xFF;
-			var offset = 0;
-			var res = [];
-			for (var i = 0; i < bytesNb; i++) {
+			var mask = 0xFF,
+				offset = 0,
+				res = [],
+				i; // iteration
+			for (i = 0; i < bytesNb; i++) {
 				res.push((integer & mask) >>> offset);
 				mask = mask << 8;
 				offset += 8;
@@ -138,8 +149,9 @@ $.Class("izpack.zip", "ZipBuilder", {
 		},
 		
 		stringToBytes : function (myString) {
-			var res = [];
-			for (var i = 0; i < myString.length; i++) {
+			var res = [],
+				i; // iteration
+			for (i = 0; i < myString.length; i++) {
 				res.push(myString.charCodeAt(i));
 			}
 			return res;
@@ -251,27 +263,29 @@ $.Class("izpack.zip", "ZipBuilder", {
 		},
 
 		createZIP : function () {
-			var i, file;
-			var zip = []; // array of bytes
-
-			var centralDirectoryStart = 0;
-			var centralDirectoryEnd = 0;
+			var i, // iteration
+				file, // contained in files
+				zip = [], // array of bytes
+				centralDirectoryStart = 0,
+				centralDirectoryEnd = 0,
+				currentOffsetFromStart = 0, // used for the central headers
+				header,
+				directoryHeader;
 			
 			for (i = 0; i < this.files.length; i++) {
 				// write the header + content
 				file = this.files[i];
-				var header = this.getLocalFileHeader(file).concat(this.stringToBytes(file.content));
+				header = this.getLocalFileHeader(file).concat(this.stringToBytes(file.content));
 				//this.dumpHex(header, "header for " + file.name);
 				zip = zip.concat(header);
 				centralDirectoryStart += header.length;
 				file.sizeLocalFile = header.length;
 			}
-			var currentOffsetFromStart = 0;
 			centralDirectoryEnd = centralDirectoryStart;
 			for (i = 0; i < this.files.length; i++) {
 				// write the header for central directory
 				file = this.files[i];
-				var directoryHeader = this.getCentralDirectoryFileHeader(file, currentOffsetFromStart);
+				directoryHeader = this.getCentralDirectoryFileHeader(file, currentOffsetFromStart);
 				//this.dumpHex(directoryHeader, "directory header for " + file.name);
 				zip = zip.concat(directoryHeader);
 				centralDirectoryEnd += directoryHeader.length;

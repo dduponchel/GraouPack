@@ -36,8 +36,9 @@ $.Class("izpack.xml.ie", "Element", {
 	methods : {
 
 		getChildren : function () {
-			var children = [];
-			for (var i = 0; i < this.xmlNode.childNodes.length; i++) {
+			var children = [],
+				i; // iteration
+			for (i = 0; i < this.xmlNode.childNodes.length; i++) {
 				children.push(new this.xmlBuilder._elementImplementationClass(
 					this.xmlNode.childNodes[i],
 					this.xmlBuilder)

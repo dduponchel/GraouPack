@@ -52,12 +52,12 @@ $.Class = function () {
 			isa : Class, // Class from John Resig impl
 			init : {},
 			methods : {}
-		}, args[2]);
+		}, args[2]),
+		objNameSpace = $.namespace(namespace);
 	
 	// we put the init method with the others
 	classContent.methods.init = classContent.init;
 	
-	var objNameSpace = $.namespace(namespace);
 	if (typeof classContent.isa === "string") {
 		classContent.isa = objNameSpace[classContent.isa];
 		if (! classContent.isa) {

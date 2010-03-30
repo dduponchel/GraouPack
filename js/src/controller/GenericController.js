@@ -62,9 +62,12 @@ $.Class("izpack.controller", "GenericController", {
 		},
 		
 		validateBinding : function (view, data, constraints) {
-			var isValid = true;
-			for (var i = 0; i < constraints.length; i++) {
-				var constraint = constraints[i];
+			var isValid = true,
+				i,
+				constraint;
+			
+			for (i = 0; i < constraints.length; i++) {
+				constraint = constraints[i];
 				isValid = this.constraints[constraint](data, view) && isValid;
 			}
 			if (isValid) {
@@ -126,9 +129,11 @@ $.Class("izpack.controller", "GenericController", {
 		},
 		
 		validate : function () {
-			var isValid = true;
-			
-			var i = 0;
+			var isValid = true,
+				i, // iter
+				binding,
+				viewData,
+				modelConstraint;
 	
 			for (i = 0; i < this.modelConstraints.length; i++) {
 				// remove model constraint errors
@@ -136,13 +141,13 @@ $.Class("izpack.controller", "GenericController", {
 			}
 	
 			for (i = 0; i < this.bindings.length; i++) {
-				var binding = this.bindings[i];
-				var viewData = binding.fromView.apply(this.view, [binding.view]);
+				binding = this.bindings[i];
+				viewData = binding.fromView.apply(this.view, [binding.view]);
 				isValid = this.validateBinding(binding.view, viewData, binding.constraints) && isValid;
 			}
 	
 			for (i = 0; i < this.modelConstraints.length; i++) {
-				var modelConstraint = this.modelConstraints[i];
+				modelConstraint = this.modelConstraints[i];
 				isValid = this.validateModelConstraints(modelConstraint) && isValid;
 			}
 	
@@ -154,12 +159,14 @@ $.Class("izpack.controller", "GenericController", {
 		afterShowView : function () {},
 		
 		showView : function () {
+			var i, // iter
+				binding;
 			
 			this.beforeShowView();
 			
 			console.debug("GenericController::showView ", this.view.name, ", setting " + this.bindings.length + " view items via binding");
-			for (var i = 0; i < this.bindings.length; i++) {
-				var binding = this.bindings[i];
+			for (i = 0; i < this.bindings.length; i++) {
+				binding = this.bindings[i];
 				binding.toView.apply(this.view, [this.blackBoard.get(binding.model)]);
 			}
 			
@@ -179,19 +186,22 @@ $.Class("izpack.controller", "GenericController", {
 			this.view.load();
 			
 			var handler = function (event) {
-				var binding = event.data.binding;
-				var controller = event.data.controller;
-				console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
-				var viewData = binding.fromView.apply(controller.view, [binding.view]);
-				controller.validateBinding(binding.view, viewData, binding.constraints);
-				controller.blackBoard.set(binding.model, viewData);
-				
-				return true; // don't block on changes !
-			};
+					var binding = event.data.binding,
+						controller = event.data.controller,
+						viewData;
+					console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
+					viewData = binding.fromView.apply(controller.view, [binding.view]);
+					controller.validateBinding(binding.view, viewData, binding.constraints);
+					controller.blackBoard.set(binding.model, viewData);
+					
+					return true; // don't block on changes !
+				},
+				i, // iter
+				binding;
 			
 			// binding to the real elements
-			for (var i = 0; i < this.bindings.length; i++) {
-				var binding = this.bindings[i];
+			for (i = 0; i < this.bindings.length; i++) {
+				binding = this.bindings[i];
 				$(binding.view).bind(binding.event, {binding: binding, controller: this}, handler);
 			}
 			

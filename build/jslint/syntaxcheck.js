@@ -18,7 +18,7 @@ globalObjOptions = {
     nomen      : false, // true if names should be checked for initial or trailing underbars
     newcap     : true,  // true if constructor names must be capitalized
     on         : false, // true if HTML event handlers should be allowed
-    onevar     : false, // true if only one var statement per function should be allowed
+    onevar     : true,  // true if only one var statement per function should be allowed
     passfail   : false, // true if the scan should stop on first error
     plusplus   : false, // true if increment/decrement should not be allowed
     predef     : ["window", "Class", "jQuery", "$", "izpack" ], // an array of strings, the names of predefined global variables

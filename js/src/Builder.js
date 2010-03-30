@@ -88,8 +88,8 @@ $.Class("izpack", "Builder", {
 
 		addErrorTab : function (index) {
 			// should be in css, but `switchClass("error-tab-highlight", "error-tab", "slow")` doesn't work in IE...
-			var fromColor = "#f55";
-			var toColor   = "#ee8";
+			var fromColor = "#f55",
+				toColor   = "#ee8";
 			
 			this.tabs[index].htmlTab
 				.css("background-color", fromColor)
@@ -107,15 +107,16 @@ $.Class("izpack", "Builder", {
 		 * @param {Object} options The options to configure the new tab.
 		 */
 		addPanel : function (options) {
-			var settings = {
+			var controller = null,
+				view = null,
+				htmlTab,
+				settings = {
 				label: undefined,
 				name: undefined,
 				optional : false
 			};
 			$.extend(settings, options);
 			
-			var controller = null;
-			var view = null;
 			try {
 				view = new izpack.view[settings.name]();
 				controller = new izpack.controller[settings.name](view, this.blackBoard);
@@ -126,7 +127,7 @@ $.Class("izpack", "Builder", {
 			}
 			
 			
-			var htmlTab = $("<a></a>")
+			htmlTab = $("<a></a>")
 			.attr("href", view.href)
 			.attr("title", settings.name)
 			.append(
@@ -166,9 +167,11 @@ $.Class("izpack", "Builder", {
 	
 	
 		validateAll : function () {
-			var fails = [];
-			for (var index  = 0; index < this.tabs.length; index++) {
-				var tab = this.tabs[index];
+			var fails = [],
+				index = 0,
+				tab = null;
+			for (index  = 0; index < this.tabs.length; index++) {
+				tab = this.tabs[index];
 				if (!tab.controller.validate()) {
 					this.addErrorTab(index);
 					fails.push(tab.name);
@@ -185,26 +188,32 @@ $.Class("izpack", "Builder", {
 		},
 		
 		generateXML : function () {
+			var xml = null,
+				files = [],
+				i = 0,
+				xmlString = "",
+				generator = null;
+				
 			try {
 				if (this.validateAll()) {
 					try {
-						var xml = izpack.xml.XMLBuilder.createInstance();
-						var files = [];
-						for (var i = 0; i < this.xmlHandlers.length; i++) {
-							var generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
+						xml = izpack.xml.XMLBuilder.createInstance();
+						files = [];
+						for (i = 0; i < this.xmlHandlers.length; i++) {
+							generator = new izpack.generator[this.xmlHandlers[i]](this.blackBoard);
 							generator.addGeneratedInfo(xml, files);
 						}
-						var xmlString = xml.toXMLString();
+						xmlString = xml.toXMLString();
 						files.push({
 							name : "install.xml",
 							content : xmlString
 						});
 						$(".generated-xml", this.dialog).text(xmlString);
-						for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+						for (i = 0; i < files.length; i++) {
 							
 							$("#graoupack-generated-files ul", this.dialog)
 							.append($("<li/>")
-							.text(files[fileIndex].name));
+							.text(files[i].name));
 						}
 						this.dialog
 						.data("zip", new izpack.zip.ZipBuilder(files).createZIP())

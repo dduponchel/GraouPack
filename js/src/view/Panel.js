@@ -69,8 +69,8 @@ $.Class("izpack.view", "Panel", {
 				modal : true,
 				buttons : {
 					"ok" : function (event) {
-						var configHandler = availablePanel.data("config.controller");
-						var isValid = configHandler.validate();
+						var configHandler = availablePanel.data("config.controller"),
+							isValid = configHandler.validate();
 						if (isValid) {
 							// js uses references : the selected panel has the right config.
 							configHandler.saveConfig();
@@ -107,13 +107,15 @@ $.Class("izpack.view", "Panel", {
 		},
 		
 		setPanels : function (data) {
+			var i, // iteration
+				panel;
 			
 			$(this.selectedPanels).each(function () {
 				$(this).data("config", null);
 			}).remove();
 			
-			for (var i = 0; i < data.length; i++) {
-				var panel = data[i];
+			for (i = 0; i < data.length; i++) {
+				panel = data[i];
 				this.addPanel(panel.clazz, panel.config);
 			}
 		},
@@ -148,15 +150,15 @@ $.Class("izpack.view", "Panel", {
 			});
 
 			$(this.infoButtons).bind("click", {view: this}, function (event) {
-				var view = event.data.view;
-				var clazz = $(this).parents(".available-panel").attr("data-class");
+				var view = event.data.view,
+					clazz = $(this).parents(".available-panel").attr("data-class");
 				view.showHelp.apply(view, [ clazz ]);
 				return false;
 			});
 			
 			$(this.addButtons).bind("click", {view: this}, function (event) {
-				var clazz = $(this).parents(".available-panel").attr("data-class");
-				var view = event.data.view;
+				var clazz = $(this).parents(".available-panel").attr("data-class"),
+					view = event.data.view;
 				
 				view.addPanel(clazz, view.getAvailableByClass(clazz).data("config.controller").getDefaultConfig());
 				
@@ -164,10 +166,14 @@ $.Class("izpack.view", "Panel", {
 			});
 			
 			$(this.selectedPanelsContainer).bind("click", {view: this}, function (event) {
-				var target = $(event.target);
-				var currentPanel = target.parents(".selected-panel");
-				var view = event.data.view;
-				var clazz = currentPanel.attr("data-class");
+				var target = $(event.target),
+					currentPanel = target.parents(".selected-panel"),
+					view = event.data.view,
+					clazz = currentPanel.attr("data-class"),
+					// for the click on config
+					available,
+					dialog,
+					configHandler;
 				
 				// click on "info"
 				if (target.is(view.infoButtonsSelected)) {
@@ -182,9 +188,9 @@ $.Class("izpack.view", "Panel", {
 				}
 				// click on "config"
 				else if (target.is(view.configButtonsSelected)) {
-					var available = view.getAvailableByClass(clazz);
-					var dialog = available.data("config.dialog");
-					var configHandler = available.data("config.controller");
+					available = view.getAvailableByClass(clazz);
+					dialog = available.data("config.dialog");
+					configHandler = available.data("config.controller");
 					configHandler.setConfig(currentPanel.data("config"));
 					configHandler.showView();
 					dialog
