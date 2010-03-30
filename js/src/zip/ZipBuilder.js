@@ -27,6 +27,7 @@
  */
  
 "use strict";
+/*jslint bitwise : false */
 
 /**
  * Allow the creation of a zip containing the specified files.
@@ -35,8 +36,8 @@
  *
  * each file have a name and a content. Example : 
  * files = [
- * 	{ name : "readme.txt", content : "this is a readme" },
- * 	{ name : "img/logo.png", content : "" }
+ *   { name : "readme.txt", content : "this is a readme" },
+ *   { name : "img/logo.png", content : "" }
  * ];
  *
  * A way to use it : 
@@ -86,13 +87,13 @@ $.Class("izpack.zip", "ZipBuilder", {
 			DOSDate = DOSDate << 5;
 			DOSDate = DOSDate | now.getDate();
 
-			return 	[ DOSTime & 0xFF, (DOSTime & 0xFF00) >>> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >>> 8 ];
+			return [ DOSTime & 0xFF, (DOSTime & 0xFF00) >>> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >>> 8 ];
 		},
 		
 		getFilesAndFolders : function (files) {
-			var filesAndFolders	= [];
-			var createdFolders 	= [];
-			var foldersRegex 	= /[^\/]+\//g;
+			var filesAndFolders = [];
+			var createdFolders  = [];
+			var foldersRegex    = /[^\/]+\//g;
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
 				var subFolders = file.name.match(foldersRegex);

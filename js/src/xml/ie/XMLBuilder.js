@@ -27,6 +27,7 @@
  */
  
 "use strict";
+/*global ActiveXObject */
 
 /**
  * Create an xml DOM document, and make its manipulation easier.

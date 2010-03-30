@@ -46,8 +46,8 @@ $.Class("izpack.generator.panel", "GenericPanel", {
 		 * 
 		 * The returned object has the following form :
 		 * {
-		 * 	name : the name used for the file's src
-		 * 	index : the index of this resource, for this class (0 based)
+		 *   name  : the name used for the file's src
+		 *   index : the index of this resource, for this class (0 based)
 		 * }
 		 */
 		createPanelWithResource : function (options) {

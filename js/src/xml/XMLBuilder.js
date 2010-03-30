@@ -217,4 +217,4 @@ $.Class("izpack.xml", "XMLBuilder", {
 		var implementation = izpack.compatibility.xml.w3c ? namespace.w3c : namespace.ie;
 		return new implementation.XMLBuilder();
 	};
-})();
+}());

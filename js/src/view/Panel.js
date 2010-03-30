@@ -43,7 +43,7 @@ $.Class("izpack.view", "Panel", {
 		this.configButtonsSelected =	"#tab-panel-selected .action .config";
 		this.infoDiv =					"#tab-panel-info-dialog"; // special case; outside the tab
 		this.modelForSelected =			"#model-for-selected";
-		this.infoDialog = 				null;
+		this.infoDialog =				null;
 		this.infoDialog = $("<div/>").append('<div id="tab-panel-info-dialog"/>').dialog({
 			autoOpen : false,
 			width : 510
