@@ -28,17 +28,17 @@
  
 "use strict";
  
-$.Class("izpack.model", "PanelConfig", {
-	isa : izpack.model.BlackBoard,
+$.Class("izpack.model", "SubConfig", {
+	isa : "BlackBoard",
 	init : function (data) {
 		this._super();
 		this.data = (data) ? data : {};
-		this.name = "PanelConfig";
+		this.name = "SubConfig";
 	},
 	methods : {
 
 		clone : function () {
-			return new izpack.model.PanelConfig($.extend(true, {}, this.data));
+			return new izpack.model.SubConfig($.extend(true, {}, this.data));
 		},
 		
 		setData : function (otherConfig) {

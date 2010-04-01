@@ -44,7 +44,7 @@ $.Class("izpack.controller.panelConfig", "GenericPanel", {
 
 		getDefaultConfig : function () {
 			console.debug("GenericPanel::getDefaultConfig");
-			return new izpack.model.PanelConfig($.extend(true, {}, this.defaultConfig));
+			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
 		},
 		
 		getConfig : function () {
