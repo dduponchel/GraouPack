@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,44 +26,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.xml.ie");
+"use strict";
+/*global ActiveXObject */
 
 /**
  * Create an xml DOM document, and make its manipulation easier.
  */
-izpack.xml.ie.XMLBuilder = function () {
-	izpack.xml.XMLBuilder.apply(this, []);
-	this._elementImplementationClass = izpack.xml.ie.Element;
-};
+$.Class("izpack.xml.ie", "XMLBuilder", {
+	isa : izpack.xml.XMLBuilder,
 
-izpack.xml.ie.XMLBuilder.prototype = $.extend({}, izpack.xml.XMLBuilder.prototype, {
+	init : function () {
+		this._super();
+		this._elementImplementationClass = izpack.xml.ie.Element;
+	},
 
-	_createEmptyDocument : function (rootName) {
-		var doc = new ActiveXObject("MSXML2.DOMDocument");
-		doc.loadXML("<" + rootName + "/>");
-		return doc;
-	},
-	_getChildren : function (currentNode) {
-		return currentNode.childNodes;
-	},
-	_getNodeName : function (node) {
-		return node.nodeName;
-	},
-	_createChild : function (nodeName, currentNode) {
-		var newElement = this._xmlDocument.createElement(nodeName);
-		currentNode.appendChild(newElement);
-		return newElement;
-	},
-	_getXmlString : function () {
-		return this._xmlDocument.xml;
-	},
-	getRootElement : function () {
-		return new this._elementImplementationClass(
-			this._xmlDocument.childNodes[0],
-			this
-		);
-	},
-	count : function (xpath) {
-		return this._xmlDocument.selectNodes(xpath).length;
+	methods : {
+		_createEmptyDocument : function (rootName) {
+			var doc = new ActiveXObject("MSXML2.DOMDocument");
+			doc.loadXML("<" + rootName + "/>");
+			return doc;
+		},
+		_getChildren : function (currentNode) {
+			return currentNode.childNodes;
+		},
+		_getNodeName : function (node) {
+			return node.nodeName;
+		},
+		_createChild : function (nodeName, currentNode) {
+			var newElement = this._xmlDocument.createElement(nodeName);
+			currentNode.appendChild(newElement);
+			return newElement;
+		},
+		_getXmlString : function () {
+			return this._xmlDocument.xml;
+		},
+		getRootElement : function () {
+			return new this._elementImplementationClass(
+				this._xmlDocument.childNodes[0],
+				this
+			);
+		},
+		count : function (xpath) {
+			return this._xmlDocument.selectNodes(xpath).length;
+		}
 	}
 });

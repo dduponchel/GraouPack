@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,49 +26,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator.panel");
+"use strict";
 
-izpack.generator.panel.InfoPanel = function (blackBoard) {
-	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
-};
+$.Class("izpack.generator.panel", "InfoPanel", {
+	isa : "GenericPanel",
 
-izpack.generator.panel.InfoPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
 	
-	/**
-	 * @Override
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		var resourceOptions = {
-			//forcedSrc  : this.blackBoard.get("fileSrc"),
-			xmlBuilder : xmlBuilder
-		};
-		var fileContent = "";
-		if (this.blackBoard.get("useHTML")) {
-			$.extend(resourceOptions, {
-				clazz      : "HTMLInfoPanel",
-				defaultID  : "HTMLInfoPanel.info",
-				defaultSrc : "info.html",
-				prefixSrc  : "info-",
-				suffixSrc  : ".html",
-				prefixID   : "HTMLInfoPanel.info"
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var resourceOptions = {
+					//forcedSrc  : this.blackBoard.get("fileSrc"),
+					xmlBuilder : xmlBuilder
+				},
+				fileContent = "",
+				addedData;
+			
+			if (this.blackBoard.get("useHTML")) {
+				$.extend(resourceOptions, {
+					clazz      : "HTMLInfoPanel",
+					defaultID  : "HTMLInfoPanel.info",
+					defaultSrc : "info.html",
+					prefixSrc  : "info-",
+					suffixSrc  : ".html",
+					prefixID   : "HTMLInfoPanel.info"
+				});
+				fileContent = "html";
+			}
+			else {
+				$.extend(resourceOptions, {
+					clazz      : "InfoPanel",
+					defaultID  : "InfoPanel.info",
+					defaultSrc : "info.txt",
+					prefixSrc  : "info-",
+					suffixSrc  : ".txt",
+					prefixID   : "InfoPanel.info"
+				});
+				fileContent = "text";
+			}
+			addedData = this.createPanelWithResource(resourceOptions);
+			files.push({
+				name : addedData.name,
+				content : fileContent + " for InfoPanel n°" + (addedData.index + 1)
 			});
-			fileContent = "html";
 		}
-		else {
-			$.extend(resourceOptions, {
-				clazz      : "InfoPanel",
-				defaultID  : "InfoPanel.info",
-				defaultSrc : "info.txt",
-				prefixSrc  : "info-",
-				suffixSrc  : ".txt",
-				prefixID   : "InfoPanel.info"
-			});
-			fileContent = "text";
-		}
-		var addedData = this.createPanelWithResource(resourceOptions);
-		files.push({
-			name : addedData.name,
-			content : fileContent + " for InfoPanel n°" + (addedData.index + 1)
-		});
 	}
 });

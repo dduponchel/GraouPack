@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,20 +26,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.model");
-
-izpack.model.PanelConfig = function (data) {
-	izpack.model.BlackBoard.apply(this, []);
-	this.data = (data) ? data : {};
-	this.name = "PanelConfig";
-};
-
-izpack.model.PanelConfig.prototype = $.extend({}, izpack.model.BlackBoard.prototype, {
-	clone : function () {
-		return new izpack.model.PanelConfig($.extend(true, {}, this.data));
+"use strict";
+ 
+$.Class("izpack.model", "PanelConfig", {
+	isa : izpack.model.BlackBoard,
+	init : function (data) {
+		this._super();
+		this.data = (data) ? data : {};
+		this.name = "PanelConfig";
 	},
-	
-	setData : function (otherConfig) {
-		this.data = otherConfig.data;
+	methods : {
+
+		clone : function () {
+			return new izpack.model.PanelConfig($.extend(true, {}, this.data));
+		},
+		
+		setData : function (otherConfig) {
+			this.data = otherConfig.data;
+		}
 	}
 });

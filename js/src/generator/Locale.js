@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,22 +26,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator");
+"use strict";
 
-izpack.generator.Locale = function (blackBoard) {
-	izpack.generator.GenericGenerator.apply(this, [ blackBoard ]);
-};
-
-izpack.generator.Locale.prototype = $.extend({}, izpack.generator.GenericGenerator.prototype, {
+$.Class("izpack.generator", "Locale", {
+	isa : "GenericGenerator",
 	
-	/**
-	 * @Override
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		var localeXml = xmlBuilder.get("/installation/locale");
-		var locales = this.blackBoard.get("locales");
-		for (var i = 0; i < locales.length; i++) {
-			localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
+	
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var localeXml = xmlBuilder.get("/installation/locale"),
+				locales = this.blackBoard.get("locales"),
+				i;
+			for (i = 0; i < locales.length; i++) {
+				localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
+			}
 		}
 	}
 });

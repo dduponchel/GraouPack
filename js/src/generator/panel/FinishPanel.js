@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,24 +26,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator.panel");
+"use strict";
 
-izpack.generator.panel.FinishPanel = function (blackBoard) {
-	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
-};
-
-izpack.generator.panel.FinishPanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
+$.Class("izpack.generator.panel", "FinishPanel", {
+	isa : "GenericPanel",
 	
-	/**
-	 * @Override
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		var panel = xmlBuilder.get("/installation/panels").createChild("panel");
-		if (this.blackBoard.get("addAutomated")) {
-			panel.setAttribute("classname", "FinishPanel");
-		}
-		else {
-			panel.setAttribute("classname", "SimpleFinishPanel");
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
+	
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+			if (this.blackBoard.get("addAutomated")) {
+				panel.setAttribute("classname", "FinishPanel");
+			}
+			else {
+				panel.setAttribute("classname", "SimpleFinishPanel");
+			}
 		}
 	}
 });

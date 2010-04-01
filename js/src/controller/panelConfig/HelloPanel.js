@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,45 +26,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller.panelConfig");
+"use strict";
 
-izpack.controller.panelConfig.HelloPanel = function (view, domGenericPanel) {
-	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
-	
-	this.defaultConfig = {
-		"fileSrc" : "",
-		"useHTML" : false
-	};
-};
+$.Class("izpack.controller.panelConfig", "HelloPanel", {
+	isa : "GenericPanel",
+	init : function (view, domGenericPanel) {
+		this._super(view, domGenericPanel);
+		this.defaultConfig = {
+			"fileSrc" : "",
+			"useHTML" : false
+		};
+	},
 
-izpack.controller.panelConfig.HelloPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
-	setBindings : function () {
-		/*
-		this.bind({
-			view: this.view.fileSrc,
-			model: "fileSrc",
-			fromView: this.view.getFileSrc,
-			toView: this.view.setFileSrc,
-			event : "change"
-		});
-		*/
-		this.bind({
-			view: this.view.useHTML,
-			model: "useHTML",
-			fromView: this.view.getUseHTML,
-			toView: this.view.setUseHTML,
-			event : "change"
-		});
-		/*
-		this.addModelConstraint({
-			blame : this.view.fileSrc,
-			constraint : function (model) {
-				if (model.get("useHTML")) {
-					return $.trim(model.get("fileSrc")) ? true : false;
+	methods : {
+
+		setBindings : function () {
+			/*
+			this.bind({
+				view: this.view.fileSrc,
+				model: "fileSrc",
+				fromView: this.view.getFileSrc,
+				toView: this.view.setFileSrc,
+				event : "change"
+			});
+			*/
+			this.bind({
+				view: this.view.useHTML,
+				model: "useHTML",
+				fromView: this.view.getUseHTML,
+				toView: this.view.setUseHTML,
+				event : "change"
+			});
+			/*
+			this.addModelConstraint({
+				blame : this.view.fileSrc,
+				constraint : function (model) {
+					if (model.get("useHTML")) {
+						return $.trim(model.get("fileSrc")) ? true : false;
+					}
+					return true;
 				}
-				return true;
-			}
-		});
-		*/
+			});
+			*/
+		}
 	}
 });

@@ -25,29 +25,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.view.panelConfig", "HelloPanel", {
-	isa : "GenericPanel",
-	init : function (domView) {
-		this._super("HelloPanelConfig", domView);
-		this.useHTML = "#tab-panel-config-hello-file-html";
-	},
-	methods : {
-		initView : function () {
-		},
-		setUseHTML : function (useHTML) {
-			$(this.useHTML)[0].checked = useHTML;
-			if (useHTML) {
-				$(".hideMe", this.domView).show();
-			} else {
-				$(".hideMe", this.domView).hide();
-			}
-		},
-		
-		getUseHTML : function () {
-			return $(this.useHTML)[0].checked;
+/**
+ * Simple wrapper to create classes.
+ * Usage : 
+ * $.Class("namespace", "ClassName", {
+ *   isa : namespace.MotherClass, // shortcut : same namespace, can also written isa : "MotherClass"
+ *   init : {
+ *     this._super(arg1);
+ *     this.attr1 = null;
+ *     this.attr2 = "graou !";
+ *   },
+ *   methods : {
+ *     myMethod : function (a, b) {
+ *     }
+ *   }
+ * });
+ */
+$.Class = function () {
+	var args = arguments,
+		namespace = args[0], // String
+		className = args[1], // String
+		classContent = $.extend({
+			isa : Class, // Class from John Resig impl
+			init : {},
+			methods : {}
+		}, args[2]),
+		objNameSpace = $.namespace(namespace);
+	
+	// we put the init method with the others
+	classContent.methods.init = classContent.init;
+	
+	if (typeof classContent.isa === "string") {
+		classContent.isa = objNameSpace[classContent.isa];
+		if (! classContent.isa) {
+			throw "mother class for " + namespace + "." + className + " not found";
 		}
 	}
-});
+
+	objNameSpace[className] = classContent.isa.extend(classContent.methods);
+};

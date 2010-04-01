@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -24,50 +25,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.view");
+
+"use strict";
 
 /**
  * A generic tab.
  * @param {String} name The internal name of the tab.
  */
-izpack.view.GenericView = function (name) {
+$.Class("izpack.view", "GenericView", {
 	
-	/**
-	 * The name of the tab.
-	 */
-	this.name = name;
+	init : function (name) {
+		/**
+		 * The name of the tab.
+		 */
+		this.name = name;
 
-	/**
-	 * The html id used for this tab.
-	 */
-	this.id = "tab-" + name;
-	
-	/**
-	 * the url of the associated view
-	 */
-	this.href = "html/" + this.id + ".html";
+		/**
+		 * The html id used for this tab.
+		 */
+		this.id = "tab-" + name;
+		
+		/**
+		 * the url of the associated view
+		 */
+		this.href = "html/" + this.id + ".html";
 
-	/**
-	 * Is the html view loaded ?
-	 */
-	this.viewLoaded = false;
-};
-
-izpack.view.GenericView.prototype = {
-	/**
-	 * This method is called when the view (html) is loaded.
-	 * It calls then the method initView.
-	 */
-	load : function () {
-		this.viewLoaded = true;
-		this.initView();
+		/**
+		 * Is the html view loaded ?
+		 */
+		this.viewLoaded = false;
 	},
 	
-	/**
-	 * Adds the UI logic (drag/drop, etc) as soon as the html tab is loaded.
-	 */
-	initView : function () {
-		throw "initView must be overriden !";
+	methods : {
+		/**
+		 * This method is called when the view (html) is loaded.
+		 * It calls then the method initView.
+		 */
+		load : function () {
+			this.viewLoaded = true;
+			this.initView();
+		},
+		
+		/**
+		 * Adds the UI logic (drag/drop, etc) as soon as the html tab is loaded.
+		 */
+		initView : function () {
+			throw "initView must be overriden !";
+		}
 	}
-};
+});

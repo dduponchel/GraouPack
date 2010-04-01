@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,14 +26,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller.panelConfig");
+"use strict";
 
-izpack.controller.panelConfig.TargetPanel = function (view, domGenericPanel) {
-	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
-};
+$.Class("izpack.controller.panelConfig", "TargetPanel", {
+	isa : "GenericPanel",
 
-izpack.controller.panelConfig.TargetPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
-	setBindings : function () {
-		// nothing yet
+	init : function (view, domGenericPanel) {
+		this._super(view, domGenericPanel);
+	},
+	
+	methods : {
+		setBindings : function () {
+			// nothing yet
+		}
 	}
 });

@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,14 +26,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.view");
+"use strict";
 
-izpack.view.Presentation = function () {
-	izpack.view.GenericView.apply(this, [ "presentation" ]);
-};
-
-izpack.view.Presentation.prototype = $.extend({}, izpack.view.GenericView.prototype, {
-	initView : function () {
-		// nothing to do
+$.Class("izpack.view", "Presentation", {
+	isa : "GenericView",
+	init : function () {
+		this._super("presentation");
+	},
+	methods : {
+		initView : function () {
+			// nothing to do
+		}
 	}
 });

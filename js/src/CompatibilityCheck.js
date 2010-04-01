@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,24 +26,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+"use strict";
 $.namespace("izpack.compatibility");
+/*global XMLSerializer, ActiveXObject */
 
 (function () {
-	if (typeof console === "undefined") {
-		console = {};
+	if (typeof window.console === "undefined") {
+		window.console = {};
 		console.debug = console.log = console.info = console.warn = console.error = function () {};
 	} else if (console.log && !console.debug) {
 		// IE 8 implements console.log in his "developer tools" but not console.debug...
 		console.debug = console.log;
 	}
 	
-	izpack.compatibility.xml = {
+	var xmlCompat = izpack.compatibility.xml = {
 		w3c : typeof XMLSerializer !== "undefined" &&
 		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined",
 		ie : typeof window.ActiveXObject !== "undefined"
 	};
 
-	if (!izpack.compatibility.xml.w3c && !izpack.compatibility.xml.ie) {
+	if (!xmlCompat.w3c && !xmlCompat.ie) {
 		alert("this browser doesn't seem to be recent enough to support this app.");
 	}
-})();
+}());

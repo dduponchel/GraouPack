@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,24 +26,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller.panelConfig");
+"use strict";
 
-izpack.controller.panelConfig.FinishPanel = function (view, domGenericPanel) {
-	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
-	
-	this.defaultConfig = {
-		"addAutomated" : false
-	};
-};
+$.Class("izpack.controller.panelConfig", "FinishPanel", {
+	isa : "GenericPanel",
 
-izpack.controller.panelConfig.FinishPanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
-	setBindings : function () {
-		this.bind({
-			view : this.view.addAutomated,
-			model : "addAutomated",
-			fromView : this.view.getAddAutomated,
-			toView : this.view.setAddAutomated,
-			event : "change"
-		});
+	init : function (view, domGenericPanel) {
+		this._super(view, domGenericPanel);
+		this.defaultConfig = {
+			"addAutomated" : false
+		};
+	},
+
+	methods : {
+
+		setBindings : function () {
+			this.bind({
+				view : this.view.addAutomated,
+				model : "addAutomated",
+				fromView : this.view.getAddAutomated,
+				toView : this.view.setAddAutomated,
+				event : "change"
+			});
+		}
 	}
 });

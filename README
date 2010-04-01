@@ -1,4 +1,4 @@
-This is an highly experimental (read : doesn't work) test of a pure 
+This is an highly experimental (read : don't work) test of a pure 
 javascript UI for creating an IzPack xml.
 The goal of this application : provide an easy way to create an IzPack xml,
 and preview what your installer would look like.
@@ -6,9 +6,23 @@ No heavy app to install, just a browser.
 The only browser tested is Firefox 3.6. It should works fine on firefox 3.x,
 and there is a risk it would work on opera/safari/chrome.
 
-Known limitations : since it runs in a browser, it will only be able to 
-generate the xml. It's up to you to copy/paste it in a file, and run 
-IzPack's bin/compile on it.
+Known limitations : 
+ - This app should generate a valid xml for IzPack 5, but won't reflect all the
+possibilities given by IzPack.
+ - The app runs in your browser and can't launch the compilation of your installer.
+You have to do it manually !
+ - There are two ways for getting the generated zip : using the data url scheme
+(works more or less, but isn't user-friendly) or a flash 10 component. On 
+file://....index.html, this flash component will be displayed but won't work
+(thanks Adobe for providing accessible, open, bullet-proof apps...).
+A simple static http server will do the trick : apache http, nginx, lighthttpd,
+or even simpler : cd GraouPack ; python -m SimpleHTTPServer 8080
+
+Tests : 
+ - the tests can be run with js/test/index.html
+ - cross browser code coverage is possible with jscoverage ( http://siliconforks.com/jscoverage/ ) :
+cd GraouPack ; jscoverage-server --verbose --no-instrument=/js/test/ --no-instrument=/js/lib/
+then opens http://127.0.0.1:8080/jscoverage.html?js/test/index.html
 
 The main repository is on GitHub ( http://github.com/dduponchel/GraouPack )
 and this app can be seen deployed on google app engine ( http://graoupack.appspot.com/ )

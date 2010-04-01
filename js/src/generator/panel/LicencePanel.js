@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,49 +26,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.generator.panel");
+"use strict";
 
-izpack.generator.panel.LicencePanel = function (blackBoard) {
-	izpack.generator.panel.GenericPanel.apply(this, [ blackBoard ]);
-};
+$.Class("izpack.generator.panel", "LicencePanel", {
+	isa : "GenericPanel",
 
-izpack.generator.panel.LicencePanel.prototype = $.extend({}, izpack.generator.panel.GenericPanel.prototype, {
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
 	
-	/**
-	 * @Override
-	 */
-	addGeneratedInfo : function (xmlBuilder, files) {
-		var resourceOptions = {
-			//forcedSrc  : this.blackBoard.get("fileSrc"),
-			xmlBuilder : xmlBuilder
-		};
-		var fileContent = "";
-		if (this.blackBoard.get("useHTML")) {
-			$.extend(resourceOptions, {
-				clazz      : "HTMLLicencePanel",
-				defaultID  : "HTMLLicencePanel.info",
-				defaultSrc : "license.html",
-				prefixSrc  : "license-",
-				suffixSrc  : ".html",
-				prefixID   : "HTMLLicencePanel.info"
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var resourceOptions = {
+					//forcedSrc  : this.blackBoard.get("fileSrc"),
+					xmlBuilder : xmlBuilder
+				},
+				fileContent = "",
+				addedData;
+			
+			if (this.blackBoard.get("useHTML")) {
+				$.extend(resourceOptions, {
+					clazz      : "HTMLLicencePanel",
+					defaultID  : "HTMLLicencePanel.info",
+					defaultSrc : "license.html",
+					prefixSrc  : "license-",
+					suffixSrc  : ".html",
+					prefixID   : "HTMLLicencePanel.info"
+				});
+				fileContent = "html";
+			}
+			else {
+				$.extend(resourceOptions, {
+					clazz      : "LicencePanel",
+					defaultID  : "LicencePanel.info",
+					defaultSrc : "license.txt",
+					prefixSrc  : "license-",
+					suffixSrc  : ".txt",
+					prefixID   : "LicencePanel.info"
+				});
+				fileContent = "text";
+			}
+			addedData = this.createPanelWithResource(resourceOptions);
+			files.push({
+				name : addedData.name,
+				content : fileContent + " for LicencePanel n°" + (addedData.index + 1)
 			});
-			fileContent = "html";
 		}
-		else {
-			$.extend(resourceOptions, {
-				clazz      : "LicencePanel",
-				defaultID  : "LicencePanel.info",
-				defaultSrc : "license.txt",
-				prefixSrc  : "license-",
-				suffixSrc  : ".txt",
-				prefixID   : "LicencePanel.info"
-			});
-			fileContent = "text";
-		}
-		var addedData = this.createPanelWithResource(resourceOptions);
-		files.push({
-			name : addedData.name,
-			content : fileContent + " for LicencePanel n°" + (addedData.index + 1)
-		});
 	}
 });

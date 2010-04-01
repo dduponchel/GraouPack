@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,20 +26,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.view.panelConfig");
+"use strict";
 
-izpack.view.panelConfig.FinishPanel = function (domView) {
-	izpack.view.panelConfig.GenericPanel.apply(this, [ "FinishPanelConfig", domView ]);
-	this.addAutomated = "#tab-panel-config-finish-automated";
-};
-
-izpack.view.panelConfig.FinishPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
-	initView : function () {
+$.Class("izpack.view.panelConfig", "FinishPanel", {
+	isa : "GenericPanel",
+	init : function (domView) {
+		this._super("FinishPanelConfig", domView);
+		this.addAutomated = "#tab-panel-config-finish-automated";
 	},
-	getAddAutomated : function () {
-		return $(this.addAutomated)[0].checked;
-	},
-	setAddAutomated : function (automated) {
-		$(this.addAutomated)[0].checked = automated;
+	methods : {
+		initView : function () {
+		},
+		getAddAutomated : function () {
+			return $(this.addAutomated)[0].checked;
+		},
+		setAddAutomated : function (automated) {
+			$(this.addAutomated)[0].checked = automated;
+		}
 	}
 });

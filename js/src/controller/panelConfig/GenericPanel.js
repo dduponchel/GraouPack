@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -24,41 +25,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-$.namespace("izpack.controller.panelConfig");
+
+"use strict";
 
 /**
  * A generic panel config controller.
  * @param {GenericView} view the view to use.
  */
-izpack.controller.panelConfig.GenericPanel = function (view, domGenericPanel) {
-	izpack.controller.GenericController.apply(this, [ view, null ]);
-	this.domGenericPanel = domGenericPanel;
-	this.defaultConfig = null;
-	this.notSavedConfig = null;
-};
+$.Class("izpack.controller.panelConfig", "GenericPanel", {
+	isa : izpack.controller.GenericController,
+	init : function (view, domGenericPanel) {
+		this._super(view, null);
+		this.domGenericPanel = domGenericPanel;
+		this.defaultConfig   = {};
+		this.notSavedConfig  = null;
+	},
+	methods : {
 
-izpack.controller.panelConfig.GenericPanel.prototype = $.extend({}, izpack.controller.GenericController.prototype, {
-	
-	getDefaultConfig : function () {
-		console.debug("GenericPanel::getDefaultConfig");
-		return new izpack.model.PanelConfig($.extend(true, {}, this.defaultConfig));
-	},
-	
-	getConfig : function () {
-		console.debug("GenericPanel::getConfig");
-		return this.blackBoard;
-	},
-	
-	setConfig : function (config) {
-		console.debug("GenericPanel::setConfig", config);
-		this.blackBoard = (config) ? config.clone() : null;
-		this.notSavedConfig = config;
-	},
-	
-	saveConfig : function () {
-		console.debug("GenericPanel::saveConfig");
-		// blackBoard -> notSavedConfig
-		this.notSavedConfig.setData(this.blackBoard);
+		getDefaultConfig : function () {
+			console.debug("GenericPanel::getDefaultConfig");
+			return new izpack.model.PanelConfig($.extend(true, {}, this.defaultConfig));
+		},
+		
+		getConfig : function () {
+			console.debug("GenericPanel::getConfig");
+			return this.blackBoard;
+		},
+		
+		setConfig : function (config) {
+			console.debug("GenericPanel::setConfig", config);
+			this.blackBoard = (config) ? config.clone() : null;
+			this.notSavedConfig = config;
+		},
+		
+		saveConfig : function () {
+			console.debug("GenericPanel::saveConfig");
+			// blackBoard -> notSavedConfig
+			this.notSavedConfig.setData(this.blackBoard);
+		}
 	}
 });

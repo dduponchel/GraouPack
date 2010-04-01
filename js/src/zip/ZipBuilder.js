@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,7 +26,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.zip.ZipBuilder");
+"use strict";
+/*jslint bitwise : false */
 
 /**
  * Allow the creation of a zip containing the specified files.
@@ -34,8 +36,8 @@ $.namespace("izpack.zip.ZipBuilder");
  *
  * each file have a name and a content. Example : 
  * files = [
- * 	{ name : "readme.txt", content : "this is a readme" },
- * 	{ name : "img/logo.png", content : "" }
+ *   { name : "readme.txt", content : "this is a readme" },
+ *   { name : "img/logo.png", content : "" }
  * ];
  *
  * A way to use it : 
@@ -51,229 +53,248 @@ $.namespace("izpack.zip.ZipBuilder");
  * An other way to do that is to use flash (yerk)
  * @see http://www.downloadify.info/
  */
-izpack.zip.ZipBuilder = function (files, rootFolder) {
+$.Class("izpack.zip", "ZipBuilder", {
 	
-	if (typeof rootFolder === "string" && rootFolder) {
-		for (var i = 0; i < files.length; i++) {
-			var file = files[i];
-			file.name = rootFolder + "/" + file.name;
-		}
-	}
-	this.files = this.getFilesAndFolders(files);
-};
-
-izpack.zip.ZipBuilder.prototype = {
-	msdosTime : function (now) {
-		var DOSTime, DOSDate;
-		// http://www.delorie.com/djgpp/doc/rbinter/it/52/13.html
-		// http://www.delorie.com/djgpp/doc/rbinter/it/65/16.html
-		// http://www.delorie.com/djgpp/doc/rbinter/it/66/16.html
+	init : function (files, rootFolder) {
 		
-		DOSTime = now.getHours();
-		DOSTime = DOSTime << 6;
-		DOSTime = DOSTime | now.getMinutes();
-		DOSTime = DOSTime << 5;
-		DOSTime = DOSTime | now.getSeconds() / 2;
-
-		DOSDate = now.getFullYear() - 1980;
-		DOSDate = DOSDate << 4;
-		DOSDate = DOSDate | (now.getMonth() + 1);
-		DOSDate = DOSDate << 5;
-		DOSDate = DOSDate | now.getDate();
-
-		return 	[ DOSTime & 0xFF, (DOSTime & 0xFF00) >>> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >>> 8 ];
+		var i, // iterations
+			file; // contained in files
+		
+		this.files = [];
+		
+		if (typeof rootFolder === "string" && rootFolder) {
+			for (i = 0; i < files.length; i++) {
+				file = files[i];
+				file.name = rootFolder + "/" + file.name;
+			}
+		}
+		this.files = this.getFilesAndFolders(files);
 	},
-	
-	getFilesAndFolders : function (files) {
-		var filesAndFolders	= [];
-		var createdFolders 	= [];
-		var foldersRegex 	= /[^\/]+\//g;
-		for (var i = 0; i < files.length; i++) {
-			var file = files[i];
-			var subFolders = file.name.match(foldersRegex);
-			if (subFolders) {
-				// create folders, if not already done
-				var path = "";
-				for (var folderIndex = 0; folderIndex < subFolders.length; folderIndex++) {
-					path += subFolders[folderIndex];
-					if ($.inArray(path, createdFolders) === -1) { // doesn't exist
-						filesAndFolders.push({
-							name : path,
-							content : ""
-						});
-						createdFolders.push(path);
+
+	methods : {
+		msdosTime : function (now) {
+			var DOSTime, DOSDate;
+			// http://www.delorie.com/djgpp/doc/rbinter/it/52/13.html
+			// http://www.delorie.com/djgpp/doc/rbinter/it/65/16.html
+			// http://www.delorie.com/djgpp/doc/rbinter/it/66/16.html
+			
+			DOSTime = now.getHours();
+			DOSTime = DOSTime << 6;
+			DOSTime = DOSTime | now.getMinutes();
+			DOSTime = DOSTime << 5;
+			DOSTime = DOSTime | now.getSeconds() / 2;
+
+			DOSDate = now.getFullYear() - 1980;
+			DOSDate = DOSDate << 4;
+			DOSDate = DOSDate | (now.getMonth() + 1);
+			DOSDate = DOSDate << 5;
+			DOSDate = DOSDate | now.getDate();
+
+			return [ DOSTime & 0xFF, (DOSTime & 0xFF00) >>> 8, DOSDate & 0xFF, (DOSDate & 0xFF00) >>> 8 ];
+		},
+		
+		getFilesAndFolders : function (files) {
+			var filesAndFolders = [], // array of strings
+				createdFolders  = [], // array of strings
+				foldersRegex    = /[^\/]+\//g, // to split folders
+				i, // iteration
+				folderIndex, // iteration
+				file, // contained in files
+				subFolders, // array of strings, [ "root/", "sub/", "subsub/", "file" ] for example
+				path; // complete current path, "root/sub/" for example
+			
+			for (i = 0; i < files.length; i++) {
+				file = files[i];
+				subFolders = file.name.match(foldersRegex);
+				if (subFolders) {
+					// create folders, if not already done
+					path = "";
+					for (folderIndex = 0; folderIndex < subFolders.length; folderIndex++) {
+						path += subFolders[folderIndex];
+						if ($.inArray(path, createdFolders) === -1) { // doesn't exist
+							filesAndFolders.push({
+								name : path,
+								content : ""
+							});
+							createdFolders.push(path);
+						}
 					}
 				}
+				filesAndFolders.push(file);
 			}
-			filesAndFolders.push(file);
-		}
-		return filesAndFolders;
-	},
-	
-	dumpHex : function (arrayBytes, message) {
-		var res = "";
-		for (var i = 0; i < arrayBytes.length; i++) {
-			res += arrayBytes[i].toString(16) + " ";
-		}
-		console.debug("ZipBuilder::dumpHex : ", res, message);
-		return res;
-	},
-	
-	intToBytes : function (integer, bytesNb) {
-		var mask = 0xFF;
-		var offset = 0;
-		var res = [];
-		for (var i = 0; i < bytesNb; i++) {
-			res.push((integer & mask) >>> offset);
-			mask = mask << 8;
-			offset += 8;
-		}
-		return res;
-	},
-	
-	stringToBytes : function (myString) {
-		var res = [];
-		for (var i = 0; i < myString.length; i++) {
-			res.push(myString.charCodeAt(i));
-		}
-		return res;
-	},
-	
-	/*
-	 * local file header signature     4 bytes  (0x04034b50)
-	 * version needed to extract       2 bytes
-	 * general purpose bit flag        2 bytes
-	 * compression method              2 bytes
-	 * last mod file time              2 bytes
-	 * last mod file date              2 bytes
-	 * crc-32                          4 bytes
-	 * compressed size                 4 bytes
-	 * uncompressed size               4 bytes
-	 * file name length                2 bytes
-	 * extra field length              2 bytes
-	 * file name (variable size)
-	 * extra field (variable size)
-	 */
-	getLocalFileHeader : function (file) {
-		var now = new Date();
-		return [0x50, 0x4b, 0x03, 0x04].concat( // magic number, 4 bytes. Here : a zip file :)
-			[0x0a, 0x0], // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
-			[0x0, 0x0], // general purpose bit flag, 2 bytes. Here : nothing special
-			[0x0, 0x0], // compression method, 2 bytes. Here : STORE
-			this.msdosTime(now), // last mod file time/date, 2+2 bytes
-			this.intToBytes($.crc32(file.content), 4), // crc-32, 4 bytes
-			this.intToBytes(file.content.length, 4), // compressed-size, 4 bytes (no compression, same as uncompressed)
-			this.intToBytes(file.content.length, 4), // uncompressed-size, 4 bytes
-			this.intToBytes(file.name.length, 2), // file name length, 2 bytes
-			[0x0, 0x0], // extra field length, 2 bytes
-			this.stringToBytes(file.name), // file name, variable size
-			[]); // extra field, variable size
-	},
-
-	/*
-	 * central file header signature   4 bytes  (0x02014b50)
-	 * version made by                 2 bytes
-	 * version needed to extract       2 bytes
-	 * general purpose bit flag        2 bytes
-	 * compression method              2 bytes
-	 * last mod file time              2 bytes
-	 * last mod file date              2 bytes
-	 * crc-32                          4 bytes
-	 * compressed size                 4 bytes
-	 * uncompressed size               4 bytes
-	 * file name length                2 bytes
-	 * extra field length              2 bytes
-	 * file comment length             2 bytes
-	 * disk number start               2 bytes
-	 * internal file attributes        2 bytes
-	 * external file attributes        4 bytes
-	 * relative offset of local header 4 bytes
-	 * file name (variable size)
-	 * extra field (variable size)
-	 * file comment (variable size)
-	 */
-	getCentralDirectoryFileHeader : function (file, offsetFromStart) {
-		var now = new Date();
-		return [0x50, 0x4b, 0x01, 0x02].concat( // central file header signature, 4bytes
-			[0x14, 0xFF], // version made by, 2 bytes. 'Javascript VM' doesn't exist, so 0xFF, zip version 2.0 or above.
-			[0x0a, 0x0], // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
-			[0x0, 0x0], // general purpose bit flag, 2 bytes. Here : nothing special
-			[0x0, 0x0], // compression method, 2 bytes. Here : STORE
-			this.msdosTime(now), // last mod file time/date, 2+2 bytes
-			this.intToBytes($.crc32(file.content), 4), // crc-32, 4 bytes
-			this.intToBytes(file.content.length, 4), // compressed-size, 4 bytes (no compression, same as uncompressed)
-			this.intToBytes(file.content.length, 4), // uncompressed-size, 4 bytes
-			this.intToBytes(file.name.length, 2), // file name length, 2 bytes
-			[0x0, 0x0], // extra field length, 2 bytes
-			[0x0, 0x0], // file comment length, 2 bytes
-			[0x0, 0x0], // disk number start, 2 bytes
-			[0x0, 0x0], // internal file attributes, 2 bytes
-			[0x0, 0x0, 0x0, 0x0], // external file attributes, 4 bytes
-			this.intToBytes(offsetFromStart, 4), // relative offset of the local header, 4 bytes
-			this.stringToBytes(file.name), // file name, variable size
-			[], // extra field, variable size
-			[]); // file comment, variable size
-	},
-
-	/*
-	 * end of central dir signature    4 bytes  (0x06054b50)
-	 * number of this disk             2 bytes
-	 * number of the disk with the
-	 * start of the central directory  2 bytes
-	 * total number of entries in the
-	 * central directory on this disk  2 bytes
-	 * total number of entries in
-	 * the central directory           2 bytes
-	 * size of the central directory   4 bytes
-	 * offset of start of central
-	 * directory with respect to
-	 * the starting disk number        4 bytes
-	 * .ZIP file comment length        2 bytes
-	 * .ZIP file comment       (variable size)
-	 */			
-	getEndOfCentralDirectory : function (files, centralDirectoryStart, centralDirectoryEnd) {
-		var zipComment = "Created by GraouPack";
-		return [0x50, 0x4b, 0x05, 0x06].concat( // end of central dir signature, 4 bytes
-			this.intToBytes(0, 2), // number of this disk, 2 bytes
-			this.intToBytes(0, 2), // number of the disk with the start of the central directory, 2 bytes
-			this.intToBytes(files.length, 2), // total number of entries in the central directory on this disk, 2 bytes
-			this.intToBytes(files.length, 2), // total number of entries in the central directory, 2 bytes
-			this.intToBytes(centralDirectoryEnd - centralDirectoryStart, 4), // size of the central directory, 4 bytes
-			this.intToBytes(centralDirectoryStart, 4), // offset of start of central directory with respect to the starting disk number, 4 bytes
-			this.intToBytes(zipComment.length, 2), // zip file comment length, 2 bytes
-			this.stringToBytes(zipComment)); // zip file comment, variable size
-	},
-
-	createZIP : function () {
-		var i, file;
-		var zip = []; // array of bytes
-
-		var centralDirectoryStart = 0;
-		var centralDirectoryEnd = 0;
+			return filesAndFolders;
+		},
 		
-		for (i = 0; i < this.files.length; i++) {
-			// write the header + content
-			file = this.files[i];
-			var header = this.getLocalFileHeader(file).concat(this.stringToBytes(file.content));
-			//this.dumpHex(header, "header for " + file.name);
-			zip = zip.concat(header);
-			centralDirectoryStart += header.length;
-			file.sizeLocalFile = header.length;
+		dumpHex : function (arrayBytes, message) {
+			var res = "",
+				i = 0;
+			for (i = 0; i < arrayBytes.length; i++) {
+				res += arrayBytes[i].toString(16) + " ";
+			}
+			console.debug("ZipBuilder::dumpHex : ", res, message);
+			return res;
+		},
+		
+		intToBytes : function (integer, bytesNb) {
+			var mask = 0xFF,
+				offset = 0,
+				res = [],
+				i; // iteration
+			for (i = 0; i < bytesNb; i++) {
+				res.push((integer & mask) >>> offset);
+				mask = mask << 8;
+				offset += 8;
+			}
+			return res;
+		},
+		
+		stringToBytes : function (myString) {
+			var res = [],
+				i; // iteration
+			for (i = 0; i < myString.length; i++) {
+				res.push(myString.charCodeAt(i));
+			}
+			return res;
+		},
+		
+		/*
+		 * local file header signature     4 bytes  (0x04034b50)
+		 * version needed to extract       2 bytes
+		 * general purpose bit flag        2 bytes
+		 * compression method              2 bytes
+		 * last mod file time              2 bytes
+		 * last mod file date              2 bytes
+		 * crc-32                          4 bytes
+		 * compressed size                 4 bytes
+		 * uncompressed size               4 bytes
+		 * file name length                2 bytes
+		 * extra field length              2 bytes
+		 * file name (variable size)
+		 * extra field (variable size)
+		 */
+		getLocalFileHeader : function (file) {
+			var now = new Date();
+			return [0x50, 0x4b, 0x03, 0x04].concat( // magic number, 4 bytes. Here : a zip file :)
+				[0x0a, 0x0], // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
+				[0x0, 0x0], // general purpose bit flag, 2 bytes. Here : nothing special
+				[0x0, 0x0], // compression method, 2 bytes. Here : STORE
+				this.msdosTime(now), // last mod file time/date, 2+2 bytes
+				this.intToBytes($.crc32(file.content), 4), // crc-32, 4 bytes
+				this.intToBytes(file.content.length, 4), // compressed-size, 4 bytes (no compression, same as uncompressed)
+				this.intToBytes(file.content.length, 4), // uncompressed-size, 4 bytes
+				this.intToBytes(file.name.length, 2), // file name length, 2 bytes
+				[0x0, 0x0], // extra field length, 2 bytes
+				this.stringToBytes(file.name), // file name, variable size
+				[]); // extra field, variable size
+		},
+
+		/*
+		 * central file header signature   4 bytes  (0x02014b50)
+		 * version made by                 2 bytes
+		 * version needed to extract       2 bytes
+		 * general purpose bit flag        2 bytes
+		 * compression method              2 bytes
+		 * last mod file time              2 bytes
+		 * last mod file date              2 bytes
+		 * crc-32                          4 bytes
+		 * compressed size                 4 bytes
+		 * uncompressed size               4 bytes
+		 * file name length                2 bytes
+		 * extra field length              2 bytes
+		 * file comment length             2 bytes
+		 * disk number start               2 bytes
+		 * internal file attributes        2 bytes
+		 * external file attributes        4 bytes
+		 * relative offset of local header 4 bytes
+		 * file name (variable size)
+		 * extra field (variable size)
+		 * file comment (variable size)
+		 */
+		getCentralDirectoryFileHeader : function (file, offsetFromStart) {
+			var now = new Date();
+			return [0x50, 0x4b, 0x01, 0x02].concat( // central file header signature, 4bytes
+				[0x14, 0xFF], // version made by, 2 bytes. 'Javascript VM' doesn't exist, so 0xFF, zip version 2.0 or above.
+				[0x0a, 0x0], // version needed to extract, 2 bytes. Here "Default value" (zip 1.0)
+				[0x0, 0x0], // general purpose bit flag, 2 bytes. Here : nothing special
+				[0x0, 0x0], // compression method, 2 bytes. Here : STORE
+				this.msdosTime(now), // last mod file time/date, 2+2 bytes
+				this.intToBytes($.crc32(file.content), 4), // crc-32, 4 bytes
+				this.intToBytes(file.content.length, 4), // compressed-size, 4 bytes (no compression, same as uncompressed)
+				this.intToBytes(file.content.length, 4), // uncompressed-size, 4 bytes
+				this.intToBytes(file.name.length, 2), // file name length, 2 bytes
+				[0x0, 0x0], // extra field length, 2 bytes
+				[0x0, 0x0], // file comment length, 2 bytes
+				[0x0, 0x0], // disk number start, 2 bytes
+				[0x0, 0x0], // internal file attributes, 2 bytes
+				[0x0, 0x0, 0x0, 0x0], // external file attributes, 4 bytes
+				this.intToBytes(offsetFromStart, 4), // relative offset of the local header, 4 bytes
+				this.stringToBytes(file.name), // file name, variable size
+				[], // extra field, variable size
+				[]); // file comment, variable size
+		},
+
+		/*
+		 * end of central dir signature    4 bytes  (0x06054b50)
+		 * number of this disk             2 bytes
+		 * number of the disk with the
+		 * start of the central directory  2 bytes
+		 * total number of entries in the
+		 * central directory on this disk  2 bytes
+		 * total number of entries in
+		 * the central directory           2 bytes
+		 * size of the central directory   4 bytes
+		 * offset of start of central
+		 * directory with respect to
+		 * the starting disk number        4 bytes
+		 * .ZIP file comment length        2 bytes
+		 * .ZIP file comment       (variable size)
+		 */			
+		getEndOfCentralDirectory : function (files, centralDirectoryStart, centralDirectoryEnd) {
+			var zipComment = "Created by GraouPack";
+			return [0x50, 0x4b, 0x05, 0x06].concat( // end of central dir signature, 4 bytes
+				this.intToBytes(0, 2), // number of this disk, 2 bytes
+				this.intToBytes(0, 2), // number of the disk with the start of the central directory, 2 bytes
+				this.intToBytes(files.length, 2), // total number of entries in the central directory on this disk, 2 bytes
+				this.intToBytes(files.length, 2), // total number of entries in the central directory, 2 bytes
+				this.intToBytes(centralDirectoryEnd - centralDirectoryStart, 4), // size of the central directory, 4 bytes
+				this.intToBytes(centralDirectoryStart, 4), // offset of start of central directory with respect to the starting disk number, 4 bytes
+				this.intToBytes(zipComment.length, 2), // zip file comment length, 2 bytes
+				this.stringToBytes(zipComment)); // zip file comment, variable size
+		},
+
+		createZIP : function () {
+			var i, // iteration
+				file, // contained in files
+				zip = [], // array of bytes
+				centralDirectoryStart = 0,
+				centralDirectoryEnd = 0,
+				currentOffsetFromStart = 0, // used for the central headers
+				header,
+				directoryHeader;
+			
+			for (i = 0; i < this.files.length; i++) {
+				// write the header + content
+				file = this.files[i];
+				header = this.getLocalFileHeader(file).concat(this.stringToBytes(file.content));
+				//this.dumpHex(header, "header for " + file.name);
+				zip = zip.concat(header);
+				centralDirectoryStart += header.length;
+				file.sizeLocalFile = header.length;
+			}
+			centralDirectoryEnd = centralDirectoryStart;
+			for (i = 0; i < this.files.length; i++) {
+				// write the header for central directory
+				file = this.files[i];
+				directoryHeader = this.getCentralDirectoryFileHeader(file, currentOffsetFromStart);
+				//this.dumpHex(directoryHeader, "directory header for " + file.name);
+				zip = zip.concat(directoryHeader);
+				centralDirectoryEnd += directoryHeader.length;
+				currentOffsetFromStart += file.sizeLocalFile;
+			}
+			// end of central directory record
+			zip = zip.concat(this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd));
+			//this.dumpHex(zip, "final zip");
+			return $.base64.encode(zip);
 		}
-		var currentOffsetFromStart = 0;
-		centralDirectoryEnd = centralDirectoryStart;
-		for (i = 0; i < this.files.length; i++) {
-			// write the header for central directory
-			file = this.files[i];
-			var directoryHeader = this.getCentralDirectoryFileHeader(file, currentOffsetFromStart);
-			//this.dumpHex(directoryHeader, "directory header for " + file.name);
-			zip = zip.concat(directoryHeader);
-			centralDirectoryEnd += directoryHeader.length;
-			currentOffsetFromStart += file.sizeLocalFile;
-		}
-		// end of central directory record
-		zip = zip.concat(this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd));
-		//this.dumpHex(zip, "final zip");
-		return $.base64.encode(zip);
 	}
-};
+});

@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,21 +26,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.view.panelConfig");
+"use strict";
 
-izpack.view.panelConfig.PacksPanel = function (domView) {
-	izpack.view.panelConfig.GenericPanel.apply(this, [ "PacksPanelConfig", domView ]);
-	this.useTree = "#tab-panel-config-packs-tree";
-};
-
-izpack.view.panelConfig.PacksPanel.prototype = $.extend({}, izpack.view.panelConfig.GenericPanel.prototype, {
-	initView : function () {
+$.Class("izpack.view.panelConfig", "PacksPanel", {
+	isa : "GenericPanel",
+	init : function (domView) {
+		this._super("PacksPanelConfig", domView);
+		this.useTree = "#tab-panel-config-packs-tree";
 	},
-	getUseTree : function () {
-		return $(this.useTree)[0].checked;
-	},
-	setUseTree : function (useTree) {
-		$(this.useTree)[0].checked = useTree;
+	methods : {
+		initView : function () {
+		},
+		getUseTree : function () {
+			return $(this.useTree)[0].checked;
+		},
+		setUseTree : function (useTree) {
+			$(this.useTree)[0].checked = useTree;
+		}
 	}
-
 });

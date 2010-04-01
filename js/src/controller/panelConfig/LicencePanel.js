@@ -1,4 +1,5 @@
 /*
+ * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
  * 
@@ -25,35 +26,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
-$.namespace("izpack.controller.panelConfig");
+"use strict";
 
-izpack.controller.panelConfig.LicencePanel = function (view, domGenericPanel) {
-	izpack.controller.panelConfig.GenericPanel.apply(this, [ view, domGenericPanel ]);
+$.Class("izpack.controller.panelConfig", "LicencePanel", {
+	isa : "GenericPanel",
 	
-	this.defaultConfig = {
-		"fileSrc" : "",
-		"useHTML" : false
-	};
-};
+	init : function (view, domGenericPanel) {
+		this._super(view, domGenericPanel);
+		this.defaultConfig = {
+			"fileSrc" : "",
+			"useHTML" : false
+		};
+	},
 
-izpack.controller.panelConfig.LicencePanel.prototype = $.extend({}, izpack.controller.panelConfig.GenericPanel.prototype, {
-	setBindings : function () {
-		/*
-		this.bind({
-			view: this.view.fileSrc,
-			model: "fileSrc",
-			fromView: this.view.getFileSrc,
-			toView: this.view.setFileSrc,
-			constraints: [ "required" ],
-			event : "change"
-		});
-		*/
-		this.bind({
-			view: this.view.useHTML,
-			model: "useHTML",
-			fromView: this.view.getUseHTML,
-			toView: this.view.setUseHTML,
-			event : "change"
-		});
+	methods : {
+
+		setBindings : function () {
+			/*
+			this.bind({
+				view: this.view.fileSrc,
+				model: "fileSrc",
+				fromView: this.view.getFileSrc,
+				toView: this.view.setFileSrc,
+				constraints: [ "required" ],
+				event : "change"
+			});
+			*/
+			this.bind({
+				view: this.view.useHTML,
+				model: "useHTML",
+				fromView: this.view.getUseHTML,
+				toView: this.view.setUseHTML,
+				event : "change"
+			});
+		}
 	}
 });
