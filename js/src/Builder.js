@@ -56,13 +56,19 @@ $.Class("izpack", "Builder", {
 			},
 			dataType: "base64",
 			onError : function () {
+				/*DEBUG_START*/
 				console.log("downloadify::error callback");
+				/*DEBUG_END*/
 			},
 			onCancel : function () {
+				/*DEBUG_START*/
 				console.log("downloadify::cancel callback");
+				/*DEBUG_END*/
 			},
 			onComplete : function () {
+				/*DEBUG_START*/
 				console.log("downloadify::complete callback");
+				/*DEBUG_END*/
 			}
 		});
 	
@@ -118,15 +124,19 @@ $.Class("izpack", "Builder", {
 			$.extend(settings, options);
 			
 			try {
+				/*DEBUG_START*/
 				console.groupCollapsed(settings.name + "::constructors");
 				console.time(settings.name + "::constructors");
+				/*DEBUG_END*/
 				
 				view = new izpack.view[settings.name]();
 				controller = new izpack.controller[settings.name](view, this.blackBoard);
 				controller.setBindings();
 				
+				/*DEBUG_START*/
 				console.timeEnd(settings.name + "::constructors");
 				console.groupEnd();
+				/*DEBUG_END*/
 			}
 			catch (e) {
 				throw "Creating '" + settings.name + "' tab : " + e;
@@ -164,26 +174,34 @@ $.Class("izpack", "Builder", {
 			.bind("tabsload", {builder : this}, function (event, ui) {
 				var builder = event.data.builder;
 				
+				/*DEBUG_START*/
 				console.groupCollapsed(builder.tabs[ui.index].name + "::tabsload");
 				console.time(builder.tabs[ui.index].name + "::tabsload");
+				/*DEBUG_END*/
 				
 				event.data.builder.tabs[ui.index].controller.initView();
 				
+				/*DEBUG_START*/
 				console.timeEnd(builder.tabs[ui.index].name + "::tabsload");
 				console.groupEnd();
+				/*DEBUG_END*/
 			})
 			.bind("tabsshow", {builder : this}, function (event, ui) {
 				var builder = event.data.builder;
 				
+				/*DEBUG_START*/
 				console.groupCollapsed(builder.tabs[ui.index].name + "::tabsshow");
 				console.time(builder.tabs[ui.index].name + "::tabsshow");
+				/*DEBUG_END*/
 				
 				// remove any error / error animation
 				builder.removeErrorTab(ui.index);
 				builder.tabs[ui.index].controller.showView();
 				
+				/*DEBUG_START*/
 				console.timeEnd(builder.tabs[ui.index].name + "::tabsshow");
 				console.groupEnd();
+				/*DEBUG_END*/
 			});
 		},
 	
@@ -216,8 +234,10 @@ $.Class("izpack", "Builder", {
 				xmlString = "",
 				generator = null;
 			
+			/*DEBUG_START*/
 			console.groupCollapsed("generateXML");
 			console.time("generateXML");
+			/*DEBUG_END*/
 			
 			try {
 				if (this.validateAll()) {
@@ -246,17 +266,23 @@ $.Class("izpack", "Builder", {
 					}
 					catch (xmlException) {
 						alert("Something went wrong with the xml generation !\n" + xmlException);
+						/*DEBUG_START*/
 						console.error("Something went wrong with the xml generation !", xmlException);
+						/*DEBUG_END*/
 					}
 				}
 			}
 			catch (validationException) {
 				alert("Something went wrong with the validation !\n" + validationException);
+				/*DEBUG_START*/
 				console.error("Something went wrong with the validation !", validationException);
+				/*DEBUG_END*/
 			}
 			
+			/*DEBUG_START*/
 			console.timeEnd("generateXML");
 			console.groupEnd();
+			/*DEBUG_END*/
 		}
 	}	
 });

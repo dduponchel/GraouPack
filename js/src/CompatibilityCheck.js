@@ -34,6 +34,7 @@ $.namespace("izpack.compatibility");
 	var console = window.console,
 		xmlCompat;
 	
+	/*DEBUG_START*/
 	if (typeof console === "undefined") {
 		console = {};
 		console.debug = 
@@ -52,6 +53,7 @@ $.namespace("izpack.compatibility");
 		// IE 8 implements console.log in his "developer tools" but not console.debug...
 		console.debug = console.log;
 	}
+	/*DEBUG_END*/
 	
 	xmlCompat = izpack.compatibility.xml = {
 		w3c : typeof XMLSerializer !== "undefined" &&

@@ -131,7 +131,9 @@ $.Class("izpack.zip", "ZipBuilder", {
 			for (i = 0; i < arrayBytes.length; i++) {
 				res += arrayBytes[i].toString(16) + " ";
 			}
+			/*DEBUG_START*/
 			console.debug("ZipBuilder::dumpHex : ", res, message);
+			/*DEBUG_END*/
 			return res;
 		},
 		
