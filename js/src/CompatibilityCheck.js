@@ -31,15 +31,29 @@ $.namespace("izpack.compatibility");
 /*global XMLSerializer, ActiveXObject */
 
 (function () {
-	if (typeof window.console === "undefined") {
-		window.console = {};
-		console.debug = console.log = console.info = console.warn = console.error = function () {};
+	var console = window.console,
+		xmlCompat;
+	
+	if (typeof console === "undefined") {
+		console = {};
+		console.debug = 
+		console.log = 
+		console.info = 
+		console.warn = 
+		console.error = 
+		console.groupCollapsed = 
+		console.time = 
+		console.timeEnd = 
+		console.groupEnd = 
+		function () {};
+		
+		window.console = console;
 	} else if (console.log && !console.debug) {
 		// IE 8 implements console.log in his "developer tools" but not console.debug...
 		console.debug = console.log;
 	}
 	
-	var xmlCompat = izpack.compatibility.xml = {
+	xmlCompat = izpack.compatibility.xml = {
 		w3c : typeof XMLSerializer !== "undefined" &&
 		document.implementation && document.implementation.createDocument && typeof document.implementation.createDocument !== "undefined",
 		ie : typeof window.ActiveXObject !== "undefined"

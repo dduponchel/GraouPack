@@ -105,8 +105,8 @@ $.Class("izpack.view", "Project", {
 			var authorsRes = [];
 			$(this.authors + " li").each(function () {
 				authorsRes.push({
-					name : $(".name", $(this)).text(),
-					mail : $(".mail", $(this)).text()
+					name : $(".name", this).text(),
+					mail : $(".mail", this).text()
 				});
 			});
 			return authorsRes;

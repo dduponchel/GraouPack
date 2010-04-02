@@ -184,7 +184,7 @@ $.Class("izpack.view", "Panel", {
 					currentPanel
 					.data("config", null)
 					.remove();
-					$(event.data.view.selectedPanelsContainer).trigger("izpack.change");
+					$(view.selectedPanelsContainer).trigger("izpack.change");
 				}
 				// click on "config"
 				else if (target.is(view.configButtonsSelected)) {

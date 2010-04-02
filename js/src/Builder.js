@@ -118,18 +118,25 @@ $.Class("izpack", "Builder", {
 			$.extend(settings, options);
 			
 			try {
+				console.groupCollapsed(settings.name + "::constructors");
+				console.time(settings.name + "::constructors");
+				
 				view = new izpack.view[settings.name]();
 				controller = new izpack.controller[settings.name](view, this.blackBoard);
 				controller.setBindings();
+				
+				console.timeEnd(settings.name + "::constructors");
+				console.groupEnd();
 			}
 			catch (e) {
 				throw "Creating '" + settings.name + "' tab : " + e;
 			}
 			
 			
-			htmlTab = $("<a></a>")
-			.attr("href", view.href)
-			.attr("title", settings.name)
+			htmlTab = $("<a></a>", {
+				href  : view.href,
+				title : settings.name
+			})
 			.append(
 				$("<span/>").text(settings.label)
 			);
@@ -155,13 +162,28 @@ $.Class("izpack", "Builder", {
 				cache : true
 			})
 			.bind("tabsload", {builder : this}, function (event, ui) {
+				var builder = event.data.builder;
+				
+				console.groupCollapsed(builder.tabs[ui.index].name + "::tabsload");
+				console.time(builder.tabs[ui.index].name + "::tabsload");
+				
 				event.data.builder.tabs[ui.index].controller.initView();
+				
+				console.timeEnd(builder.tabs[ui.index].name + "::tabsload");
+				console.groupEnd();
 			})
 			.bind("tabsshow", {builder : this}, function (event, ui) {
 				var builder = event.data.builder;
+				
+				console.groupCollapsed(builder.tabs[ui.index].name + "::tabsshow");
+				console.time(builder.tabs[ui.index].name + "::tabsshow");
+				
 				// remove any error / error animation
 				builder.removeErrorTab(ui.index);
 				builder.tabs[ui.index].controller.showView();
+				
+				console.timeEnd(builder.tabs[ui.index].name + "::tabsshow");
+				console.groupEnd();
 			});
 		},
 	
@@ -193,7 +215,10 @@ $.Class("izpack", "Builder", {
 				i = 0,
 				xmlString = "",
 				generator = null;
-				
+			
+			console.groupCollapsed("generateXML");
+			console.time("generateXML");
+			
 			try {
 				if (this.validateAll()) {
 					try {
@@ -229,6 +254,9 @@ $.Class("izpack", "Builder", {
 				alert("Something went wrong with the validation !\n" + validationException);
 				console.error("Something went wrong with the validation !", validationException);
 			}
+			
+			console.timeEnd("generateXML");
+			console.groupEnd();
 		}
 	}	
 });

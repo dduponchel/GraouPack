@@ -42,13 +42,11 @@ $.Class("izpack.view", "Locale", {
 				connectWith : this.lists,
 				placeholder : 'ui-state-highlight'
 			})
-			.bind('sortupdate', {view: this}, function (event, ui) {
-				var view = event.data.view;
-				if ($(this).is(view.selected)) {
-					$(view.selected).trigger("izpack.change");
-				}
-			})
 			.disableSelection();
+			
+			$(this.selected).bind('sortupdate', function (event, ui) {
+				$(this).trigger("izpack.change");
+			});
 
 		},
 
@@ -67,7 +65,8 @@ $.Class("izpack.view", "Locale", {
 				i; // iter
 				
 			$("li", this.selected).each(function () {
-				currentLocales[$(this).attr("data-iso3")] = $(this);
+				var $this = $(this);
+				currentLocales[$this.attr("data-iso3")] = $this;
 			});
 			for (i = 0; i < locales.length; i++) {
 				locale = locales[i];
