@@ -18,6 +18,12 @@ file://....index.html, this flash component will be displayed but won't work
 A simple static http server will do the trick : apache http, nginx, lighthttpd,
 or even simpler : cd GraouPack ; python -m SimpleHTTPServer 8080
 
+Use offline : 
+GraouPack uses external CDNs if possible for its dependencies (jQuery, etc).
+If you want to use it offline, you have to download these projects and update
+the file index.html. Be warned, some external files include others ! (for example
+the css for jQuery UI. You should be fine with the whole project).
+
 The main repository is on GitHub ( http://github.com/dduponchel/GraouPack )
 and this app can be seen deployed on google app engine ( http://graoupack.appspot.com/ )
 thanks to DryDrop ( http://drydrop.binaryage.com/ ).
