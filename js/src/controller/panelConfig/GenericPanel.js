@@ -43,23 +43,31 @@ $.Class("izpack.controller.panelConfig", "GenericPanel", {
 	methods : {
 
 		getDefaultConfig : function () {
+			/*DEBUG_START*/
 			console.debug("GenericPanel::getDefaultConfig");
+			/*DEBUG_END*/
 			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
 		},
 		
 		getConfig : function () {
+			/*DEBUG_START*/
 			console.debug("GenericPanel::getConfig");
+			/*DEBUG_END*/
 			return this.blackBoard;
 		},
 		
 		setConfig : function (config) {
+			/*DEBUG_START*/
 			console.debug("GenericPanel::setConfig", config);
+			/*DEBUG_END*/
 			this.blackBoard = (config) ? config.clone() : null;
 			this.notSavedConfig = config;
 		},
 		
 		saveConfig : function () {
+			/*DEBUG_START*/
 			console.debug("GenericPanel::saveConfig");
+			/*DEBUG_END*/
 			// blackBoard -> notSavedConfig
 			this.notSavedConfig.setData(this.blackBoard);
 		}

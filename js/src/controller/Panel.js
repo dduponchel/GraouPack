@@ -56,7 +56,9 @@ $.Class("izpack.controller", "Panel", {
 					panelView,
 					panelController;
 				
+				/*DEBUG_START*/
 				console.debug("Panel controller::afterInitView : creating view/controller for " + clazz);
+				/*DEBUG_END*/
 				
 				panelView = new izpack.view.panelConfig[clazz](panelDialog);
 				panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);

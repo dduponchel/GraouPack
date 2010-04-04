@@ -117,7 +117,9 @@ $.Class("izpack.controller", "GenericController", {
 				throw "GenericController::bind : the associated model must be defined !";
 			}
 			
+			/*DEBUG_START*/
 			console.debug("GenericController::bind '", settings.view, "' to '", settings.model + "' on '", settings.event, "', ", settings.constraints.length, " constraints");
+			/*DEBUG_END*/
 			
 			// default value
 			if (this.blackBoard && !this.blackBoard.isDefined(settings.model)) {
@@ -134,7 +136,9 @@ $.Class("izpack.controller", "GenericController", {
 			};
 			
 			$.extend(settings, options);
+			/*DEBUG_START*/
 			console.debug("GenericController::addModelConstraint, blaming'", settings.blame);
+			/*DEBUG_END*/
 			this.modelConstraints.push(settings);
 		},
 		
@@ -174,7 +178,9 @@ $.Class("izpack.controller", "GenericController", {
 			
 			this.beforeShowView();
 			
+			/*DEBUG_START*/
 			console.debug("GenericController::showView ", this.view.name, ", setting " + this.bindings.length + " view items via binding");
+			/*DEBUG_END*/
 			for (i = 0; i < this.bindings.length; i++) {
 				binding = this.bindings[i];
 				binding.toView.apply(this.view, [this.blackBoard.get(binding.model)]);
@@ -191,7 +197,9 @@ $.Class("izpack.controller", "GenericController", {
 			
 			this.beforeInitView();
 			
+			/*DEBUG_START*/
 			console.debug("GenericController::initView ", this.view.name);
+			/*DEBUG_END*/
 			
 			this.view.load();
 			
@@ -201,7 +209,10 @@ $.Class("izpack.controller", "GenericController", {
 						binding = event.data.binding,
 						controller = event.data.controller,
 						viewData;
+					
+					/*DEBUG_START*/
 					console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
+					/*DEBUG_END*/
 					viewData = binding.fromView.apply(controller.view, args);
 					controller.validateBinding(binding.view, viewData, binding.constraints);
 					controller.blackBoard.set(binding.model, viewData);
