@@ -58,13 +58,13 @@ $.Class("izpack", "Builder", {
 		// callback function for the generate.html async load
 		// this == the builder instance
 		generateHtmlLoaded : function (response, status, xhr) {
-			if(status === "error") {
+			if (status === "error") {
 				alert("Some components can't be loaded ! GraouPack can't work :-(");
 				return;
 			}
 
 			this.dialog = $("#GraouXML .dialog").dialog({
-			autoOpen : false,
+				autoOpen : false,
 				title : "generated XML",
 				width : 700,
 				height : 500
