@@ -29,10 +29,10 @@
 "use strict";
 
 $.Class("izpack.controller.panelConfig", "PacksPanel", {
-	isa : "GenericPanel",
+	isa : izpack.controller.GenericConfigController,
 	
-	init : function (view, domGenericPanel) {
-		this._super(view, domGenericPanel);
+	init : function (view, domConfig) {
+		this._super(view, domConfig);
 		this.defaultConfig = {
 			useTree : false
 		};

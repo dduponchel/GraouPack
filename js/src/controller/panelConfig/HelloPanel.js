@@ -29,9 +29,9 @@
 "use strict";
 
 $.Class("izpack.controller.panelConfig", "HelloPanel", {
-	isa : "GenericPanel",
-	init : function (view, domGenericPanel) {
-		this._super(view, domGenericPanel);
+	isa : izpack.controller.GenericConfigController,
+	init : function (view, domConfig) {
+		this._super(view, domConfig);
 		this.defaultConfig = {
 			"fileSrc" : "",
 			"useHTML" : false

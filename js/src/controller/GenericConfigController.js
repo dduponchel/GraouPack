@@ -29,14 +29,13 @@
 "use strict";
 
 /**
- * A generic panel config controller.
- * @param {GenericView} view the view to use.
+ * A generic config controller.
  */
-$.Class("izpack.controller.panelConfig", "GenericPanel", {
-	isa : izpack.controller.GenericController,
-	init : function (view, domGenericPanel) {
+$.Class("izpack.controller", "GenericConfigController", {
+	isa : "GenericController",
+	init : function (view, domConfig) {
 		this._super(view, null);
-		this.domGenericPanel = domGenericPanel;
+		this.domConfig = domConfig;
 		this.defaultConfig   = {};
 		this.notSavedConfig  = null;
 	},
@@ -44,21 +43,21 @@ $.Class("izpack.controller.panelConfig", "GenericPanel", {
 
 		getDefaultConfig : function () {
 			/*DEBUG_START*/
-			console.debug("GenericPanel::getDefaultConfig");
+			console.debug("GenericConfigController::getDefaultConfig");
 			/*DEBUG_END*/
 			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
 		},
 		
 		getConfig : function () {
 			/*DEBUG_START*/
-			console.debug("GenericPanel::getConfig");
+			console.debug("GenericConfigController::getConfig");
 			/*DEBUG_END*/
 			return this.blackBoard;
 		},
 		
 		setConfig : function (config) {
 			/*DEBUG_START*/
-			console.debug("GenericPanel::setConfig", config);
+			console.debug("GenericConfigController::setConfig", config);
 			/*DEBUG_END*/
 			this.blackBoard = (config) ? config.clone() : null;
 			this.notSavedConfig = config;
@@ -66,7 +65,7 @@ $.Class("izpack.controller.panelConfig", "GenericPanel", {
 		
 		saveConfig : function () {
 			/*DEBUG_START*/
-			console.debug("GenericPanel::saveConfig");
+			console.debug("GenericConfigController::saveConfig");
 			/*DEBUG_END*/
 			// blackBoard -> notSavedConfig
 			this.notSavedConfig.setData(this.blackBoard);
