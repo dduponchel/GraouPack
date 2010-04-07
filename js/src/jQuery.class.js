@@ -48,12 +48,20 @@ $.Class = function () {
 	var args = arguments,
 		namespace = args[0], // String
 		className = args[1], // String
-		classContent = $.extend({
-			isa : Class, // Class from John Resig impl
-			init : {},
-			methods : {}
-		}, args[2]),
-		objNameSpace = $.namespace(namespace);
+		classContent = args[2], // object
+		objNameSpace = $.namespace(namespace),
+		motherClassNotFound = "mother class for " + namespace + "." + className + " not found";
+	
+	// isa specified but resolved to undefined
+	if	("isa" in classContent && typeof classContent.isa === "undefined") {
+		throw motherClassNotFound;
+	}
+	
+	classContent = $.extend({
+		isa : Class, // Class from John Resig impl
+		init : {},
+		methods : {}
+	}, classContent);
 	
 	// we put the init method with the others
 	classContent.methods.init = classContent.init;
@@ -61,7 +69,7 @@ $.Class = function () {
 	if (typeof classContent.isa === "string") {
 		classContent.isa = objNameSpace[classContent.isa];
 		if (! classContent.isa) {
-			throw "mother class for " + namespace + "." + className + " not found";
+			throw motherClassNotFound;
 		}
 	}
 
