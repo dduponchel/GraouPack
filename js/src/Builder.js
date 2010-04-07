@@ -191,9 +191,7 @@ $.Class("izpack", "Builder", {
 		 * Start the application !
 		 */
 		start : function () {
-			this.rootElt.tabs({
-				cache : true
-			})
+			this.rootElt
 			.bind("tabsload", {builder : this}, function (event, ui) {
 				var builder = event.data.builder;
 				
@@ -225,6 +223,9 @@ $.Class("izpack", "Builder", {
 				console.timeEnd(builder.tabs[ui.index].name + "::tabsshow");
 				console.groupEnd();
 				/*DEBUG_END*/
+			})
+			.tabs({
+				cache : true
 			});
 		},
 	
