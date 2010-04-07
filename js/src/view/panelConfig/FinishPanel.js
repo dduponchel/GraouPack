@@ -29,7 +29,7 @@
 "use strict";
 
 $.Class("izpack.view.panelConfig", "FinishPanel", {
-	isa : "GenericPanel",
+	isa : izpack.view.GenericConfigView,
 	init : function (domView) {
 		this._super("FinishPanelConfig", domView);
 		this.addAutomated = "#tab-panel-config-finish-automated";

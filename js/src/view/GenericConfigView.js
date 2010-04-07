@@ -32,8 +32,8 @@
  * A generic panel config controller.
  * @param {GenericView} view the view to use.
  */
-$.Class("izpack.view.panelConfig", "GenericPanel", {
-	isa : izpack.view.GenericView,
+$.Class("izpack.view", "GenericConfigView", {
+	isa : "GenericView",
 	init : function (name, domView) {
 		this._super(name);
 		this.href = null; // irrelevant here
