@@ -256,7 +256,8 @@ $.Class("izpack", "Builder", {
 				files = [],
 				i = 0,
 				xmlString = "",
-				generator = null;
+				generator = null,
+				$generatedFiles = null;
 			
 			/*DEBUG_START*/
 			console.groupCollapsed("generateXML");
@@ -278,9 +279,12 @@ $.Class("izpack", "Builder", {
 							content : xmlString
 						});
 						$(".generated-xml", this.dialog).text(xmlString);
+						
+						$generatedFiles = $("#graoupack-generated-files ul", this.dialog).empty();
+						$("#graoupack-generated-files ul", this.dialog)
 						for (i = 0; i < files.length; i++) {
 							
-							$("#graoupack-generated-files ul", this.dialog)
+							$generatedFiles
 							.append($("<li/>")
 							.text(files[i].name));
 						}
