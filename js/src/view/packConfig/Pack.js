@@ -25,23 +25,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.view.panelConfig", "PacksPanel", {
+$.Class("izpack.view.packConfig", "Pack", {
 	isa : izpack.view.GenericConfigView,
 	init : function (domView) {
-		this._super("PacksPanelConfig", domView);
-		this.useTree = "#tab-panel-config-packs-tree";
+		this._super("packConfig", domView);
+		
+		this.name			= "#tab-pack-config-name";
+		this.required		= "#tab-pack-config-required";
+		this.description	= "#tab-pack-config-description";
+		this.files			= "#tab-izpack-config-files";
 	},
 	methods : {
 		initView : function () {
+			// nothing to do yet
 		},
-		getUseTree : function () {
-			return $(this.useTree)[0].checked;
+		getName : function () {
+			return $(this.name).val();
 		},
-		setUseTree : function (useTree) {
-			$(this.useTree)[0].checked = useTree;
+		setName : function (name) {
+			$(this.name).val(name);
+		},
+		getRequired : function () {
+			return $(this.required)[0].checked;
+		},
+		setRequired : function (required) {
+			$(this.required)[0].checked = required;
+		},
+		getDescription : function () {
+			return $(this.description).val();
+		},
+		setDescription : function (description) {
+			$(this.description).val(description);
+		},
+		getFiles : function () {
+			return $(this.files).val().split(/\n+/);
+		},
+		setFiles : function (files) {
+			$(this.files).val(files.join("\n"));
 		}
 	}
 });

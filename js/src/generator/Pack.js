@@ -25,51 +25,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+ 
 "use strict";
 
-/**
- * A generic panel config controller.
- * @param {GenericView} view the view to use.
- */
-$.Class("izpack.controller.panelConfig", "GenericPanel", {
-	isa : izpack.controller.GenericController,
-	init : function (view, domGenericPanel) {
-		this._super(view, null);
-		this.domGenericPanel = domGenericPanel;
-		this.defaultConfig   = {};
-		this.notSavedConfig  = null;
+$.Class("izpack.generator", "Pack", {
+	isa : "GenericGenerator",
+	
+	init : function (blackBoard) {
+		this._super(blackBoard);
 	},
+	
 	methods : {
-
-		getDefaultConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericPanel::getDefaultConfig");
-			/*DEBUG_END*/
-			return new izpack.model.PanelConfig($.extend(true, {}, this.defaultConfig));
-		},
-		
-		getConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericPanel::getConfig");
-			/*DEBUG_END*/
-			return this.blackBoard;
-		},
-		
-		setConfig : function (config) {
-			/*DEBUG_START*/
-			console.debug("GenericPanel::setConfig", config);
-			/*DEBUG_END*/
-			this.blackBoard = (config) ? config.clone() : null;
-			this.notSavedConfig = config;
-		},
-		
-		saveConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericPanel::saveConfig");
-			/*DEBUG_END*/
-			// blackBoard -> notSavedConfig
-			this.notSavedConfig.setData(this.blackBoard);
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var packs = this.blackBoard.get("packs"), // packs, js side
+				pack, // a pack, js side
+				packsXml, // packs, xml side
+				packXml, // a pack, xml side
+				files, // files for a pack
+				fileXml, // file, xml side
+				i, j; // iter
+			
+			packsXml = xmlBuilder.get("/installation/packs");
+			for (i = 0; i < packs.length; i++) {
+				pack = packs[i];
+				packXml = packsXml.createChild("pack");
+				packXml.setAttribute("name", pack.get("name"));
+				packXml.setAttribute("required", pack.get("required") ? "yes" : "no");
+				packXml.createChild("description").setContent(pack.get("description"));
+				
+				files = pack.get("files");
+				for (j = 0; j < files.length; j++) {
+					fileXml = packXml.createChild("file");
+					fileXml.setAttribute("targetdir", "$INSTALL_PATH");
+					fileXml.setAttribute("src", files[j]);
+				}
+			}
 		}
 	}
 });

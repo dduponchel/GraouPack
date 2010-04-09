@@ -38,21 +38,24 @@
 	<script type="text/javascript" src="js/src/xml/ie/Element.js"></script>
 	
 	<script type="text/javascript" src="js/src/model/BlackBoard.js"></script>
-	<script type="text/javascript" src="js/src/model/PanelConfig.js"></script>
+	<script type="text/javascript" src="js/src/model/SubConfig.js"></script>
 	
 	<script type="text/javascript" src="js/src/controller/GenericController.js"></script>
+	<script type="text/javascript" src="js/src/controller/GenericConfigController.js"></script>
 	<script type="text/javascript" src="js/src/controller/Project.js"></script>
 	<script type="text/javascript" src="js/src/controller/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/controller/Locale.js"></script>
 	<script type="text/javascript" src="js/src/controller/Panel.js"></script>
+	<script type="text/javascript" src="js/src/controller/Pack.js"></script>
 	
 	<script type="text/javascript" src="js/src/view/GenericView.js"></script>
 	<script type="text/javascript" src="js/src/view/Project.js"></script>
 	<script type="text/javascript" src="js/src/view/Presentation.js"></script>
 	<script type="text/javascript" src="js/src/view/Locale.js"></script>
 	<script type="text/javascript" src="js/src/view/Panel.js"></script>
+	<script type="text/javascript" src="js/src/view/Pack.js"></script>
 	
-	<script type="text/javascript" src="js/src/view/panelConfig/GenericPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/GenericConfigView.js"></script>
 	<script type="text/javascript" src="js/src/view/panelConfig/FinishPanel.js"></script>
 	<script type="text/javascript" src="js/src/view/panelConfig/HelloPanel.js"></script>
 	<script type="text/javascript" src="js/src/view/panelConfig/InfoPanel.js"></script>
@@ -60,8 +63,8 @@
 	<script type="text/javascript" src="js/src/view/panelConfig/LicencePanel.js"></script>
 	<script type="text/javascript" src="js/src/view/panelConfig/PacksPanel.js"></script>
 	<script type="text/javascript" src="js/src/view/panelConfig/TargetPanel.js"></script>
+	<script type="text/javascript" src="js/src/view/packConfig/Pack.js"></script>
 	
-	<script type="text/javascript" src="js/src/controller/panelConfig/GenericPanel.js"></script>
 	<script type="text/javascript" src="js/src/controller/panelConfig/FinishPanel.js"></script>
 	<script type="text/javascript" src="js/src/controller/panelConfig/HelloPanel.js"></script>
 	<script type="text/javascript" src="js/src/controller/panelConfig/InfoPanel.js"></script>
@@ -69,11 +72,13 @@
 	<script type="text/javascript" src="js/src/controller/panelConfig/LicencePanel.js"></script>
 	<script type="text/javascript" src="js/src/controller/panelConfig/PacksPanel.js"></script>
 	<script type="text/javascript" src="js/src/controller/panelConfig/TargetPanel.js"></script>
+	<script type="text/javascript" src="js/src/controller/packConfig/Pack.js"></script>
 	
 	<script type="text/javascript" src="js/src/generator/GenericGenerator.js"></script>
 	<script type="text/javascript" src="js/src/generator/Project.js"></script>
 	<script type="text/javascript" src="js/src/generator/Locale.js"></script>
 	<script type="text/javascript" src="js/src/generator/Panel.js"></script>
+	<script type="text/javascript" src="js/src/generator/Pack.js"></script>
 	<script type="text/javascript" src="js/src/generator/panel/GenericPanel.js"></script>
 	<script type="text/javascript" src="js/src/generator/panel/FinishPanel.js"></script>
 	<script type="text/javascript" src="js/src/generator/panel/HelloPanel.js"></script>
@@ -100,8 +105,9 @@
 	builder.addPanel({label : "Presentation",	name : "Presentation"});
 	builder.addPanel({label : "my application",	name : "Project"});
 	builder.addPanel({label : "locales",		name : "Locale"});
-	builder.addPanel({label : "panels",		name : "Panel"});
-	builder.xmlHandlers = [ "Locale", "Project", "Panel" ];
+	builder.addPanel({label : "panels",			name : "Panel"});
+	builder.addPanel({label : "packs",			name : "Pack"});
+	builder.xmlHandlers = [ "Locale", "Project", "Panel", "Pack" ];
 	builder.start();
 </script>
 <footer>done with jQuery and vim :D</footer>

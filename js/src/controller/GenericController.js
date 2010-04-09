@@ -87,7 +87,17 @@ $.Class("izpack.controller", "GenericController", {
 			var settings = {
 				view: "",
 				model: "",
-				fromView: function (view) {},
+				/*
+				 * Get the data from the view and return them.
+				 * this refers to the view.
+				 * arguments contains the datas passed with the event.
+				 */
+				fromView: function () {},
+				
+				/* 
+				 * Set the data from the model into the view.
+				 * this refers to the view.
+				 */ 
 				toView: function (data) {},
 				constraints : [],
 				defaultValue : {},
@@ -189,15 +199,17 @@ $.Class("izpack.controller", "GenericController", {
 			
 			this.view.load();
 			
-			var handler = function (event) {
-					var binding = event.data.binding,
+			var handler = function () {
+					var args = $.makeArray(arguments),
+						event = args.shift(),
+						binding = event.data.binding,
 						controller = event.data.controller,
 						viewData;
 					
 					/*DEBUG_START*/
 					console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
 					/*DEBUG_END*/
-					viewData = binding.fromView.apply(controller.view, [binding.view]);
+					viewData = binding.fromView.apply(controller.view, args);
 					controller.validateBinding(binding.view, viewData, binding.constraints);
 					controller.blackBoard.set(binding.model, viewData);
 					

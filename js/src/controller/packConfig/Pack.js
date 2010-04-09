@@ -25,23 +25,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.view.panelConfig", "PacksPanel", {
-	isa : izpack.view.GenericConfigView,
-	init : function (domView) {
-		this._super("PacksPanelConfig", domView);
-		this.useTree = "#tab-panel-config-packs-tree";
+$.Class("izpack.controller.packConfig", "Pack", {
+	isa : izpack.controller.GenericConfigController,
+	init : function (view) {
+		this._super(view);
+		
+		this.defaultConfig = {
+			name		: "",
+			required	: false,
+			description	: "",
+			files		: []
+		};
 	},
 	methods : {
-		initView : function () {
-		},
-		getUseTree : function () {
-			return $(this.useTree)[0].checked;
-		},
-		setUseTree : function (useTree) {
-			$(this.useTree)[0].checked = useTree;
+		setBindings : function () {
+			this.bind({
+				view			: this.view.name,
+				model			: "name",
+				event			: "change",
+				fromView		: this.view.getName,
+				toView			: this.view.setName,
+				constraints		: [ "required" ]
+			});
+			this.bind({
+				view			: this.view.required,
+				model			: "required",
+				event			: "change",
+				fromView		: this.view.getRequired,
+				toView			: this.view.setRequired,
+				constraints		: [ "required" ]
+			});
+			this.bind({
+				view			: this.view.description,
+				model			: "description",
+				event			: "change",
+				fromView		: this.view.getDescription,
+				toView			: this.view.setDescription
+			});
+			this.bind({
+				view			: this.view.files,
+				model			: "files",
+				event			: "change",
+				fromView		: this.view.getFiles,
+				toView			: this.view.setFiles
+			});
 		}
 	}
 });

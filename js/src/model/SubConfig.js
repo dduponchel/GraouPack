@@ -25,18 +25,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+ 
 "use strict";
+ 
+$.Class("izpack.model", "SubConfig", {
+	isa : "BlackBoard",
+	init : function (data) {
+		this._super();
+		this.data = (data) ? data : {};
+		this.name = "SubConfig";
+	},
+	methods : {
 
-/**
- * A generic panel config controller.
- * @param {GenericView} view the view to use.
- */
-$.Class("izpack.view.panelConfig", "GenericPanel", {
-	isa : izpack.view.GenericView,
-	init : function (name, domView) {
-		this._super(name);
-		this.href = null; // irrelevant here
-		this.domView = domView;
+		clone : function () {
+			return new izpack.model.SubConfig($.extend(true, {}, this.data));
+		},
+		
+		setData : function (otherConfig) {
+			this.data = otherConfig.data;
+		}
 	}
 });

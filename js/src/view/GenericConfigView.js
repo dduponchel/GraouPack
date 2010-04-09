@@ -25,23 +25,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.view.panelConfig", "PacksPanel", {
-	isa : izpack.view.GenericConfigView,
-	init : function (domView) {
-		this._super("PacksPanelConfig", domView);
-		this.useTree = "#tab-panel-config-packs-tree";
-	},
-	methods : {
-		initView : function () {
-		},
-		getUseTree : function () {
-			return $(this.useTree)[0].checked;
-		},
-		setUseTree : function (useTree) {
-			$(this.useTree)[0].checked = useTree;
-		}
+/**
+ * A generic panel config controller.
+ * @param {GenericView} view the view to use.
+ */
+$.Class("izpack.view", "GenericConfigView", {
+	isa : "GenericView",
+	init : function (name, domView) {
+		this._super(name);
+		this.href = null; // irrelevant here
+		this.domView = domView;
 	}
 });

@@ -25,24 +25,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
- 
-$.Class("izpack.model", "PanelConfig", {
-	isa : izpack.model.BlackBoard,
-	init : function (data) {
-		this._super();
-		this.data = (data) ? data : {};
-		this.name = "PanelConfig";
+
+/**
+ * A generic config controller.
+ */
+$.Class("izpack.controller", "GenericConfigController", {
+	isa : "GenericController",
+	init : function (view) {
+		this._super(view, null);
+		this.defaultConfig   = {};
+		this.notSavedConfig  = null;
 	},
 	methods : {
 
-		clone : function () {
-			return new izpack.model.PanelConfig($.extend(true, {}, this.data));
+		getDefaultConfig : function () {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::getDefaultConfig");
+			/*DEBUG_END*/
+			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
 		},
 		
-		setData : function (otherConfig) {
-			this.data = otherConfig.data;
+		getConfig : function () {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::getConfig");
+			/*DEBUG_END*/
+			return this.blackBoard;
+		},
+		
+		setConfig : function (config) {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::setConfig", config);
+			/*DEBUG_END*/
+			this.blackBoard = (config) ? config.clone() : null;
+			this.notSavedConfig = config;
+		},
+		
+		saveConfig : function () {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::saveConfig");
+			/*DEBUG_END*/
+			// blackBoard -> notSavedConfig
+			this.notSavedConfig.setData(this.blackBoard);
 		}
 	}
 });

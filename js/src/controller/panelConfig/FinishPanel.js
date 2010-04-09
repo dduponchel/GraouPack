@@ -29,10 +29,10 @@
 "use strict";
 
 $.Class("izpack.controller.panelConfig", "FinishPanel", {
-	isa : "GenericPanel",
+	isa : izpack.controller.GenericConfigController,
 
-	init : function (view, domGenericPanel) {
-		this._super(view, domGenericPanel);
+	init : function (view) {
+		this._super(view);
 		this.defaultConfig = {
 			"addAutomated" : false
 		};

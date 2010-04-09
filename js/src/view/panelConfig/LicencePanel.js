@@ -29,7 +29,7 @@
 "use strict";
 
 $.Class("izpack.view.panelConfig", "LicencePanel", {
-	isa : "GenericPanel",
+	isa : izpack.view.GenericConfigView,
 	init : function (domView) {
 		this._super("LicencePanelConfig", domView);
 		this.useHTML = "#tab-panel-config-licence-file-html";

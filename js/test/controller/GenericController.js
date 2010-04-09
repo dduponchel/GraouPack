@@ -42,7 +42,7 @@ module("Controller GenericController", {
 
 test("bind: initView + trigger", function () {
 	
-	expect(4);
+	expect(3);
 	
 	var div = $("<div id='GenericControllerTest'/>").appendTo("body");
 	
@@ -53,8 +53,7 @@ test("bind: initView + trigger", function () {
 	this.controller.bind({
 		view : "#GenericControllerTest",
 		model : "associatedEntry",
-		fromView : function (view) {
-			equal(view, "#GenericControllerTest", "fromView called");
+		fromView : function () {
 			ok(this.thisIsAView, "fromView context : view");
 			return "fromView result";
 		},
@@ -86,7 +85,7 @@ test("bind: showView", function () {
 	this.controller.bind({
 		view : "#GenericControllerTest",
 		model : "associatedEntry",
-		fromView : function (view) {
+		fromView : function () {
 			ok(false, "fromView called");
 		},
 		toView : function (data) {
@@ -101,7 +100,7 @@ test("bind: showView", function () {
 });
 
 test("bind: constraints", function () {
-	expect(4);
+	expect(3);
 	
 	var div = $("<div id='GenericControllerTest'/>").appendTo("body");
 	
@@ -112,8 +111,7 @@ test("bind: constraints", function () {
 	this.controller.bind({
 		view : "#GenericControllerTest",
 		model : "associatedEntry",
-		fromView : function (view) {
-			equal(view, "#GenericControllerTest", "fromView called");
+		fromView : function () {
 			ok(this.thisIsAView, "fromView context : view");
 			return "";
 		},

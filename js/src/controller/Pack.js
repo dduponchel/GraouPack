@@ -25,23 +25,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.view.panelConfig", "PacksPanel", {
-	isa : izpack.view.GenericConfigView,
-	init : function (domView) {
-		this._super("PacksPanelConfig", domView);
-		this.useTree = "#tab-panel-config-packs-tree";
+$.Class("izpack.controller", "Pack", {
+
+	isa : "GenericController",
+
+	init : function (view, blackBoard) {
+		this._super(view, blackBoard);
 	},
 	methods : {
-		initView : function () {
+		setBindings : function () {
+			this.bind({
+				view			: this.view.packsContainer,
+				model			: "packs",
+				defaultValue	: [],
+				fromView		: this.view.getPacks,
+				toView			: this.view.setPacks,
+				constraints		: [ "required" ]
+			});
 		},
-		getUseTree : function () {
-			return $(this.useTree)[0].checked;
-		},
-		setUseTree : function (useTree) {
-			$(this.useTree)[0].checked = useTree;
+
+		afterInitView : function () {
+			var view			= this.view,
+				configDom		= view.configDom,
+				configDialog	= view.createConfigDialog(),
+				configView,
+				configController;
+
+			
+			/*DEBUG_START*/
+			console.debug("Pack controller::afterInitView : creating config view/controller");
+			/*DEBUG_END*/
+			
+			configView =		new izpack.view.packConfig.Pack(configDialog);
+			configController =	new izpack.controller.packConfig.Pack(configView);
+			
+			$(configDom).data("config.controller", configController);
+			
+			configController.setBindings();
+			configController.initView();
 		}
 	}
 });
