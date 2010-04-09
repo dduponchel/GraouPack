@@ -27,6 +27,7 @@
  */
  
 "use strict";
+/*global XMLSerializer, XPathResult */
 
 /**
  * Create an xml DOM document, and make its manipulation easier.

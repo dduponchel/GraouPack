@@ -41,10 +41,12 @@ $.Class("izpack.generator.panel", "InfoPanel", {
 		 */
 		addGeneratedInfo : function (xmlBuilder, files) {
 			var resourceOptions = {
-				//forcedSrc  : this.blackBoard.get("fileSrc"),
-				xmlBuilder : xmlBuilder
-			};
-			var fileContent = "";
+					//forcedSrc  : this.blackBoard.get("fileSrc"),
+					xmlBuilder : xmlBuilder
+				},
+				fileContent = "",
+				addedData;
+			
 			if (this.blackBoard.get("useHTML")) {
 				$.extend(resourceOptions, {
 					clazz      : "HTMLInfoPanel",
@@ -67,7 +69,7 @@ $.Class("izpack.generator.panel", "InfoPanel", {
 				});
 				fileContent = "text";
 			}
-			var addedData = this.createPanelWithResource(resourceOptions);
+			addedData = this.createPanelWithResource(resourceOptions);
 			files.push({
 				name : addedData.name,
 				content : fileContent + " for InfoPanel n°" + (addedData.index + 1)

@@ -29,14 +29,45 @@
 "use strict";
 
 /**
- * A generic panel config controller.
- * @param {GenericView} view the view to use.
+ * A generic config controller.
  */
-$.Class("izpack.view.panelConfig", "GenericPanel", {
-	isa : izpack.view.GenericView,
-	init : function (name, domView) {
-		this._super(name);
-		this.href = null; // irrelevant here
-		this.domView = domView;
+$.Class("izpack.controller", "GenericConfigController", {
+	isa : "GenericController",
+	init : function (view) {
+		this._super(view, null);
+		this.defaultConfig   = {};
+		this.notSavedConfig  = null;
+	},
+	methods : {
+
+		getDefaultConfig : function () {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::getDefaultConfig");
+			/*DEBUG_END*/
+			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
+		},
+		
+		getConfig : function () {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::getConfig");
+			/*DEBUG_END*/
+			return this.blackBoard;
+		},
+		
+		setConfig : function (config) {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::setConfig", config);
+			/*DEBUG_END*/
+			this.blackBoard = (config) ? config.clone() : null;
+			this.notSavedConfig = config;
+		},
+		
+		saveConfig : function () {
+			/*DEBUG_START*/
+			console.debug("GenericConfigController::saveConfig");
+			/*DEBUG_END*/
+			// blackBoard -> notSavedConfig
+			this.notSavedConfig.setData(this.blackBoard);
+		}
 	}
 });

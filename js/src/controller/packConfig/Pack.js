@@ -25,27 +25,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.generator", "Locale", {
-	isa : "GenericGenerator",
-	
-	init : function (blackBoard) {
-		this._super(blackBoard);
+$.Class("izpack.controller.packConfig", "Pack", {
+	isa : izpack.controller.GenericConfigController,
+	init : function (view) {
+		this._super(view);
+		
+		this.defaultConfig = {
+			name		: "",
+			required	: false,
+			description	: "",
+			files		: []
+		};
 	},
-	
 	methods : {
-		/**
-		 * @Override
-		 */
-		addGeneratedInfo : function (xmlBuilder, files) {
-			var localeXml = xmlBuilder.get("/installation/locale"),
-				locales = this.blackBoard.get("locales"),
-				i;
-			for (i = 0; i < locales.length; i++) {
-				localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
-			}
+		setBindings : function () {
+			this.bind({
+				view			: this.view.name,
+				model			: "name",
+				event			: "change",
+				fromView		: this.view.getName,
+				toView			: this.view.setName,
+				constraints		: [ "required" ]
+			});
+			this.bind({
+				view			: this.view.required,
+				model			: "required",
+				event			: "change",
+				fromView		: this.view.getRequired,
+				toView			: this.view.setRequired,
+				constraints		: [ "required" ]
+			});
+			this.bind({
+				view			: this.view.description,
+				model			: "description",
+				event			: "change",
+				fromView		: this.view.getDescription,
+				toView			: this.view.setDescription
+			});
+			this.bind({
+				view			: this.view.files,
+				model			: "files",
+				event			: "change",
+				fromView		: this.view.getFiles,
+				toView			: this.view.setFiles
+			});
 		}
 	}
 });

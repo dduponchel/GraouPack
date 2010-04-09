@@ -42,13 +42,11 @@ $.Class("izpack.view", "Locale", {
 				connectWith : this.lists,
 				placeholder : 'ui-state-highlight'
 			})
-			.bind('sortupdate', {view: this}, function (event, ui) {
-				var view = event.data.view;
-				if ($(this).is(view.selected)) {
-					$(view.selected).trigger("izpack.change");
-				}
-			})
 			.disableSelection();
+			
+			$(this.selected).bind('sortupdate', function (event, ui) {
+				$(this).trigger("izpack.change");
+			});
 
 		},
 
@@ -61,12 +59,17 @@ $.Class("izpack.view", "Locale", {
 		},
 
 		setLocales : function (locales) {
-			var currentLocales = {};
+			var currentLocales = {},
+				currentLocale,
+				locale,
+				i; // iter
+				
 			$("li", this.selected).each(function () {
-				currentLocales[$(this).attr("data-iso3")] = $(this);
+				var $this = $(this);
+				currentLocales[$this.attr("data-iso3")] = $this;
 			});
-			for (var i = 0; i < locales.length; i++) {
-				var locale = locales[i];
+			for (i = 0; i < locales.length; i++) {
+				locale = locales[i];
 				if (locale in currentLocales) {
 					// this locale is already selected, we do nothing
 					delete currentLocales[locale];
@@ -77,7 +80,7 @@ $.Class("izpack.view", "Locale", {
 				}
 			}
 			// the remaining locales in currentLocales are no longer relevant
-			for (var currentLocale in currentLocales) {
+			for (currentLocale in currentLocales) {
 				if (currentLocales.hasOwnProperty(currentLocale)) {
 					$("li[data-iso3=" + currentLocale + "]", this.selected).appendTo(this.available);
 				}

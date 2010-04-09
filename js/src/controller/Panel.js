@@ -52,10 +52,17 @@ $.Class("izpack.controller", "Panel", {
 			$(this.view.availablePanels).each(function (index, domElt) {
 				var availablePanel = $(this),
 					clazz = availablePanel.attr("data-class"),
-					panelDialog = view.createConfigPanel(availablePanel);
+					panelDialog = view.createConfigPanel(availablePanel),
+					panelView,
+					panelController;
+				
+				/*DEBUG_START*/
 				console.debug("Panel controller::afterInitView : creating view/controller for " + clazz);
-				var panelView = new izpack.view.panelConfig[clazz](panelDialog),
-					panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);
+				/*DEBUG_END*/
+				
+				panelView = new izpack.view.panelConfig[clazz](panelDialog);
+				panelController = new izpack.controller.panelConfig[clazz](panelView);
+				
 				availablePanel
 				.data("config.controller", panelController)
 				.data("config.dialog", panelDialog)

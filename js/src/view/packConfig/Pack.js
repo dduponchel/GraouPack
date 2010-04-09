@@ -25,27 +25,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.generator", "Locale", {
-	isa : "GenericGenerator",
-	
-	init : function (blackBoard) {
-		this._super(blackBoard);
+$.Class("izpack.view.packConfig", "Pack", {
+	isa : izpack.view.GenericConfigView,
+	init : function (domView) {
+		this._super("packConfig", domView);
+		
+		this.name			= "#tab-pack-config-name";
+		this.required		= "#tab-pack-config-required";
+		this.description	= "#tab-pack-config-description";
+		this.files			= "#tab-izpack-config-files";
 	},
-	
 	methods : {
-		/**
-		 * @Override
-		 */
-		addGeneratedInfo : function (xmlBuilder, files) {
-			var localeXml = xmlBuilder.get("/installation/locale"),
-				locales = this.blackBoard.get("locales"),
-				i;
-			for (i = 0; i < locales.length; i++) {
-				localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
-			}
+		initView : function () {
+			// nothing to do yet
+		},
+		getName : function () {
+			return $(this.name).val();
+		},
+		setName : function (name) {
+			$(this.name).val(name);
+		},
+		getRequired : function () {
+			return $(this.required)[0].checked;
+		},
+		setRequired : function (required) {
+			$(this.required)[0].checked = required;
+		},
+		getDescription : function () {
+			return $(this.description).val();
+		},
+		setDescription : function (description) {
+			$(this.description).val(description);
+		},
+		getFiles : function () {
+			return $(this.files).val().split(/\n+/);
+		},
+		setFiles : function (files) {
+			$(this.files).val(files.join("\n"));
 		}
 	}
 });

@@ -24,6 +24,12 @@ If you want to use it offline, you have to download these projects and update
 the file index.html. Be warned, some external files include others ! (for example
 the css for jQuery UI. You should be fine with the whole project).
 
+Tests : 
+ - the tests can be run with js/test/index.html
+ - cross browser code coverage is possible with jscoverage ( http://siliconforks.com/jscoverage/ ) :
+cd GraouPack ; jscoverage-server --verbose --no-instrument=/js/test/ --no-instrument=/js/lib/
+then opens http://127.0.0.1:8080/jscoverage.html?js/test/index.html
+
 The main repository is on GitHub ( http://github.com/dduponchel/GraouPack )
 and this app can be seen deployed on google app engine ( http://graoupack.appspot.com/ )
 thanks to DryDrop ( http://drydrop.binaryage.com/ ).

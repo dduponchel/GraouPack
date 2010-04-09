@@ -25,27 +25,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.generator", "Locale", {
-	isa : "GenericGenerator",
-	
-	init : function (blackBoard) {
-		this._super(blackBoard);
-	},
-	
-	methods : {
-		/**
-		 * @Override
-		 */
-		addGeneratedInfo : function (xmlBuilder, files) {
-			var localeXml = xmlBuilder.get("/installation/locale"),
-				locales = this.blackBoard.get("locales"),
-				i;
-			for (i = 0; i < locales.length; i++) {
-				localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
-			}
-		}
+/**
+ * A generic panel config controller.
+ * @param {GenericView} view the view to use.
+ */
+$.Class("izpack.view", "GenericConfigView", {
+	isa : "GenericView",
+	init : function (name, domView) {
+		this._super(name);
+		this.href = null; // irrelevant here
+		this.domView = domView;
 	}
 });

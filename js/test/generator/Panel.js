@@ -47,7 +47,7 @@ test("HelloPanel: simple hello panel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "HelloPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false
 			})
 		}
@@ -67,7 +67,7 @@ test("HelloPanel: html hello panel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "HelloPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true
 			})
 		}
@@ -95,19 +95,19 @@ test("HelloPanel: multiple panels", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "HelloPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true
 			})
 		},
 		{
 			clazz : "HelloPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false
 			})
 		},
 		{
 			clazz : "HelloPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true
 			})
 		}
@@ -154,7 +154,7 @@ test("InfoPanel: text info panel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "InfoPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false
 			})
 		}
@@ -183,7 +183,7 @@ test("InfoPanel: html info panel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "InfoPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true
 			})
 		}
@@ -211,25 +211,25 @@ test("InfoPanel: multiple panels", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "InfoPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true // HTML
 			})
 		},
 		{
 			clazz : "InfoPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false // TXT
 			})
 		},
 		{
 			clazz : "InfoPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true // HTML
 			})
 		},
 		{
 			clazz : "InfoPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false // TXT
 			})
 		}
@@ -290,7 +290,7 @@ test("LicencePanel: text info panel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "LicencePanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false
 			})
 		}
@@ -319,7 +319,7 @@ test("LicencePanel: html info panel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "LicencePanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true
 			})
 		}
@@ -347,25 +347,25 @@ test("LicencePanel: multiple panels", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "LicencePanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true // HTML
 			})
 		},
 		{
 			clazz : "LicencePanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false // TXT
 			})
 		},
 		{
 			clazz : "LicencePanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : true // HTML
 			})
 		},
 		{
 			clazz : "LicencePanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useHTML" : false // TXT
 			})
 		}
@@ -448,7 +448,7 @@ test("PacksPanel: PacksPanel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "PacksPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useTree" : false
 			})
 		}
@@ -468,7 +468,7 @@ test("PacksPanel: TreePacksPanel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "PacksPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"useTree" : true
 			})
 		}
@@ -514,7 +514,7 @@ test("FinishPanel: SimpleFinishPanel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "FinishPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"addAutomated" : false
 			})
 		}
@@ -534,7 +534,7 @@ test("FinishPanel: FinishPanel", function () {
 	this.mockDatas["panels"] = [
 		{
 			clazz : "FinishPanel",
-			config : new izpack.model.PanelConfig({
+			config : new izpack.model.SubConfig({
 				"addAutomated" : true
 			})
 		}

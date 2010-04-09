@@ -29,7 +29,7 @@
 "use strict";
 
 $.Class("izpack.view.panelConfig", "PacksPanel", {
-	isa : "GenericPanel",
+	isa : izpack.view.GenericConfigView,
 	init : function (domView) {
 		this._super("PacksPanelConfig", domView);
 		this.useTree = "#tab-panel-config-packs-tree";

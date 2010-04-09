@@ -27,22 +27,42 @@
  */
  
 "use strict";
- 
-$.Class("izpack.model", "PanelConfig", {
-	isa : izpack.model.BlackBoard,
-	init : function (data) {
-		this._super();
-		this.data = (data) ? data : {};
-		this.name = "PanelConfig";
-	},
-	methods : {
 
-		clone : function () {
-			return new izpack.model.PanelConfig($.extend(true, {}, this.data));
-		},
-		
-		setData : function (otherConfig) {
-			this.data = otherConfig.data;
+$.Class("izpack.generator", "Pack", {
+	isa : "GenericGenerator",
+	
+	init : function (blackBoard) {
+		this._super(blackBoard);
+	},
+	
+	methods : {
+		/**
+		 * @Override
+		 */
+		addGeneratedInfo : function (xmlBuilder, files) {
+			var packs = this.blackBoard.get("packs"), // packs, js side
+				pack, // a pack, js side
+				packsXml, // packs, xml side
+				packXml, // a pack, xml side
+				files, // files for a pack
+				fileXml, // file, xml side
+				i, j; // iter
+			
+			packsXml = xmlBuilder.get("/installation/packs");
+			for (i = 0; i < packs.length; i++) {
+				pack = packs[i];
+				packXml = packsXml.createChild("pack");
+				packXml.setAttribute("name", pack.get("name"));
+				packXml.setAttribute("required", pack.get("required") ? "yes" : "no");
+				packXml.createChild("description").setContent(pack.get("description"));
+				
+				files = pack.get("files");
+				for (j = 0; j < files.length; j++) {
+					fileXml = packXml.createChild("file");
+					fileXml.setAttribute("targetdir", "$INSTALL_PATH");
+					fileXml.setAttribute("src", files[j]);
+				}
+			}
 		}
 	}
 });

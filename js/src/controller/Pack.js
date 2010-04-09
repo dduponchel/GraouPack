@@ -25,27 +25,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 "use strict";
 
-$.Class("izpack.generator", "Locale", {
-	isa : "GenericGenerator",
-	
-	init : function (blackBoard) {
-		this._super(blackBoard);
+$.Class("izpack.controller", "Pack", {
+
+	isa : "GenericController",
+
+	init : function (view, blackBoard) {
+		this._super(view, blackBoard);
 	},
-	
 	methods : {
-		/**
-		 * @Override
-		 */
-		addGeneratedInfo : function (xmlBuilder, files) {
-			var localeXml = xmlBuilder.get("/installation/locale"),
-				locales = this.blackBoard.get("locales"),
-				i;
-			for (i = 0; i < locales.length; i++) {
-				localeXml.createChild("langpack").setAttribute("iso3", locales[i]);
-			}
+		setBindings : function () {
+			this.bind({
+				view			: this.view.packsContainer,
+				model			: "packs",
+				defaultValue	: [],
+				fromView		: this.view.getPacks,
+				toView			: this.view.setPacks,
+				constraints		: [ "required" ]
+			});
+		},
+
+		afterInitView : function () {
+			var view			= this.view,
+				configDom		= view.configDom,
+				configDialog	= view.createConfigDialog(),
+				configView,
+				configController;
+
+			
+			/*DEBUG_START*/
+			console.debug("Pack controller::afterInitView : creating config view/controller");
+			/*DEBUG_END*/
+			
+			configView =		new izpack.view.packConfig.Pack(configDialog);
+			configController =	new izpack.controller.packConfig.Pack(configView);
+			
+			$(configDom).data("config.controller", configController);
+			
+			configController.setBindings();
+			configController.initView();
 		}
 	}
 });

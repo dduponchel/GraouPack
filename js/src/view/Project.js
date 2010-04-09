@@ -61,7 +61,10 @@ $.Class("izpack.view", "Project", {
 			});
 			
 			$(this.addButton).bind("click", {view: this}, function (event) {
-				var view = event.data.view;
+				var view = event.data.view,
+					nameText = $(view.addAuthorName).val(),
+					mailText = $(view.addAuthorMail).val();
+				
 				$.validity.setup({
 					outputMode : "summary"
 				});
@@ -74,8 +77,6 @@ $.Class("izpack.view", "Project", {
 					return false;
 				}
 	
-				var nameText = $(view.addAuthorName).val();
-				var mailText = $(view.addAuthorMail).val();
 				view.addAuthor(nameText, mailText);
 				$(view.authors).trigger("izpack.change");
 				$(view.addAuthorFields).val("");
@@ -104,8 +105,8 @@ $.Class("izpack.view", "Project", {
 			var authorsRes = [];
 			$(this.authors + " li").each(function () {
 				authorsRes.push({
-					name : $(".name", $(this)).text(),
-					mail : $(".mail", $(this)).text()
+					name : $(".name", this).text(),
+					mail : $(".mail", this).text()
 				});
 			});
 			return authorsRes;

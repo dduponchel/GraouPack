@@ -57,14 +57,13 @@ $.Class("izpack.controller", "GenericController", {
 
 	methods : {
 
-		setBindings : function () {
-			throw "setBindings must be overriden !";
-		},
-		
 		validateBinding : function (view, data, constraints) {
-			var isValid = true;
-			for (var i = 0; i < constraints.length; i++) {
-				var constraint = constraints[i];
+			var isValid = true,
+				i,
+				constraint;
+			
+			for (i = 0; i < constraints.length; i++) {
+				constraint = constraints[i];
 				isValid = this.constraints[constraint](data, view) && isValid;
 			}
 			if (isValid) {
@@ -88,7 +87,17 @@ $.Class("izpack.controller", "GenericController", {
 			var settings = {
 				view: "",
 				model: "",
-				fromView: function (view) {},
+				/*
+				 * Get the data from the view and return them.
+				 * this refers to the view.
+				 * arguments contains the datas passed with the event.
+				 */
+				fromView: function () {},
+				
+				/* 
+				 * Set the data from the model into the view.
+				 * this refers to the view.
+				 */ 
 				toView: function (data) {},
 				constraints : [],
 				defaultValue : {},
@@ -104,7 +113,9 @@ $.Class("izpack.controller", "GenericController", {
 				throw "GenericController::bind : the associated model must be defined !";
 			}
 			
+			/*DEBUG_START*/
 			console.debug("GenericController::bind '", settings.view, "' to '", settings.model + "' on '", settings.event, "', ", settings.constraints.length, " constraints");
+			/*DEBUG_END*/
 			
 			// default value
 			if (this.blackBoard && !this.blackBoard.isDefined(settings.model)) {
@@ -121,14 +132,18 @@ $.Class("izpack.controller", "GenericController", {
 			};
 			
 			$.extend(settings, options);
+			/*DEBUG_START*/
 			console.debug("GenericController::addModelConstraint, blaming'", settings.blame);
+			/*DEBUG_END*/
 			this.modelConstraints.push(settings);
 		},
 		
 		validate : function () {
-			var isValid = true;
-			
-			var i = 0;
+			var isValid = true,
+				i, // iter
+				binding,
+				viewData,
+				modelConstraint;
 	
 			for (i = 0; i < this.modelConstraints.length; i++) {
 				// remove model constraint errors
@@ -136,13 +151,13 @@ $.Class("izpack.controller", "GenericController", {
 			}
 	
 			for (i = 0; i < this.bindings.length; i++) {
-				var binding = this.bindings[i];
-				var viewData = binding.fromView.apply(this.view, [binding.view]);
+				binding = this.bindings[i];
+				viewData = binding.fromView.apply(this.view, [binding.view]);
 				isValid = this.validateBinding(binding.view, viewData, binding.constraints) && isValid;
 			}
 	
 			for (i = 0; i < this.modelConstraints.length; i++) {
-				var modelConstraint = this.modelConstraints[i];
+				modelConstraint = this.modelConstraints[i];
 				isValid = this.validateModelConstraints(modelConstraint) && isValid;
 			}
 	
@@ -154,12 +169,16 @@ $.Class("izpack.controller", "GenericController", {
 		afterShowView : function () {},
 		
 		showView : function () {
+			var i, // iter
+				binding;
 			
 			this.beforeShowView();
 			
+			/*DEBUG_START*/
 			console.debug("GenericController::showView ", this.view.name, ", setting " + this.bindings.length + " view items via binding");
-			for (var i = 0; i < this.bindings.length; i++) {
-				var binding = this.bindings[i];
+			/*DEBUG_END*/
+			for (i = 0; i < this.bindings.length; i++) {
+				binding = this.bindings[i];
 				binding.toView.apply(this.view, [this.blackBoard.get(binding.model)]);
 			}
 			
@@ -174,28 +193,42 @@ $.Class("izpack.controller", "GenericController", {
 			
 			this.beforeInitView();
 			
+			/*DEBUG_START*/
 			console.debug("GenericController::initView ", this.view.name);
+			/*DEBUG_END*/
 			
 			this.view.load();
 			
-			var handler = function (event) {
-				var binding = event.data.binding;
-				var controller = event.data.controller;
-				console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
-				var viewData = binding.fromView.apply(controller.view, [binding.view]);
-				controller.validateBinding(binding.view, viewData, binding.constraints);
-				controller.blackBoard.set(binding.model, viewData);
-				
-				return true; // don't block on changes !
-			};
+			var handler = function () {
+					var args = $.makeArray(arguments),
+						event = args.shift(),
+						binding = event.data.binding,
+						controller = event.data.controller,
+						viewData;
+					
+					/*DEBUG_START*/
+					console.debug("GenericController::bound event : view '", binding.view, "' has triggered '", binding.event, "'");
+					/*DEBUG_END*/
+					viewData = binding.fromView.apply(controller.view, args);
+					controller.validateBinding(binding.view, viewData, binding.constraints);
+					controller.blackBoard.set(binding.model, viewData);
+					
+					return true; // don't block on changes !
+				},
+				i, // iter
+				binding;
 			
 			// binding to the real elements
-			for (var i = 0; i < this.bindings.length; i++) {
-				var binding = this.bindings[i];
+			for (i = 0; i < this.bindings.length; i++) {
+				binding = this.bindings[i];
 				$(binding.view).bind(binding.event, {binding: binding, controller: this}, handler);
 			}
 			
 			this.afterInitView();
 		}
+	},
+	
+	abstracts : {
+		setBindings : function () {}
 	}
 });

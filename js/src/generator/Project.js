@@ -40,12 +40,16 @@ $.Class("izpack.generator", "Project", {
 		 * @Override
 		 */
 		addGeneratedInfo : function (xmlBuilder, files) {
-			var authors = this.blackBoard.get("authors");
+			var authors = this.blackBoard.get("authors"), // authors, js side
+				author, // an author, js side
+				authorsXml, // authors, xml side
+				authorXml, // an author, xml side
+				i; // iter
 			if (authors.length) {
-				var authorsXml = xmlBuilder.get("/installation/info/authors");
-				for (var i = 0; i < authors.length; i++) {
-					var author = authors[i];
-					var authorXml = authorsXml.createChild("author");
+				authorsXml = xmlBuilder.get("/installation/info/authors");
+				for (i = 0; i < authors.length; i++) {
+					author = authors[i];
+					authorXml = authorsXml.createChild("author");
 					authorXml.setAttribute("name", author.name);
 					authorXml.setAttribute("email", author.mail);
 				}

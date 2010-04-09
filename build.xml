@@ -18,9 +18,17 @@
 		
 		<!-- source files -->
 		<path id="js.srcFiles">
+			<!-- first, the class plugin and the compatibility check !-->
+			<fileset dir="js/src">
+				<include name="jQuery.class.js" />
+				<include name="CompatibilityCheck.js" />
+			</fileset>
 			<fileset dir="js/src">
 				<include name="*.js" />
+				<exclude name="jQuery.class.js" />
+				<exclude name="CompatibilityCheck.js" />
 			</fileset>
+			
 			<fileset dir="js/src/zip">
 				<include name="*.js" />
 			</fileset>
@@ -151,8 +159,8 @@
 		
 		<mkdir dir="${target}" />
 		<concat destfile="${target.concatFile.path}">
-			<path refid="js.srcFiles" />
 			<path refid="js.libFiles" />
+			<path refid="js.srcFiles" />
 		</concat>
 	</target>
 	
@@ -181,6 +189,22 @@
 		<echo>${count.srcFiles} files checked</echo>
 		
 	</target>
+
+	<!--                            -->
+	<!--  delete debug statements   -->
+	<!--                            -->
+	<target
+		description="remove the debug statements"
+		name="delete.debug"
+		depends="concat">
+
+		<replaceregexp
+			file="${target.concatFile.path}"
+			match="DEBUG_(BEGIN|START).*?DEBUG_(END|STOP)"
+			replace="debug statement removed"
+			flags="gs"
+		/>
+	</target>
 	
 	<!--                            -->
 	<!--        minification        -->
@@ -188,7 +212,7 @@
 	<target
 		description="JavaScript minification"
 		name="minify"
-		depends="load.properties, concat">
+		depends="load.properties, delete.debug">
 	
 		<apply executable="java" parallel="false">
 			
@@ -216,10 +240,11 @@
 			<path refid="target.minFile" />
 		</length>
 		<echo>compressed :   ${length.compressed}</echo>
-
+		<!--
 		<delete>
 			<path refid="target.concatFile" />
 		</delete>
+		-->
 	</target>
 	
 	<!--                            -->

@@ -46,30 +46,31 @@ $.Class("izpack.generator.panel", "GenericPanel", {
 		 * 
 		 * The returned object has the following form :
 		 * {
-		 * 	name : the name used for the file's src
-		 * 	index : the index of this resource, for this class (0 based)
+		 *   name  : the name used for the file's src
+		 *   index : the index of this resource, for this class (0 based)
 		 * }
 		 */
 		createPanelWithResource : function (options) {
-			var settings = {
-				clazz      : "",	// the name of the IzPack class handling the panel
-				xmlBuider  : null,	// the xml builder
-				forcedSrc  : "",	// will use this src if setted. If not, using default rules
-				defaultID  : "",	// the id to use when there is no other file
-				defaultSrc : "",	// the src to use when there is no other file
-				prefixSrc  : "",	// the src prefix to use if many files
-				suffixSrc  : "",	// the src suffix to use if many files
-				prefixID   : "",	// the id prefix to use if many files
-				suffixID   : ""		// the id suffix to use if many files
-			};
-			$.extend(settings, options);
-			settings.forcedSrc = $.trim(settings.forcedSrc);
-			
-			var otherPanels = settings.xmlBuilder.count("/installation/panels/panel[@classname='" + settings.clazz + "']"),
+			var settings = $.extend({
+					clazz      : "",	// the name of the IzPack class handling the panel
+					xmlBuider  : null,	// the xml builder
+					forcedSrc  : "",	// will use this src if setted. If not, using default rules
+					defaultID  : "",	// the id to use when there is no other file
+					defaultSrc : "",	// the src to use when there is no other file
+					prefixSrc  : "",	// the src prefix to use if many files
+					suffixSrc  : "",	// the src suffix to use if many files
+					prefixID   : "",	// the id prefix to use if many files
+					suffixID   : ""		// the id suffix to use if many files
+				}, options),
+				otherPanels = settings.xmlBuilder.count("/installation/panels/panel[@classname='" + settings.clazz + "']"),
 				resource = settings.xmlBuilder.get("/installation/resources").createChild("res"),
 				fileName = "",
-				panel = settings.xmlBuilder.get("/installation/panels").createChild("panel");
+				panel = settings.xmlBuilder.get("/installation/panels").createChild("panel"),
+				id;
+			
 			panel.setAttribute("classname", settings.clazz);
+			
+			settings.forcedSrc = $.trim(settings.forcedSrc);
 			
 			// no other panel, we use the defaults
 			if (otherPanels === 0) {
@@ -80,7 +81,7 @@ $.Class("izpack.generator.panel", "GenericPanel", {
 				resource.setAttribute("src", fileName);
 			}
 			else { // else, we must use id
-				var id = settings.prefixID + otherPanels + settings.suffixID;
+				id = settings.prefixID + otherPanels + settings.suffixID;
 				if (!settings.forcedSrc) {
 					fileName = settings.prefixSrc + otherPanels + settings.suffixSrc;
 				}

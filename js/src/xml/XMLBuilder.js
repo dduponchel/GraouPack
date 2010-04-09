@@ -56,21 +56,28 @@ $.Class("izpack.xml", "XMLBuilder", {
 				throw "The path must follow the pattern (/\\w+)+ !";
 			}
 			
-			var nodeNames = path.split("/");
+			var nodeNames = path.split("/"),
+				depth, // depth in the xml
+				currentNode, // xml node
+				nodeName,
+				xmlChildren, // children of the current xml node
+				childNb, // number of the current xml child
+				found, // has the next xml element has been found ?
+				xmlChild; // current xml child
 
 			// get rid of the first / (creates a "")
 			nodeNames.shift();
 
-			var currentNode = this._xmlDocument;
+			currentNode = this._xmlDocument;
 			// for each level
-			for (var depth = 0; depth < nodeNames.length; depth++) {
-				var nodeName = nodeNames[depth];
-				var xmlChildren = this._getChildren(currentNode);
-				var childNb = 0;
-				var found = false;
+			for (depth = 0; depth < nodeNames.length; depth++) {
+				nodeName = nodeNames[depth];
+				xmlChildren = this._getChildren(currentNode);
+				childNb = 0;
+				found = false;
 				// looking for an existing node
 				while (!found && childNb < xmlChildren.length) {
-					var xmlChild = xmlChildren[childNb++];
+					xmlChild = xmlChildren[childNb++];
 					if (this._getNodeName(xmlChild).toLowerCase() === nodeName.toLowerCase()) {
 						found = true;
 						currentNode = xmlChild;
@@ -98,9 +105,11 @@ $.Class("izpack.xml", "XMLBuilder", {
 			
 			// from http://svg-edit.googlecode.com/svn/trunk/editor/svgcanvas.js
 			var convertToXMLReferences = function (input) {
-				var output = '';
-				for (var n = 0; n < input.length; n++) {
-					var c = input.charCodeAt(n);
+				var output = '',
+					n, // iteration
+					c; // char
+				for (n = 0; n < input.length; n++) {
+					c = input.charCodeAt(n);
 					if (c < 128) {
 						output += input.charAt(n);
 					}
@@ -109,8 +118,26 @@ $.Class("izpack.xml", "XMLBuilder", {
 					}
 				}
 				return output;
-			};
-			var input = this._getXmlString();
+			},
+				input = this._getXmlString(),
+				output = "",
+				depth = 0,
+				sameLine = false, // used when </foo> goes after <foo>bar
+				fragments,
+				append = function (fragment) {
+					output += fragment;
+				},
+				indent = function (depth) {
+					for (var i = 0; i < depth; i++) {
+						output += "  ";
+					}
+				},
+				newLine = function () {
+					output += "\r\n"; // damn windows
+				},
+				i, // iteration
+				fragment; // xml fragment
+				
 			
 			// we don't always have an xml declaration : we remove it and add our own
 			input = input.replace(/<\?xml[^>]+>\s*/, "");
@@ -118,33 +145,19 @@ $.Class("izpack.xml", "XMLBuilder", {
 			// we sometimes (IE) have extra new lines...
 			input = $.trim(input);
 			
-			var output = "";
-			
 			// other way : we can use E4X. /!\ don't use CDATA !
 			// see https://developer.mozilla.org/en/Parsing_and_serializing_XML#.22Pretty.22_serialization_of_DOM_trees_to_strings
 			// output = XML(input).toXMLString();
 			
 			
-			var depth = 0;
-			var sameLine = false; // used when </foo> goes after <foo>bar
-			var fragments = input.match(/<[^>]+>[^<]*/gi);
-			var append = function (fragment) {
-				output += fragment;
-			};
-			var indent = function (depth) {
-				for (var i = 0; i < depth; i++) {
-					output += "  ";
-				}
-			};
-			var newLine = function () {
-				output += "\r\n"; // damn windows
-			};
+			sameLine = false; // used when </foo> goes after <foo>bar
+			fragments = input.match(/<[^>]+>[^<]*/gi);
 			
 			output += '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>';
 			newLine();
 			
-			for (var i = 0; i < fragments.length - 1; i++) {
-				var fragment = fragments[i];
+			for (i = 0; i < fragments.length - 1; i++) {
+				fragment = fragments[i];
 				if (fragment.match(/>.+/)) { // <---->blabla
 					indent(depth);
 					sameLine = true;
@@ -181,29 +194,17 @@ $.Class("izpack.xml", "XMLBuilder", {
 			output = convertToXMLReferences(output);
 			
 			return output;
-		},
-		
-		_createEmtyDocument : function (rootName) {
-			throw "_createEmtyDocument must be overrided !";
-		},
-		_getChildren : function (currentNode) {
-			throw "_getChildren must be overrided !";
-		},
-		_getNodeName : function (node) {
-			throw "_getNodeName must be overrided !";
-		},
-		_createChild : function (nodeName, currentNode) {
-			throw "_createChild must be overrided !";
-		},
-		_getXmlString : function () {
-			throw "_getXmlString must be overrided !";
-		},
-		getRootElement : function () {
-			throw "getRootElement must be overrided !";
-		},
-		count : function (xpath) {
-			throw "count must be overrided !";
 		}
+	},
+	
+	abstracts : {	
+		_createEmtyDocument : function (rootName) {},
+		_getChildren : function (currentNode) {},
+		_getNodeName : function (node) {},
+		_createChild : function (nodeName, currentNode) {},
+		_getXmlString : function () {},
+		getRootElement : function () {},
+		count : function (xpath) {}
 	}
 });
 
@@ -217,4 +218,4 @@ $.Class("izpack.xml", "XMLBuilder", {
 		var implementation = izpack.compatibility.xml.w3c ? namespace.w3c : namespace.ie;
 		return new implementation.XMLBuilder();
 	};
-})();
+}());

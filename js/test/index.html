@@ -7,25 +7,88 @@
 
 	<link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
 	<script type="text/javascript" src="qunit.js"></script>
+	<script type="text/javascript">
+		QUnit.moduleStart = QUnit.testStart = function (name) {
+			if (console && console.group) {
+				console.group(name);
+			}
+		};
+		QUnit.moduleDone = QUnit.testDone = function (name, failures, total) {
+			if (console && console.groupEnd) {
+				console.groupEnd();
+			}
+		};
+	</script>
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 
+	<!-- uncompressed files -->
 	<script type="text/javascript" src="../lib/Class.js"></script>
+	<script type="text/javascript" src="../lib/jQuery.validity/jquery.validity.js"></script>
 	<script type="text/javascript" src="../lib/jQuery.namespace.js"></script>
-	<script type="text/javascript" src="../src/CompatibilityCheck.js"></script>
+	<script type="text/javascript" src="../lib/jQuery.base64.js"></script>
+	<script type="text/javascript" src="../lib/jQuery.crc32.js"></script>
+
+	<script type="text/javascript" src="../lib/downloadify/downloadify.min.js"></script>
+	
 	<script type="text/javascript" src="../src/jQuery.class.js"></script>
+	<script type="text/javascript" src="../src/CompatibilityCheck.js"></script>
+	
 	<script type="text/javascript" src="../src/Builder.js"></script>
+
 	<script type="text/javascript" src="../src/xml/XMLBuilder.js"></script>
+
+	<script type="text/javascript" src="../src/zip/ZipBuilder.js"></script>
 	<script type="text/javascript" src="../src/xml/Element.js"></script>
 	<script type="text/javascript" src="../src/xml/w3c/XMLBuilder.js"></script>
 	<script type="text/javascript" src="../src/xml/w3c/Element.js"></script>
 	<script type="text/javascript" src="../src/xml/ie/XMLBuilder.js"></script>
 	<script type="text/javascript" src="../src/xml/ie/Element.js"></script>
 	
+	<script type="text/javascript" src="../src/model/BlackBoard.js"></script>
+	<script type="text/javascript" src="../src/model/SubConfig.js"></script>
+	
+	<script type="text/javascript" src="../src/controller/GenericController.js"></script>
+	<script type="text/javascript" src="../src/controller/GenericConfigController.js"></script>
+	<script type="text/javascript" src="../src/controller/Project.js"></script>
+	<script type="text/javascript" src="../src/controller/Presentation.js"></script>
+	<script type="text/javascript" src="../src/controller/Locale.js"></script>
+	<script type="text/javascript" src="../src/controller/Panel.js"></script>
+	<script type="text/javascript" src="../src/controller/Pack.js"></script>
+	
+	<script type="text/javascript" src="../src/view/GenericView.js"></script>
+	<script type="text/javascript" src="../src/view/GenericConfigView.js"></script>
+	<script type="text/javascript" src="../src/view/Project.js"></script>
+	<script type="text/javascript" src="../src/view/Presentation.js"></script>
+	<script type="text/javascript" src="../src/view/Locale.js"></script>
+	<script type="text/javascript" src="../src/view/Panel.js"></script>
+	<script type="text/javascript" src="../src/view/Pack.js"></script>
+	
+	<script type="text/javascript" src="../src/view/panelConfig/FinishPanel.js"></script>
+	<script type="text/javascript" src="../src/view/panelConfig/HelloPanel.js"></script>
+	<script type="text/javascript" src="../src/view/panelConfig/InfoPanel.js"></script>
+	<script type="text/javascript" src="../src/view/panelConfig/InstallPanel.js"></script>
+	<script type="text/javascript" src="../src/view/panelConfig/LicencePanel.js"></script>
+	<script type="text/javascript" src="../src/view/panelConfig/PacksPanel.js"></script>
+	<script type="text/javascript" src="../src/view/panelConfig/TargetPanel.js"></script>
+	<script type="text/javascript" src="../src/view/packConfig/Pack.js"></script>
+	
+	<script type="text/javascript" src="../src/controller/panelConfig/FinishPanel.js"></script>
+	<script type="text/javascript" src="../src/controller/panelConfig/HelloPanel.js"></script>
+	<script type="text/javascript" src="../src/controller/panelConfig/InfoPanel.js"></script>
+	<script type="text/javascript" src="../src/controller/panelConfig/InstallPanel.js"></script>
+	<script type="text/javascript" src="../src/controller/panelConfig/LicencePanel.js"></script>
+	<script type="text/javascript" src="../src/controller/panelConfig/PacksPanel.js"></script>
+	<script type="text/javascript" src="../src/controller/panelConfig/TargetPanel.js"></script>
+	<script type="text/javascript" src="../src/controller/packConfig/Pack.js"></script>
+	
 	<script type="text/javascript" src="../src/generator/GenericGenerator.js"></script>
 	<script type="text/javascript" src="../src/generator/Project.js"></script>
 	<script type="text/javascript" src="../src/generator/Locale.js"></script>
 	<script type="text/javascript" src="../src/generator/Panel.js"></script>
+	<script type="text/javascript" src="../src/generator/Pack.js"></script>
 	<script type="text/javascript" src="../src/generator/panel/GenericPanel.js"></script>
 	<script type="text/javascript" src="../src/generator/panel/FinishPanel.js"></script>
 	<script type="text/javascript" src="../src/generator/panel/HelloPanel.js"></script>
@@ -34,9 +97,10 @@
 	<script type="text/javascript" src="../src/generator/panel/LicencePanel.js"></script>
 	<script type="text/javascript" src="../src/generator/panel/PacksPanel.js"></script>
 	<script type="text/javascript" src="../src/generator/panel/TargetPanel.js"></script>
-	<script type="text/javascript" src="../src/model/BlackBoard.js"></script>
-	<script type="text/javascript" src="../src/model/PanelConfig.js"></script>
-	<script type="text/javascript" src="../src/controller/GenericController.js"></script>
+
+	<!-- minified file
+	<script type="text/javascript" src="../../target/graoupack.min.js"></script>
+	-->
 	
 	<!-- tests -->
 	<script type="text/javascript" src="Helper.js"></script>
@@ -46,8 +110,10 @@
 	<script type="text/javascript" src="generator/Project.js"></script>
 	<script type="text/javascript" src="generator/Locale.js"></script>
 	<script type="text/javascript" src="generator/Panel.js"></script>
+	<script type="text/javascript" src="generator/Pack.js"></script>
 	<script type="text/javascript" src="model/BlackBoard.js"></script>
 	<script type="text/javascript" src="controller/GenericController.js"></script>
+	<script type="text/javascript" src="zip/ZipBuilder.js"></script>
 
 </head>
 <body>

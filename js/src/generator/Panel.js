@@ -40,10 +40,13 @@ $.Class("izpack.generator", "Panel", {
 		 * @Override
 		 */
 		addGeneratedInfo : function (xmlBuilder, files) {
-			var panels = this.blackBoard.get("panels");
-			for (var i = 0; i < panels.length; i++) {
-				var panel = panels[i],
-					generator = new izpack.generator.panel[panel.clazz](panel.config);
+			var panels = this.blackBoard.get("panels"),
+				panel,
+				generator,
+				i;
+			for (i = 0; i < panels.length; i++) {
+				panel = panels[i];
+				generator = new izpack.generator.panel[panel.clazz](panel.config);
 				generator.addGeneratedInfo(xmlBuilder, files);
 			}
 		}

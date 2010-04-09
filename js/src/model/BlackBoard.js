@@ -36,17 +36,23 @@ $.Class("izpack.model", "BlackBoard", {
 	methods : {
 		
 		get : function (key) {
+			/*DEBUG_START*/
 			console.debug(this.name + "::get '" + key + "'");
+			/*DEBUG_END*/
 			return this.data[key];
 		},
 		
 		set : function (key, value) {
+			/*DEBUG_START*/
 			console.debug(this.name + "::set '" + key + "' : ", value);
+			/*DEBUG_END*/
 			this.data[key] = value;
 		},
 		
 		add : function (key, value) {
+			/*DEBUG_START*/
 			console.debug(this.name + "::add '" + key + "' : ", value);
+			/*DEBUG_END*/
 			if (!this.data[key]) {
 				this.data[key] = [];
 			}
@@ -54,7 +60,9 @@ $.Class("izpack.model", "BlackBoard", {
 		},
 		
 		isDefined : function (key) {
+			/*DEBUG_START*/
 			console.debug(this.name + "::isDefined '" + key + "' = ", typeof this.data[key] !== "undefined");
+			/*DEBUG_END*/
 			return (typeof this.data[key] !== "undefined");
 		},
 		

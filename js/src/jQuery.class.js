@@ -26,6 +26,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+"use strict";
+
 /**
  * Simple wrapper to create classes.
  * Usage : 
@@ -46,20 +48,40 @@ $.Class = function () {
 	var args = arguments,
 		namespace = args[0], // String
 		className = args[1], // String
-		classContent = $.extend({
-			isa : Class, // Class from John Resig impl
-			init : {},
-			methods : {}
-		}, args[2]);
+		classContent = args[2], // object
+		objNameSpace = $.namespace(namespace),
+		motherClassNotFound = "mother class for " + namespace + "." + className + " not found";
+	
+	// isa specified but resolved to undefined
+	if	("isa" in classContent && typeof classContent.isa === "undefined") {
+		throw motherClassNotFound;
+	}
+	
+	classContent = $.extend({
+		isa : Class, // Class from John Resig impl
+		init : {},
+		methods : {},
+		abstracts : {}
+	}, classContent);
+	
+	// for each abstract method, we put a method in the methods object
+	$.each(classContent.abstracts, function (key, value) {
+		classContent.methods[key] = function () {
+			var err = namespace + "." + className + ":" + key + " must be overriden !";
+			/*DEBUG_START*/
+			console.error(err);
+			/*DEBUG_STOP*/
+			throw err;
+		};
+	});
 	
 	// we put the init method with the others
 	classContent.methods.init = classContent.init;
 	
-	var objNameSpace = $.namespace(namespace);
 	if (typeof classContent.isa === "string") {
 		classContent.isa = objNameSpace[classContent.isa];
 		if (! classContent.isa) {
-			throw "mother class for " + namespace + "." + className + " not found";
+			throw motherClassNotFound;
 		}
 	}
 

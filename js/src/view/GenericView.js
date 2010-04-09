@@ -64,13 +64,14 @@ $.Class("izpack.view", "GenericView", {
 		load : function () {
 			this.viewLoaded = true;
 			this.initView();
-		},
+		}
+	},
+	
+	abstracts : {
 		
 		/**
 		 * Adds the UI logic (drag/drop, etc) as soon as the html tab is loaded.
 		 */
-		initView : function () {
-			throw "initView must be overriden !";
-		}
+		initView : function () {}
 	}
 });

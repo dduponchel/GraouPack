@@ -29,7 +29,7 @@
 "use strict";
 
 $.Class("izpack.view.panelConfig", "HelloPanel", {
-	isa : "GenericPanel",
+	isa : izpack.view.GenericConfigView,
 	init : function (domView) {
 		this._super("HelloPanelConfig", domView);
 		this.useHTML = "#tab-panel-config-hello-file-html";

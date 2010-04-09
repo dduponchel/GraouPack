@@ -40,8 +40,11 @@ $.Class("izpack.generator.panel", "HelloPanel", {
 		 * @Override
 		 */
 		addGeneratedInfo : function (xmlBuilder, files) {
+			var panel,
+				addedData;
+			
 			if (this.blackBoard.get("useHTML")) {
-				var addedData = this.createPanelWithResource({
+				addedData = this.createPanelWithResource({
 					clazz      : "HTMLHelloPanel",
 					xmlBuilder : xmlBuilder,
 					defaultID  : "HTMLHelloPanel.info",
@@ -56,7 +59,7 @@ $.Class("izpack.generator.panel", "HelloPanel", {
 				});
 			}
 			else {
-				var panel = xmlBuilder.get("/installation/panels").createChild("panel");
+				panel = xmlBuilder.get("/installation/panels").createChild("panel");
 				panel.setAttribute("classname", "HelloPanel");
 			}
 		}
