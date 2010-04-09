@@ -39,24 +39,19 @@ $.Class("izpack.xml", "Element", {
 			return new this.xmlBuilder._elementImplementationClass(
 				this.xmlBuilder._createChild(name, this.xmlNode),
 				this.xmlBuilder);
-		},
-		getName : function () {
-			throw "getName must be overriden";
-		},
-		getChildren : function () {
-			throw "getChildren must be overriden";
-		},
-		setAttribute : function (key, value) {
-			throw "setAttribute must be overriden";
-		},
-		getAttribute : function (key) {
-			throw "getAttribute must be overriden";
-		},
-		setContent : function (content) {
-			throw "setContent must be overriden";
-		},
-		getContent : function () {
-			throw "getContent must be overriden";
 		}
+	},
+	abstracts : {
+		
+		/**
+		 * Return the name of this element.
+		 */
+		getName : function () {},
+		
+		getChildren : function () {},
+		setAttribute : function (key, value) {},
+		getAttribute : function (key) {},
+		setContent : function (content) {},
+		getContent : function () {}
 	}
 });

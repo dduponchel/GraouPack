@@ -200,7 +200,7 @@
 
 		<replaceregexp
 			file="${target.concatFile.path}"
-			match="DEBUG_START.*?DEBUG_END"
+			match="DEBUG_(BEGIN|START).*?DEBUG_(END|STOP)"
 			replace="debug statement removed"
 			flags="gs"
 		/>
@@ -240,10 +240,11 @@
 			<path refid="target.minFile" />
 		</length>
 		<echo>compressed :   ${length.compressed}</echo>
-
+		<!--
 		<delete>
 			<path refid="target.concatFile" />
 		</delete>
+		-->
 	</target>
 	
 	<!--                            -->

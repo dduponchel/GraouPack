@@ -60,8 +60,20 @@ $.Class = function () {
 	classContent = $.extend({
 		isa : Class, // Class from John Resig impl
 		init : {},
-		methods : {}
+		methods : {},
+		abstracts : {}
 	}, classContent);
+	
+	// for each abstract method, we put a method in the methods object
+	$.each(classContent.abstracts, function (key, value) {
+		classContent.methods[key] = function () {
+			var err = namespace + "." + className + ":" + key + " must be overriden !";
+			/*DEBUG_START*/
+			console.error(err);
+			/*DEBUG_STOP*/
+			throw err;
+		};
+	});
 	
 	// we put the init method with the others
 	classContent.methods.init = classContent.init;

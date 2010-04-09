@@ -40,15 +40,13 @@ $.Class("izpack.generator", "GenericGenerator", {
 		this.blackBoard = blackBoard;
 	},
 
-	methods : {
+	abstracts : {
 
 		/**
 		 * Add infos from the html generator to the current xml dom tree.
 			 * @param {XMLBuilder} xmlBuilder The xml being filled in by all generators.
 		 * @param {Array} files The additional files the user will need.
 		 */
-		addGeneratedInfo : function (xmlBuilder, files) {
-			throw "addGeneratedInfo method must be overriden !";
-		}
+		addGeneratedInfo : function (xmlBuilder, files) {}
 	}
 });

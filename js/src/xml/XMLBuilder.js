@@ -194,29 +194,17 @@ $.Class("izpack.xml", "XMLBuilder", {
 			output = convertToXMLReferences(output);
 			
 			return output;
-		},
-		
-		_createEmtyDocument : function (rootName) {
-			throw "_createEmtyDocument must be overriden !";
-		},
-		_getChildren : function (currentNode) {
-			throw "_getChildren must be overriden !";
-		},
-		_getNodeName : function (node) {
-			throw "_getNodeName must be overriden !";
-		},
-		_createChild : function (nodeName, currentNode) {
-			throw "_createChild must be overriden !";
-		},
-		_getXmlString : function () {
-			throw "_getXmlString must be overriden !";
-		},
-		getRootElement : function () {
-			throw "getRootElement must be overriden !";
-		},
-		count : function (xpath) {
-			throw "count must be overriden !";
 		}
+	},
+	
+	abstracts : {	
+		_createEmtyDocument : function (rootName) {},
+		_getChildren : function (currentNode) {},
+		_getNodeName : function (node) {},
+		_createChild : function (nodeName, currentNode) {},
+		_getXmlString : function () {},
+		getRootElement : function () {},
+		count : function (xpath) {}
 	}
 });
 
