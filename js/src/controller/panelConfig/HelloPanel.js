@@ -30,8 +30,8 @@
 
 $.Class("izpack.controller.panelConfig", "HelloPanel", {
 	isa : izpack.controller.GenericConfigController,
-	init : function (view, domConfig) {
-		this._super(view, domConfig);
+	init : function (view) {
+		this._super(view);
 		this.defaultConfig = {
 			"fileSrc" : "",
 			"useHTML" : false

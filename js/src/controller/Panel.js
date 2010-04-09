@@ -61,7 +61,7 @@ $.Class("izpack.controller", "Panel", {
 				/*DEBUG_END*/
 				
 				panelView = new izpack.view.panelConfig[clazz](panelDialog);
-				panelController = new izpack.controller.panelConfig[clazz](panelView, availablePanel);
+				panelController = new izpack.controller.panelConfig[clazz](panelView);
 				
 				availablePanel
 				.data("config.controller", panelController)

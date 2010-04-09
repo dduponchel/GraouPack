@@ -28,46 +28,43 @@
 
 "use strict";
 
-/**
- * A generic config controller.
- */
-$.Class("izpack.controller", "GenericConfigController", {
-	isa : "GenericController",
-	init : function (view) {
-		this._super(view, null);
-		this.defaultConfig   = {};
-		this.notSavedConfig  = null;
+$.Class("izpack.view.packConfig", "Pack", {
+	isa : izpack.view.GenericConfigView,
+	init : function (domView) {
+		this._super("packConfig", domView);
+		
+		this.name			= "#tab-pack-config-name";
+		this.required		= "#tab-pack-config-required";
+		this.description	= "#tab-pack-config-description";
+		this.files			= "#tab-izpack-config-files";
 	},
 	methods : {
-
-		getDefaultConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::getDefaultConfig");
-			/*DEBUG_END*/
-			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
+		initView : function () {
+			// nothing to do yet
 		},
-		
-		getConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::getConfig");
-			/*DEBUG_END*/
-			return this.blackBoard;
+		getName : function () {
+			return $(this.name).val();
 		},
-		
-		setConfig : function (config) {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::setConfig", config);
-			/*DEBUG_END*/
-			this.blackBoard = (config) ? config.clone() : null;
-			this.notSavedConfig = config;
+		setName : function (name) {
+			$(this.name).val(name);
 		},
-		
-		saveConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::saveConfig");
-			/*DEBUG_END*/
-			// blackBoard -> notSavedConfig
-			this.notSavedConfig.setData(this.blackBoard);
+		getRequired : function () {
+			return $(this.required)[0].checked;
+		},
+		setRequired : function (required) {
+			$(this.required)[0].checked = required;
+		},
+		getDescription : function () {
+			return $(this.description).val();
+		},
+		setDescription : function (description) {
+			$(this.description).val(description);
+		},
+		getFiles : function () {
+			return $(this.files).val().split(/\n+/);
+		},
+		setFiles : function (files) {
+			$(this.files).val(files.join("\n"));
 		}
 	}
 });

@@ -37,7 +37,35 @@ $.Class("izpack.controller", "Pack", {
 	},
 	methods : {
 		setBindings : function () {
-			// nothing to do
+			this.bind({
+				view			: this.view.packsContainer,
+				model			: "packs",
+				defaultValue	: [],
+				fromView		: this.view.getPacks,
+				toView			: this.view.setPacks,
+				constraints		: [ "required" ]
+			});
+		},
+
+		afterInitView : function () {
+			var view			= this.view,
+				configDom		= view.configDom,
+				configDialog	= view.createConfigDialog(),
+				configView,
+				configController;
+
+			
+			/*DEBUG_START*/
+			console.debug("Pack controller::afterInitView : creating config view/controller");
+			/*DEBUG_END*/
+			
+			configView =		new izpack.view.packConfig.Pack(configDialog);
+			configController =	new izpack.controller.packConfig.Pack(configView);
+			
+			$(configDom).data("config.controller", configController);
+			
+			configController.setBindings();
+			configController.initView();
 		}
 	}
 });

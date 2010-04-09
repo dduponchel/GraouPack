@@ -28,46 +28,50 @@
 
 "use strict";
 
-/**
- * A generic config controller.
- */
-$.Class("izpack.controller", "GenericConfigController", {
-	isa : "GenericController",
+$.Class("izpack.controller.packConfig", "Pack", {
+	isa : izpack.controller.GenericConfigController,
 	init : function (view) {
-		this._super(view, null);
-		this.defaultConfig   = {};
-		this.notSavedConfig  = null;
+		this._super(view);
+		
+		this.defaultConfig = {
+			name		: "",
+			required	: false,
+			description	: "",
+			files		: []
+		};
 	},
 	methods : {
-
-		getDefaultConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::getDefaultConfig");
-			/*DEBUG_END*/
-			return new izpack.model.SubConfig($.extend(true, {}, this.defaultConfig));
-		},
-		
-		getConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::getConfig");
-			/*DEBUG_END*/
-			return this.blackBoard;
-		},
-		
-		setConfig : function (config) {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::setConfig", config);
-			/*DEBUG_END*/
-			this.blackBoard = (config) ? config.clone() : null;
-			this.notSavedConfig = config;
-		},
-		
-		saveConfig : function () {
-			/*DEBUG_START*/
-			console.debug("GenericConfigController::saveConfig");
-			/*DEBUG_END*/
-			// blackBoard -> notSavedConfig
-			this.notSavedConfig.setData(this.blackBoard);
+		setBindings : function () {
+			this.bind({
+				view			: this.view.name,
+				model			: "name",
+				event			: "change",
+				fromView		: this.view.getName,
+				toView			: this.view.setName,
+				constraints		: [ "required" ]
+			});
+			this.bind({
+				view			: this.view.required,
+				model			: "required",
+				event			: "change",
+				fromView		: this.view.getRequired,
+				toView			: this.view.setRequired,
+				constraints		: [ "required" ]
+			});
+			this.bind({
+				view			: this.view.description,
+				model			: "description",
+				event			: "change",
+				fromView		: this.view.getDescription,
+				toView			: this.view.setDescription
+			});
+			this.bind({
+				view			: this.view.files,
+				model			: "files",
+				event			: "change",
+				fromView		: this.view.getFiles,
+				toView			: this.view.setFiles
+			});
 		}
 	}
 });

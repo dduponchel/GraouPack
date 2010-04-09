@@ -1,2 +1,30 @@
-<div id="tab-locale">
+<form action="#" id="tab-pack" class="aligned-form">
+<fieldset>
+	<legend>add a pack</legend>
+	<label for="tab-pack-add-name">name</label><input type="text" id="tab-pack-add-name" name="tab-pack-add-name" /><br />
+	<button id="tab-pack-add-button" class="aligned-button">add a pack</button>
+</fieldset>
+<div id="tab-pack-template" class="ui-helper-hidden pack">
+	<h3></h3>
+	<div class="action">
+		<img src="img/remove.png" alt="remove" class="remove" />
+		<img src="img/configure.png" alt="configure" class="config" />
+	</div>
+	<ul class="children">
+	</ul>
 </div>
+<ul id="tab-pack-packs">
+</ul>
+<div id="tab-pack-config" class="ui-helper-hidden">
+	<label for="tab-pack-config-name">name</label>
+	<input type="text" name="tab-pack-config-name" id="tab-pack-config-name"/>
+	<br />
+	<label for="tab-pack-config-required">is required</label>
+	<input type="checkbox" name="tab-pack-config-required" id="tab-pack-config-required"/>
+	<br />
+	<label for="tab-pack-config-description">description</label>
+	<input type="text" name="tab-pack-config-description" id="tab-pack-config-description"/>
+	<br />
+	files (one file per line) :<br />
+	<textarea rows="8" cols="30" id="tab-izpack-config-files"></textarea>
+</form>

@@ -31,8 +31,8 @@
 $.Class("izpack.controller.panelConfig", "TargetPanel", {
 	isa : izpack.controller.GenericConfigController,
 
-	init : function (view, domConfig) {
-		this._super(view, domConfig);
+	init : function (view) {
+		this._super(view);
 	},
 	
 	methods : {
