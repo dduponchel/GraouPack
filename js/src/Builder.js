@@ -39,7 +39,9 @@ $.Class("izpack", "Builder", {
 		this.rootElt = $("#" + htmlID);
 		
 		// needed for the tabs
-		this.rootElt.append("<ul></ul>");
+		this.rootElt
+		.empty()
+		.append("<ul></ul>");
 		
 		// the main model
 		this.blackBoard = new izpack.model.BlackBoard();
