@@ -41,22 +41,22 @@ $.Class("izpack.xml", "Element", {
 				this.xmlBuilder);
 		},
 		getName : function () {
-			throw "getName must be overrided";
+			throw "getName must be overriden";
 		},
 		getChildren : function () {
-			throw "getChildren must be overrided";
+			throw "getChildren must be overriden";
 		},
 		setAttribute : function (key, value) {
-			throw "setAttribute must be overrided";
+			throw "setAttribute must be overriden";
 		},
 		getAttribute : function (key) {
-			throw "getAttribute must be overrided";
+			throw "getAttribute must be overriden";
 		},
 		setContent : function (content) {
-			throw "setContent must be overrided";
+			throw "setContent must be overriden";
 		},
 		getContent : function () {
-			throw "getContent must be overrided";
+			throw "getContent must be overriden";
 		}
 	}
 });
