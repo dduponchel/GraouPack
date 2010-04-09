@@ -57,10 +57,6 @@ $.Class("izpack.controller", "GenericController", {
 
 	methods : {
 
-		setBindings : function () {
-			throw "setBindings must be overriden !";
-		},
-		
 		validateBinding : function (view, data, constraints) {
 			var isValid = true,
 				i,
@@ -230,5 +226,9 @@ $.Class("izpack.controller", "GenericController", {
 			
 			this.afterInitView();
 		}
+	},
+	
+	abstracts : {
+		setBindings : function () {}
 	}
 });

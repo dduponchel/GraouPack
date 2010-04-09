@@ -295,7 +295,11 @@ $.Class("izpack.zip", "ZipBuilder", {
 			}
 			// end of central directory record
 			zip = zip.concat(this.getEndOfCentralDirectory(this.files, centralDirectoryStart, centralDirectoryEnd));
-			//this.dumpHex(zip, "final zip");
+			
+			/*DEBUG_START*/
+			this.dumpHex(zip, "final zip");
+			/*DEBUG_END*/
+			
 			return $.base64.encode(zip);
 		}
 	}
