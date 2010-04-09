@@ -1,0 +1,263 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>Online preview | IzPack</title>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+	<meta name="robots" content="index, follow" />
+
+	<meta name="description" content="IzPack Java installer generator." />
+	<meta name="keywords" content="izpack,java,installer,generator,setup,install,deployment" />
+	<meta name="author" content="Julien Ponge" />
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="http://izpack.org/style.css" media="screen,projection" type="text/css" />
+	<!--[if IE 6]>
+	<link rel="stylesheet" href="http://izpack.org/ie6sucks.css" media="screen,projection" type="text/css" />
+	<script type="text/javascript" src="http://izpack.org/jquery.ifixpng2.min.js"></script>
+	<script type="text/javascript">
+	//alert($.ifixpng);
+	$(function(){
+	//alert("ready");
+	$("#navigation-header a").ifixpng();
+	});
+	</script>
+	<![endif]-->
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="http://izpack.org/ie7suckstoo.css" media="screen,projection" type="text/css" />
+	<![endif]-->
+	<link rel="alternate" type="application/rss+xml" href="http://feeds.feedburner.com/IzPack" />
+	<link rel="shortcut icon" type="image/x-icon" href="http://izpack.org/favicon.ico" />
+
+	<script type="text/javascript">
+	//<![CDATA[
+	$.preloadImages = function()
+	{
+		for(var i = 0; i<arguments.length; i++) {
+			$("<img />").attr("src", arguments[i]);
+		}
+	}
+	$.preloadImages(
+		"http://izpack.org/images/navigation-header/background-on.png"
+	);
+	//]]>
+	</script>
+	
+	<!-- GraouPack only -->
+	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/base/jquery.ui.all.css" rel="stylesheet" />
+	<link type="text/css" href="css/style.css" rel="stylesheet" />
+	<link type="text/css" href="js/lib/jQuery.validity/jquery.validity.css" rel="stylesheet" />
+
+	<link type="text/css" href="css/tab/Locale.css" rel="stylesheet" />
+	<link type="text/css" href="css/tab/Project.css" rel="stylesheet" />
+	<link type="text/css" href="css/tab/Panel.css" rel="stylesheet" />
+	<style type="text/css">
+		#navigation-header-graoupack a {
+			background : url("img/izpack-navigation-header.png") no-repeat scroll left center transparent;
+		}
+	</style>
+	<!-- /GraouPack -->
+
+</head>
+
+<body>
+
+<div id="front-header">
+	<a href=".">
+		<img id="logo" src="http://izpack.org/images/izpack-logo.png" alt="IzPack. Package once. Deploy everywhere." />
+	</a>
+	
+	<div class="news-search">
+		<form action="http://www.google.com/cse" id="cse-search-box" target="_blank">
+		<div>
+			<input type="hidden" name="cx" value="partner-pub-4723170449396879:wxcjssabcf8" />
+			<input type="hidden" name="ie" value="UTF-8" />
+			<input type="text" name="q" size="31" />
+			<input type="submit" name="sa" value="Search" />
+		</div>
+		</form>
+		<div id="feedburner">
+			<a href="http://feeds.feedburner.com/~r/IzPack/~6/3"><img src="http://feeds.feedburner.com/IzPack.3.gif" alt="IzPack news"/></a>
+		</div>
+	</div>
+</div>
+
+<ul id="navigation-header">
+	<li id="navigation-header-features">
+		<a href="http://izpack.org/features/">Features</a>
+	</li>
+	<li id="navigation-header-download">
+		<a href="http://izpack.org/downloads/">Downloads</a>
+	</li>
+	<li id="navigation-header-documentation">
+		<a href="http://izpack.org/documentation/">Documentation</a>
+	</li>
+	<li id="navigation-header-community">
+		<a href="http://izpack.org/community/">Community</a>
+	</li>
+	<li id="navigation-header-developers">
+		<a href="http://izpack.org/developers/">Developers</a>
+	</li>
+	<li id="navigation-header-graoupack">
+		<a href="izpack.html">Online preview</a>
+	</li>
+</ul>
+<div id="sidebar">
+	<script type="text/javascript">
+	//<![CDATA[
+	  google_ad_client = "pub-4723170449396879";
+	  /* IzPack.org left side */
+	  google_ad_slot = "3228276844";
+	  google_ad_width = 160;
+	  google_ad_height = 600;
+	//]]>
+	  </script>
+  <script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+  </script>
+</div>
+<div id="content">
+
+<h1 id="title">Online preview</h1>
+
+<div id="content-text">
+	<div id="GraouPack" style="min-height: 510px;">
+		<p>Loading the application, please wait...</p>
+		<noscript>
+			<p>This application is entirely written in javascript, therefore it needs the js to be enable. Enable js and try again !</p>
+		</noscript>
+	</div>
+</div>
+
+</div>
+
+<div id="footer">
+<p>Copyright &copy; 2001 &mdash; 2009 Julien Ponge. All rights reserved.
+   Design improved by David Duponchel.</p>
+</div>
+<!-- custom search -->
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+
+<script type="text/javascript">
+	//<![CDATA[
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	//]]>
+</script>
+<script type="text/javascript">
+	//<![CDATA[
+	var pageTracker = _gat._getTracker("UA-658166-3");
+	pageTracker._initData();
+	pageTracker._trackPageview();
+	//]]>
+</script>
+
+<script type="text/javascript">
+if (typeof $ !== "function") {
+	alert("Some online resources can't be loaded, GraouPack won't work :-(\nAre you offline ?");
+}
+
+$(function() {
+	
+	// TODO find a proper way to display correctly GraouPack on IzPack.org...
+	$("#GraouPack").css("float", "left").css("width", "100%");
+
+	var builder = new izpack.Builder("GraouPack");
+	builder.addPanel({label : "Presentation",	name : "Presentation"});
+	builder.addPanel({label : "my application",	name : "Project"});
+	builder.addPanel({label : "locales",		name : "Locale"});
+	builder.addPanel({label : "panels",			name : "Panel"});
+	builder.addPanel({label : "packs",			name : "Pack"});
+	builder.xmlHandlers = [ "Locale", "Project", "Panel", "Pack" ];
+	builder.start();
+});
+</script>
+
+<!--              GraouPack              -->
+<!-- unminified version for tests only ! -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+<!-- uncompressed files -->
+<script type="text/javascript" src="js/lib/Class.js"></script>
+<script type="text/javascript" src="js/lib/jQuery.validity/jquery.validity.js"></script>
+<script type="text/javascript" src="js/lib/jQuery.namespace.js"></script>
+<script type="text/javascript" src="js/lib/jQuery.base64.js"></script>
+<script type="text/javascript" src="js/lib/jQuery.crc32.js"></script>
+
+<script type="text/javascript" src="js/lib/downloadify/downloadify.min.js"></script>
+
+<script type="text/javascript" src="js/src/jQuery.class.js"></script>
+<script type="text/javascript" src="js/src/CompatibilityCheck.js"></script>
+
+<script type="text/javascript" src="js/src/Builder.js"></script>
+
+<script type="text/javascript" src="js/src/xml/XMLBuilder.js"></script>
+
+<script type="text/javascript" src="js/src/zip/ZipBuilder.js"></script>
+<script type="text/javascript" src="js/src/xml/Element.js"></script>
+<script type="text/javascript" src="js/src/xml/w3c/XMLBuilder.js"></script>
+<script type="text/javascript" src="js/src/xml/w3c/Element.js"></script>
+<script type="text/javascript" src="js/src/xml/ie/XMLBuilder.js"></script>
+<script type="text/javascript" src="js/src/xml/ie/Element.js"></script>
+
+<script type="text/javascript" src="js/src/model/BlackBoard.js"></script>
+<script type="text/javascript" src="js/src/model/SubConfig.js"></script>
+
+<script type="text/javascript" src="js/src/controller/GenericController.js"></script>
+<script type="text/javascript" src="js/src/controller/GenericConfigController.js"></script>
+<script type="text/javascript" src="js/src/controller/Project.js"></script>
+<script type="text/javascript" src="js/src/controller/Presentation.js"></script>
+<script type="text/javascript" src="js/src/controller/Locale.js"></script>
+<script type="text/javascript" src="js/src/controller/Panel.js"></script>
+<script type="text/javascript" src="js/src/controller/Pack.js"></script>
+
+<script type="text/javascript" src="js/src/view/GenericView.js"></script>
+<script type="text/javascript" src="js/src/view/Project.js"></script>
+<script type="text/javascript" src="js/src/view/Presentation.js"></script>
+<script type="text/javascript" src="js/src/view/Locale.js"></script>
+<script type="text/javascript" src="js/src/view/Panel.js"></script>
+<script type="text/javascript" src="js/src/view/Pack.js"></script>
+
+<script type="text/javascript" src="js/src/view/GenericConfigView.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/FinishPanel.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/HelloPanel.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/InfoPanel.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/InstallPanel.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/LicencePanel.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/PacksPanel.js"></script>
+<script type="text/javascript" src="js/src/view/panelConfig/TargetPanel.js"></script>
+<script type="text/javascript" src="js/src/view/packConfig/Pack.js"></script>
+
+<script type="text/javascript" src="js/src/controller/panelConfig/FinishPanel.js"></script>
+<script type="text/javascript" src="js/src/controller/panelConfig/HelloPanel.js"></script>
+<script type="text/javascript" src="js/src/controller/panelConfig/InfoPanel.js"></script>
+<script type="text/javascript" src="js/src/controller/panelConfig/InstallPanel.js"></script>
+<script type="text/javascript" src="js/src/controller/panelConfig/LicencePanel.js"></script>
+<script type="text/javascript" src="js/src/controller/panelConfig/PacksPanel.js"></script>
+<script type="text/javascript" src="js/src/controller/panelConfig/TargetPanel.js"></script>
+<script type="text/javascript" src="js/src/controller/packConfig/Pack.js"></script>
+
+<script type="text/javascript" src="js/src/generator/GenericGenerator.js"></script>
+<script type="text/javascript" src="js/src/generator/Project.js"></script>
+<script type="text/javascript" src="js/src/generator/Locale.js"></script>
+<script type="text/javascript" src="js/src/generator/Panel.js"></script>
+<script type="text/javascript" src="js/src/generator/Pack.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/GenericPanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/FinishPanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/HelloPanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/InfoPanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/InstallPanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/LicencePanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/PacksPanel.js"></script>
+<script type="text/javascript" src="js/src/generator/panel/TargetPanel.js"></script>
+
+<!-- minified file 
+<script type="text/javascript" src="target/graoupack.min.js"></script>
+-->
+
+
+</body>
+</html>
