@@ -155,6 +155,7 @@ $.Class("izpack.view", "Pack", {
 		},
 		
 		setPacks : function (packs) {
+			$(this.packsContainer).empty();
 			for (var i = 0; i < packs.length; i++) {
 				this.addPack(packs[i]);
 			}

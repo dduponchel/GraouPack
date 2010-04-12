@@ -39,7 +39,7 @@ $.Class("izpack.generator", "Pack", {
 		/**
 		 * @Override
 		 */
-		addGeneratedInfo : function (xmlBuilder, files) {
+		addGeneratedInfo : function (xmlBuilder, generatedFiles) {
 			var packs = this.blackBoard.get("packs"), // packs, js side
 				pack, // a pack, js side
 				packsXml, // packs, xml side

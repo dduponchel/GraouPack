@@ -283,7 +283,6 @@ $.Class("izpack", "Builder", {
 						$(".generated-xml", this.dialog).text(xmlString);
 						
 						$generatedFiles = $("#graoupack-generated-files ul", this.dialog).empty();
-						$("#graoupack-generated-files ul", this.dialog)
 						for (i = 0; i < files.length; i++) {
 							
 							$generatedFiles
