@@ -1,0 +1,5 @@
+<%for(var i = 0; i < locales.length ; i++){%>
+	<tr <%= locales[i]%>>
+		<%= $.View('//graoupack/views/locale/show',locales[i])%>
+	</tr>
+<%}%>
