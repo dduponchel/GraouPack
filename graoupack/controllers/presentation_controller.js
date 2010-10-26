@@ -10,7 +10,6 @@
 $.Controller.extend('Graoupack.Controllers.Presentation',
 /* @Static */
 {
-	onDocument: true
 },
 /* @Prototype */
 {

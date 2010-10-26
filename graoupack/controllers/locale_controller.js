@@ -10,7 +10,6 @@
 $.Controller.extend('Graoupack.Controllers.Locale',
 /* @Static */
 {
-	onDocument: true
 },
 /* @Prototype */
 {
