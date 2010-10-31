@@ -13,6 +13,10 @@ $.Controller.extend('Graoupack.Controllers.Panel',
 },
 /* @Prototype */
 {
+  init: function() {
+    console.log("panel init");
+    this.load();
+  },
  /**
  * When the page loads, gets all panels to be displayed.
  */

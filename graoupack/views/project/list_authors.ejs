@@ -1,0 +1,5 @@
+<%for(var i = 0; i < authors.length ; i++){%>
+	<tr <%= authors[i]%>>
+		<%= $.View('//graoupack/views/project/show_author',authors[i])%>
+	</tr>
+<%}%>

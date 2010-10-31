@@ -1,26 +1,16 @@
-<h2>presentations</h2>
-<table cellspacing='0px'>
-	<thead>
-	<tr>
-		<% for(var attr in Graoupack.Models.Presentation.attributes){%>
-			<% if(attr == 'id') continue;%>
-			<th><%= attr%> </th>	 
-		<%}%>
-		<th>Options</th>
-	</tr>
-	</thead>
-	<tbody>
-		<%= $.View('//graoupack/views/presentation/list',{presentations: presentations})%>
-	</tbody>
-</table>
-<h2>New presentation</h2>
-<form>
-	<% for(var attr in Graoupack.Models.Presentation.attributes){ %>
-		<% if(attr == 'id') continue;%>
-		<div>
-			<label><%= attr %> </label><br />
-			<input type="text" value="" name="<%= attr %>"/>
-		</div>
-	<%}%>
-	<input type='submit' value='Create'/>
-</form>
+<p id="tab-presentation">
+This is an highly experimental (read : doesn't work) test of a pure javascript UI for creating an IzPack xml.
+The goal of this application : provide an easy way to create an IzPack xml, and preview what your installer would look like.
+No heavy app to install, just a browser.
+The only browser tested is Firefox 3.6. It should works fine on firefox 3.x, and there is a risk it would work on opera/safari/chrome.
+</p>
+<p>
+Choose what you want for your installer and click on "generate !"
+</p>
+<p>
+This project is released under the terms of the new BSD license.
+The main repository is on <a href="http://github.com/dduponchel/GraouPack">GitHub</a> and this app can be seen deployed on <a href="http://graoupack.appspot.com/">google app engine</a> thanks to <a href="http://drydrop.binaryage.com/">DryDrop</a>.
+</p>
+<p>
+Clear all data : <button class="nuke">destroy</button>
+</p>

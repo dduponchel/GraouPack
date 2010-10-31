@@ -1,26 +1,33 @@
-<h2>projects</h2>
-<table cellspacing='0px'>
-	<thead>
-	<tr>
-		<% for(var attr in Graoupack.Models.Project.attributes){%>
-			<% if(attr == 'id') continue;%>
-			<th><%= attr%> </th>	 
-		<%}%>
-		<th>Options</th>
-	</tr>
-	</thead>
-	<tbody>
-		<%= $.View('//graoupack/views/project/list',{projects: projects})%>
-	</tbody>
-</table>
-<h2>New project</h2>
 <form>
-	<% for(var attr in Graoupack.Models.Project.attributes){ %>
-		<% if(attr == 'id') continue;%>
-		<div>
-			<label><%= attr %> </label><br />
-			<input type="text" value="" name="<%= attr %>"/>
-		</div>
-	<%}%>
-	<input type='submit' value='Create'/>
+  <fieldset>
+    <legend>Application</legend>
+    <div class="project-place-holder"></div>
+  </fieldset>
+</form>
+<form>
+  <fieldset>
+    <legend>Authors</legend>
+    <table>
+      <thead>
+        <tr>
+          <% for(var attr in Graoupack.Models.Author.attributes){%>
+            <% if(attr == 'id') continue;%>
+            <th><%= attr%> </th>
+          <%}%>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody class="authors-place-holder">
+      </tbody>
+    </table>
+    <h2>New author</h2>
+    <% for(var attr in Graoupack.Models.Author.attributes){ %>
+      <% if(attr == 'id') continue;%>
+        <div>
+          <label><%= attr %> </label><br />
+          <input type="text" value="" name="<%= attr %>"/>
+        </div>
+      <%}%>
+    <input type='submit' value='Create'/>
+  </fieldset>
 </form>

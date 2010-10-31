@@ -24,6 +24,14 @@ $.Controller.extend('Graoupack.Controllers.Main',
     }
   },
   load: function(){
-    $("#GraouPack").tabs();
+    $("#GraouPack")
+    .bind("tabsshow", function (event, ui) {
+      var panel = $(ui.panel);
+      console.log("EVENT " + panel.attr('id'));
+      if(!panel.data("controller")){
+        panel.data("controller", new Graoupack.Controllers[panel.attr('id')](panel));
+      }
+    })
+    .tabs();
   }
 });

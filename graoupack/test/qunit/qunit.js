@@ -1,3 +1,3 @@
 steal
   .plugins("funcunit/qunit", "graoupack")
-  .then("graoupack_test");
+  .then("abstract_test", "author_test", "project_test");

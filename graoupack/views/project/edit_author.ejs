@@ -1,4 +1,4 @@
-<%for(var attribute in Graoupack.Models.Presentation.attributes){%>
+<%for(var attribute in Graoupack.Models.Author.attributes){%>
 	<%if(attribute == 'id') continue;%>
 	<td class='<%= attribute %>'>
 		<input type="text" value="<%= this[attribute]%>" name="<%= attribute%>"/>
