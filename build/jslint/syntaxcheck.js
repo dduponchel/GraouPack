@@ -11,9 +11,9 @@ globalObjOptions = {
     forin      : true,  // true if for in statements must filter
     fragment   : false, // true if HTML fragments should be allowed
     immed      : true,  // true if immediate invocations must be wrapped in parens
-    indent     : 4,     // the number of spaces used for indentation (default is 4)
+    indent     : 2,     // the number of spaces used for indentation (default is 4)
     laxbreak   : false, // true if line breaks should not be checked
-	maxerr     : 50,    // The maximum number of warnings reported (default is 50)
+    maxerr     : 50,    // The maximum number of warnings reported (default is 50)
 //    maxlen     : 120,   // The maximum number of characters in a line
     nomen      : false, // true if names should be checked for initial or trailing underbars
     newcap     : true,  // true if constructor names must be capitalized
@@ -21,7 +21,7 @@ globalObjOptions = {
     onevar     : true,  // true if only one var statement per function should be allowed
     passfail   : false, // true if the scan should stop on first error
     plusplus   : false, // true if increment/decrement should not be allowed
-    predef     : ["window", "Class", "jQuery", "$", "izpack" ], // an array of strings, the names of predefined global variables
+    predef     : ["window", "jQuery", "$", "Graoupack", "steal" ], // an array of strings, the names of predefined global variables
     regexp     : false, // true if . and [^...]  should not be allowed in RegExp literals. These forms should not be used when validating in secure applications.
     rhino      : false, // true if the Rhino environment globals should be predefined
     safe       : false, // true if the safe subset rules are enforced. These rules are used by ADsafe. It enforces the safe subset rules but not the widget structure rules.
@@ -31,7 +31,6 @@ globalObjOptions = {
     windows    : false, // true if MS Windows-specigic globals should be predefined
     white      : true,  // true if strict whitespace rules apply
     widget     : false  // true if the Yahoo Widgets globals should be predefined
-
 };
 
 load("build/jslint/fulljslint.js", "build/jslint/rhino.js");

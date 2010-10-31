@@ -1,260 +1,58 @@
-<project name="IzPack Js Builder" default="build" basedir=".">
-	
-	<target name="build"
-		depends="load.properties, clean, check, minify"
-		description="Release builder">
-	</target>
-	
-	<target name="quickbuild"
-		depends="load.properties, clean, minify"
-		description="Release builder">
-	</target>
-	
-	
-	<!--                            -->
-	<!--            init            -->
-	<!--                            -->
-	<target name="load.properties">
-		
-		<!-- source files -->
-		<path id="js.srcFiles">
-			<!-- first, the class plugin and the compatibility check !-->
-			<fileset dir="js/src">
-				<include name="jQuery.class.js" />
-				<include name="CompatibilityCheck.js" />
-			</fileset>
-			<fileset dir="js/src">
-				<include name="*.js" />
-				<exclude name="jQuery.class.js" />
-				<exclude name="CompatibilityCheck.js" />
-			</fileset>
-			
-			<fileset dir="js/src/zip">
-				<include name="*.js" />
-			</fileset>
-			<fileset dir="js/src/xml">
-				<include name="*.js" />
-			</fileset>
-			<fileset dir="js/src/xml/w3c">
-				<include name="*.js" />
-			</fileset>
-			<fileset dir="js/src/xml/ie">
-				<include name="*.js" />
-			</fileset>
+<project name="IzPack Js check" default="check" basedir=".">
 
-			<!-- we want first the mother class -->
-			<fileset dir="js/src/generator">
-				<include name="GenericGenerator.js" />
-			</fileset>
-			<fileset dir="js/src/generator">
-				<include name="*.js" />
-				<exclude name="GenericGenerator.js" />
-			</fileset>
-			<fileset dir="js/src/generator/panel">
-				<include name="GenericPanel.js" />
-			</fileset>
-			<fileset dir="js/src/generator/panel">
-				<include name="*.js" />
-				<exclude name="GenericPanel.js" />
-			</fileset>
-			
-			<fileset dir="js/src/model">
-				<include name="*.js" />
-			</fileset>
+  <!--                            -->
+  <!--            init            -->
+  <!--                            -->
+  <target name="load.properties">
 
-			<!-- we want first the mother class -->
-			<fileset dir="js/src/controller">
-				<include name="GenericController.js" />
-			</fileset>
-			<fileset dir="js/src/controller">
-				<include name="*.js" />
-				<exclude name="GenericController.js" />
-			</fileset>
+    <!-- source files -->
+    <path id="js.srcFiles">
+      <fileset dir="graoupack">
+        <include name="**/*.js" />
+        <exclude name="production.js" />
+      </fileset>
+    </path>
 
-			<!-- we want first the mother class -->
-			<fileset dir="js/src/view">
-				<include name="GenericView.js" />
-			</fileset>
-			<fileset dir="js/src/view">
-				<include name="*.js" />
-				<exclude name="GenericView.js" />
-			</fileset>
+    <property name="lib.dir"
+      value="build"
+      description="compression librairies dir" />
 
-			<!-- we want first the mother class -->
-			<fileset dir="js/src/controller/panelConfig">
-				<include name="GenericPanel.js" />
-			</fileset>
-			<fileset dir="js/src/controller/panelConfig">
-				<include name="*.js" />
-				<exclude name="GenericPanel.js" />
-			</fileset>
+    <!-- syntax check -->
+    <property
+      name="rhino.jar"
+      value="${lib.dir}/rhino-1.7R2.jar"
+      description="Rhino javascript engine" />
 
-			<!-- we want first the mother class -->
-			<fileset dir="js/src/view/panelConfig">
-				<include name="GenericPanel.js" />
-			</fileset>
-			<fileset dir="js/src/view/panelConfig">
-				<include name="*.js" />
-				<exclude name="GenericPanel.js" />
-			</fileset>
-		</path>
-		
-		<!-- lib files -->
-		<path id="js.libFiles">
-			<fileset dir="js/lib">
-				<include name="jQuery.validity/jquery.validity.js" />
-				<include name="Class.js" />
-				<include name="jQuery.namespace.js" />
-				<include name="jQuery.base64.js" />
-				<include name="jQuery.crc32.js" />
-				<include name="downloadify/downloadify.min.js" />
-			</fileset>
-		</path>
-
-		<property name="target" value="target"/>
-		<property name="target.concatFile.path" value="${target}/graoupack.js"/>
-		<property name="target.minFile.path" value="${target}/graoupack.min.js"/>
-		<path id="target.concatFile">
-			<fileset dir=".">
-				<include name="${target.concatFile.path}"/>
-			</fileset>
-		</path>
-		<path id="target.minFile">
-			<fileset dir=".">
-				<include name="${target.minFile.path}"/>
-			</fileset>
-		</path>
-		
-		
-		<!-- compressor -->
-		<property name="lib.dir"
-			value="build"
-			description="compression librairies dir" />
-		
-		<property
-			name="yui.compressor"
-			value="${lib.dir}/yuicompressor-2.4.2.jar"
-			description="YUI compressor" />
-		
-		<!-- syntax check -->
-		<property
-			name="rhino.jar"
-			value="${lib.dir}/rhino-1.7R2.jar"
-			description="Rhino javascript engine" />
-		
-		<property
-			name="syntax.check"
-			value="${lib.dir}/jslint/syntaxcheck.js"
-			description="syntax check file" />
-	</target>
-	
-	
-	<!--                            -->
-	<!--       concatenation        -->
-	<!--                            -->
-	<target
-		description="JavaScript concatenation"
-		name="concat"
-		depends="load.properties">
-		
-		<mkdir dir="${target}" />
-		<concat destfile="${target.concatFile.path}">
-			<path refid="js.libFiles" />
-			<path refid="js.srcFiles" />
-		</concat>
-	</target>
-	
-	
-	<!--                            -->
-	<!--        syntax check        -->
-	<!--                            -->
-	<target
-		description="JavaScript each file syntax check"
-		name="check"
-		depends="load.properties">
-		
-		<apply executable="java" parallel="false">
-			
-			<path refid="js.srcFiles" />
-			
-			<arg line="-jar" />
-			<arg path="${rhino.jar}" />
-			<arg line="${syntax.check}" />
-			<srcfile />
-		</apply>
-		
-		<resourcecount property="count.srcFiles">
-			<path refid="js.srcFiles" />
-		</resourcecount>
-		<echo>${count.srcFiles} files checked</echo>
-		
-	</target>
-
-	<!--                            -->
-	<!--  delete debug statements   -->
-	<!--                            -->
-	<target
-		description="remove the debug statements"
-		name="delete.debug"
-		depends="concat">
-
-		<replaceregexp
-			file="${target.concatFile.path}"
-			match="DEBUG_(BEGIN|START).*?DEBUG_(END|STOP)"
-			replace="debug statement removed"
-			flags="gs"
-		/>
-	</target>
-	
-	<!--                            -->
-	<!--        minification        -->
-	<!--                            -->
-	<target
-		description="JavaScript minification"
-		name="minify"
-		depends="load.properties, delete.debug">
-	
-		<apply executable="java" parallel="false">
-			
-			<path refid="target.concatFile" />
-			
-			<arg line="-jar" />
-			<arg path="${yui.compressor}" />
-			<!--<arg line="${target.concatFile}" />-->
-			<!--<arg line="-v" />-->
-			<srcfile />
-			<arg line="-o" />
-			<mapper type="glob"
-				from="*.js"
-				to="*.min.js" />
-			<targetfile />
-		</apply>
+    <property
+      name="syntax.check"
+      value="${lib.dir}/jslint/syntaxcheck.js"
+      description="syntax check file" />
+  </target>
 
 
-		<length property="length.uncompressed">
-			<path refid="target.concatFile" />
-		</length>
-		<echo>uncompressed : ${length.uncompressed}</echo>
-		
-		<length property="length.compressed">
-			<path refid="target.minFile" />
-		</length>
-		<echo>compressed :   ${length.compressed}</echo>
-		<!--
-		<delete>
-			<path refid="target.concatFile" />
-		</delete>
-		-->
-	</target>
-	
-	<!--                            -->
-	<!--            clean           -->
-	<!--                            -->
-	<target
-		description="Clean all built files."
-		name="clean"
-		depends="load.properties">
-		
-		<delete dir="${target}" />
-	</target>
+  <!--                            -->
+  <!--        syntax check        -->
+  <!--                            -->
+  <target
+    description="JavaScript each file syntax check"
+    name="check"
+    depends="load.properties">
+
+    <apply executable="java" parallel="false">
+
+      <path refid="js.srcFiles" />
+
+      <arg line="-jar" />
+      <arg path="${rhino.jar}" />
+      <arg line="${syntax.check}" />
+      <srcfile />
+    </apply>
+
+    <resourcecount property="count.srcFiles">
+      <path refid="js.srcFiles" />
+    </resourcecount>
+    <echo>${count.srcFiles} files checked</echo>
+
+  </target>
+
 </project>

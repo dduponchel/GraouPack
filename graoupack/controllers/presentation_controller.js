@@ -1,4 +1,5 @@
 /*global confirm: true */
+"use strict";
 
 /**
  * @tag controllers, home

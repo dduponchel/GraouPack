@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @tag models, home
  * Wraps backend author services.  Enables
@@ -17,7 +18,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     * @param {Function} success a callback function that returns wrapped author objects.
     * @param {Function} error a callback function for an error in the ajax request.
     */
-  findAll: function( params, success, error ){
+  findAll: function (params, success, error) {
     var obj = this.getArray('authors');
     success(this.wrapMany(obj));
   },
@@ -28,7 +29,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     * @param {Function} success a callback function that indicates a successful update.
     * @param {Function} error a callback that should be called with an object of errors.
     */
-  update: function( id, attrs, success, error ){
+  update: function (id, attrs, success, error) {
     var updated = this.updateById("authors", id, attrs);
     success(updated);
   },
@@ -38,7 +39,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     * @param {Function} success a callback function that indicates a successful destroy.
     * @param {Function} error a callback that should be called with an object of errors.
     */
-  destroy: function( id, success, error ){
+  destroy: function (id, success, error) {
     this.remove("authors", id);
     success();
   },
@@ -48,7 +49,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     * @param {Function} success a callback function that indicates a successful create.  The data that comes back must have an ID property.
     * @param {Function} error a callback that should be called with an object of errors.
     */
-  create: function( attrs, success, error ){
+  create: function (attrs, success, error) {
     this.add('authors', attrs);
     success(attrs);
   }

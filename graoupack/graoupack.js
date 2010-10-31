@@ -1,3 +1,4 @@
+"use strict";
 /*
 * @page index
 * @tag home

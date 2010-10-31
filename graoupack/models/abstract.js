@@ -1,11 +1,12 @@
-/*global confirm: true */
+"use strict";
 
 $.Model.extend('Graoupack.Models.Abstract', {
+  storage : window.localStorage,
   get : function (key) {
-    return JSON.parse(localStorage.getItem(key));
+    return JSON.parse(this.storage.getItem(key));
   },
   set : function (key, obj) {
-    localStorage.setItem(key, JSON.stringify(obj));
+    this.storage.setItem(key, JSON.stringify(obj));
   },
   getArray : function (key) {
     var array = this.get(key);
@@ -17,11 +18,12 @@ $.Model.extend('Graoupack.Models.Abstract', {
     }
     return array;
   },
-  updateById : function(key, id, obj) {
-    var array = this.getArray(key);
-    var matchingArrayIndex = -1;
+  updateById : function (key, id, obj) {
+    var array = this.getArray(key),
+        matchingArrayIndex = -1,
+        i;
     for (i in array) {
-      if (array[i].id == id) {
+      if (array[i].id === id) {
         matchingArrayIndex = i;
         break;
       }
@@ -41,24 +43,26 @@ $.Model.extend('Graoupack.Models.Abstract', {
     return obj;
   },
   destroy : function (key) {
-    localStorage.removeItem(key);
+    this.storage.removeItem(key);
   },
   remove : function (key, index) {
     var array = this.getArray(key);
-    array = array.filter(function (arrayValue, arrayIndex, array){return arrayValue.id != index});
+    array = array.filter(function (arrayValue, arrayIndex, array) {
+      return arrayValue.id !== index;
+    });
     this.set(key, array);
     return array;
   },
   nextIndex : function (key) {
-    var lastindex = localStorage.getItem(key + '-lastindex');
+    var lastindex = this.storage.getItem(key + '-lastindex');
     lastindex = lastindex ? lastindex : 0;
     lastindex++;
-    localStorage.setItem(key + '-lastindex', lastindex);
+    this.storage.setItem(key + '-lastindex', lastindex);
 
     return lastindex;
   },
   nuke : function () {
-    localStorage.clear();
+    this.storage.clear();
   }
 },
 /* @Prototype */
