@@ -19,8 +19,9 @@ $.Controller.extend('Graoupack.Controllers.Main',
 /* @Prototype */
 {
   init: function () {
+    $("#loading p").append("(almost !)");
     if (!$("#GraouPack").length) {
-      $(document.body).append($('<div/>').attr('id', 'GraouPack'));
+      $(document.body).append($('<div/>').hide().attr('id', 'GraouPack'));
       $('#GraouPack').html(this.view('init', {tabs : this.Class.tabs}));
     }
   },
@@ -28,11 +29,12 @@ $.Controller.extend('Graoupack.Controllers.Main',
     $("#GraouPack")
     .bind("tabsshow", function (event, ui) {
       var panel = $(ui.panel);
-      console.log("EVENT " + panel.attr('id'));
       if (!panel.data("controller")) {
         panel.data("controller", new Graoupack.Controllers[panel.attr('id')](panel));
       }
     })
-    .tabs();
+    .tabs()
+    .show();
+    $("#loading").remove();
   }
 });
