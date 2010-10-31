@@ -1,2 +1,2 @@
 body {font-family: verdana}
-td {padding: 3px;}
+input.error {border : 2px solid #F56600 !important}

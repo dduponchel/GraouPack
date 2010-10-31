@@ -10,6 +10,7 @@ steal.plugins(
   'jquery/controller/subscribe',  // subscribe to OpenAjax.hub
   'jquery/view/ejs',              // client side templates
   'jquery/model',                 // Ajax wrappers
+  'jquery/model/validations',     // validation
   'jquery/dom/fixture',           // simulated Ajax requests
   'jquery/dom/form_params')       // form data helper
 
