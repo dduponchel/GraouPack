@@ -2,3 +2,5 @@ target
 *.swp
 graoupack/docs.html
 graoupack/docs/
+graoupack/production.css
+graoupack/production.js
