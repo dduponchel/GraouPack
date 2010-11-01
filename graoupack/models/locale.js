@@ -58,8 +58,8 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Locale', /* @Static */ {
   findRemainingAvailable : function (success, error) {
     var selected = this.get("locales");
     var remaining = this.available.filter(function (value, index, array) {
-      for each (locale in selected) {
-        if (locale.iso3 === value.iso3) {
+      for(var i in selected) {
+        if (selected[i].iso3 === value.iso3) {
           return false;
         }
       }

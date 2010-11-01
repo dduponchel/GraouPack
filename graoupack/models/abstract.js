@@ -101,13 +101,12 @@ $.Model.extend('Graoupack.Models.Abstract', /* @Static */ {
   /**
  * Get the next index for the selected key.
  * @param {String} key the key.
- * @return {String} the new index.
+ * @return {Integer} the new index.
  */
   nextIndex : function (key) {
     var lastindex = this.storage.getItem(key + '-lastindex');
     lastindex = lastindex ? lastindex : 0;
     lastindex++;
-    lastindex = lastindex + ''; // to have a string
     this.storage.setItem(key + '-lastindex', lastindex);
 
     return lastindex;
