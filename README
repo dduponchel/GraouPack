@@ -1,3 +1,8 @@
+=== IMPORTANT ===
+The branch master is deprecated ! I'm working on a "refactoring" (same type as for IzPack) with jmvc 3 (branch develop) and it's still quite a mess. As soon as the branch develop is stable and have enough features, I will merge them :)
+=== /IMPORTANT ===
+
+
 This is an highly experimental (read : don't work) test of a pure 
 javascript UI for creating an IzPack xml.
 The goal of this application : provide an easy way to create an IzPack xml,
