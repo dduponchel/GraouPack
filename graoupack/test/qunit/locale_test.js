@@ -1,45 +1,50 @@
-module("Model: Graoupack.Models.Locale")
+"use strict";
 
-test("findAll", function(){
-	stop(2000);
-	Graoupack.Models.Locale.findAll({}, function(locales){
-		start()
-		ok(locales)
-        ok(locales.length)
-        ok(locales[0].name)
-        ok(locales[0].description)
-	});
-	
-})
-
-test("create", function(){
-	stop(2000);
-	new Graoupack.Models.Locale({name: "dry cleaning", description: "take to street corner"}).save(function(locale){
-		start();
-		ok(locale);
-        ok(locale.id);
-        equals(locale.name,"dry cleaning")
-        locale.destroy()
-	})
-})
-test("update" , function(){
-	stop();
-	new Graoupack.Models.Locale({name: "cook dinner", description: "chicken"}).
-            save(function(locale){
-            	equals(locale.description,"chicken");
-        		locale.update({description: "steak"},function(locale){
-        			start()
-        			equals(locale.description,"steak");
-        			locale.destroy();
-        		})
-            })
-
+module("Model: Graoupack.Models.Locale", {
+  setup    : function(){localStorage.clear();},
+  teardown : function(){localStorage.clear();}
 });
-test("destroy", function(){
-	stop(2000);
-	new Graoupack.Models.Locale({name: "mow grass", description: "use riding mower"}).
-            destroy(function(locale){
-            	start();
-            	ok( true ,"Destroy called" )
-            })
-})
+
+test("findRemainingAvailable - no locale selected", function () {
+  stop(2000);
+  Graoupack.Models.Locale.findRemainingAvailable(function (locales) {
+    start();
+    ok(locales);
+    equals(locales.length, Graoupack.Models.Locale.available.length);
+  });
+});
+
+test("findRemainingAvailable - some selected", function () {
+  stop(2000);
+  var allLocales = Graoupack.Models.Locale.available;
+  var selected = [];
+  selected.push(allLocales[3]);
+  selected.push(allLocales[5]);
+  selected.push(allLocales[9]);
+  Graoupack.Models.Locale.updateSelected(selected, function (callbackSelected) {
+    equals(callbackSelected.length, selected.length);
+    Graoupack.Models.Locale.findRemainingAvailable(function (locales) {
+      start();
+      equals(locales.length, allLocales.length - selected.length);
+    });
+  });
+});
+
+test("getSelected and updateSelected", function () {
+  stop(2000);
+  Graoupack.Models.Locale.getSelected(function (locales) {
+    equals(locales.length, 0);
+    var allLocales = Graoupack.Models.Locale.available;
+    var selected = [];
+    selected.push(allLocales[3]);
+    selected.push(allLocales[5]);
+    selected.push(allLocales[9]);
+    Graoupack.Models.Locale.updateSelected(selected, function (callbackSelected) {
+      equals(callbackSelected.length, selected.length);
+      Graoupack.Models.Locale.getSelected(function (locales) {
+        start();
+        equals(locales.length, selected.length);
+      });
+    });
+  });
+});

@@ -1,2 +1,29 @@
 body {font-family: verdana}
 input.error {border : 2px solid #F56600 !important}
+
+ul.sortable li, ul.draggable li {
+	margin: 5px;
+	padding: 5px;
+	list-style-type: none;
+}
+
+#Locale ul {
+	background:#eee;
+	padding:0.5em;
+	text-align:center;
+}
+
+#Locale .ui-state-highlight {
+	height:1.1em;
+}
+
+#Locale h2 {
+	text-align:center;
+}
+
+#Locale .available {
+	-moz-column-count: 3;
+	-webkit-column-count: 3;
+	column-count: 3;
+}
+

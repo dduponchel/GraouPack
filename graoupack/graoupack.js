@@ -21,7 +21,7 @@ steal.plugins(
   // loads files in models folder
   .models(
     'abstract',
-    // 'locale',
+    'locale',
     // 'pack',
     // 'panel',
     'project',
@@ -30,7 +30,7 @@ steal.plugins(
     // loads files in controllers folder
     .controllers(
       'main',
-      // 'locale',
+      'locale',
       // 'pack',
       // 'panel',
       'presentation',

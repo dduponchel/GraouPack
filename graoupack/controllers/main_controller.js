@@ -3,10 +3,9 @@
 
 /**
  * @tag controllers, home
- */
-$.Controller.extend('Graoupack.Controllers.Main',
-/* @Static */
-{
+ * Controls the page and creates the tab controllers.
+*/
+$.Controller.extend('Graoupack.Controllers.Main', /* @Static */ {
   onDocument: true,
   tabs : {
     'Presentation'  : 'presentation',
@@ -18,13 +17,19 @@ $.Controller.extend('Graoupack.Controllers.Main',
 },
 /* @Prototype */
 {
+  /**
+ * init the page.
+ */
   init: function () {
-    $("#loading p").append("(almost !)");
+    $("#loading p").append(" (almost !)");
     if (!$("#GraouPack").length) {
       $(document.body).append($('<div/>').hide().attr('id', 'GraouPack'));
       $('#GraouPack').html(this.view('init', {tabs : this.Class.tabs}));
     }
   },
+  /**
+ * When the page loads, create the tabs and the controllers.
+ */
   load: function () {
     $("#GraouPack")
     .bind("tabsshow", function (event, ui) {

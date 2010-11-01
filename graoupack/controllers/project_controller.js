@@ -3,16 +3,14 @@
 
 /**
  * @tag controllers, home
- * Displays a table of projects.	 Lets the user
- * ["Graoupack.Controllers.Project.prototype.form submit" create],
- * ["Graoupack.Controllers.Project.prototype.&#46;edit click" edit],
- * or ["Graoupack.Controllers.Project.prototype.&#46;destroy click" destroy] projects.
+ * Handles the Project tab.
 */
-$.Controller.extend('Graoupack.Controllers.Project', {
+$.Controller.extend('Graoupack.Controllers.Project', /* @Static */ {
 },
 {
   /**
-   * When the page loads, gets all projects to be displayed.
+   * When the page loads, gets the project and the authors to be displayed.
+    * @param {jQuery} el A jQuery wrapped element.
 */
   init: function (el) {
     $(el).html(this.view('init'));
@@ -40,6 +38,11 @@ $.Controller.extend('Graoupack.Controllers.Project', {
       }
     }
   },
+  /**
+ * Remove the error css class when editing.
+    * @param {jQuery} el A jQuery wrapped element.
+    * @param {Event} ev A jQuery event.
+    */
   'form change': function (el, ev) {
     $(ev.target).removeClass('error');
   },
@@ -102,6 +105,11 @@ $.Controller.extend('Graoupack.Controllers.Project', {
     author.elements().remove();	 //removes ALL elements
   },
 
+  /**
+ * When the project data changes, update the model.
+    * @param {jQuery} el A jQuery wrapped element.
+    * @param {Event} ev A jQuery event.
+    */
   '.project-place-holder change' : function (el, ev) {
     var $project = $('.project', el);
     $project.model().update($project.formParams());

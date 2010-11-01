@@ -1,26 +1,9 @@
-<h2>locales</h2>
-<table cellspacing='0px'>
-	<thead>
-	<tr>
-		<% for(var attr in Graoupack.Models.Locale.attributes){%>
-			<% if(attr == 'id') continue;%>
-			<th><%= attr%> </th>	 
-		<%}%>
-		<th>Options</th>
-	</tr>
-	</thead>
-	<tbody>
-		<%= $.View('//graoupack/views/locale/list',{locales: locales})%>
-	</tbody>
-</table>
-<h2>New locale</h2>
-<form>
-	<% for(var attr in Graoupack.Models.Locale.attributes){ %>
-		<% if(attr == 'id') continue;%>
-		<div>
-			<label><%= attr %> </label><br />
-			<input type="text" value="" name="<%= attr %>"/>
-		</div>
-	<%}%>
-	<input type='submit' value='Create'/>
-</form>
+<div>
+  <h2>selected locale(s)</h2>
+  <ul class="sortable selected"></ul>
+</div>
+
+<div>
+  <h2>available locales</h2>
+  <ul class="sortable available"></ul>
+</div>

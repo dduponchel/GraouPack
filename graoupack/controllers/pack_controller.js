@@ -8,7 +8,7 @@
  * ["Graoupack.Controllers.Pack.prototype.&#46;edit click" edit],
  * or ["Graoupack.Controllers.Pack.prototype.&#46;destroy click" destroy] packs.
 */
-$.Controller.extend('Graoupack.Controllers.Pack', {
+$.Controller.extend('Graoupack.Controllers.Pack', /* @Static */ {
 },
 /* @Prototype */
 {

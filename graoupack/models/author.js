@@ -1,13 +1,9 @@
 "use strict";
 /**
  * @tag models, home
- * Wraps backend author services.  Enables
- * [Graoupack.Models.Author.static.findAll retrieving],
- * [Graoupack.Models.Author.static.update updating],
- * [Graoupack.Models.Author.static.destroy destroying], and
- * [Graoupack.Models.Author.static.create creating] authors.
+ * An author of the application.
  */
-Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
+Graoupack.Models.Abstract.extend('Graoupack.Models.Author', /** @Static */ {
   attributes : {
     name: 'string',
     mail: 'string'
@@ -23,7 +19,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     this.validatePresenceOf('name');
   },
   /**
-    * Retrieves authors data from your backend services.
+    * Retrieves all authors.
     * @param {Object} params params that might refine your results.
     * @param {Function} success a callback function that returns wrapped author objects.
     * @param {Function} error a callback function for an error in the ajax request.
@@ -44,7 +40,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     success(updated);
   },
   /**
-    * Destroys a author's data.
+    * Destroys an author's data.
     * @param {String} id A unique id representing your author.
     * @param {Function} success a callback function that indicates a successful destroy.
     * @param {Function} error a callback that should be called with an object of errors.
@@ -54,7 +50,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     success();
   },
   /**
-    * Creates a author.
+    * Creates an author.
     * @param {Object} attrs A author's attributes.
     * @param {Function} success a callback function that indicates a successful create.  The data that comes back must have an ID property.
     * @param {Function} error a callback that should be called with an object of errors.
@@ -64,5 +60,5 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
     success(attrs);
   }
 },
-/* @Prototype */
+/** @Prototype */
 {});
