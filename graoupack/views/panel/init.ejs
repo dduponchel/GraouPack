@@ -1,26 +1,19 @@
-<h2>panels</h2>
-<table cellspacing='0px'>
-	<thead>
-	<tr>
-		<% for(var attr in Graoupack.Models.Panel.attributes){%>
-			<% if(attr == 'id') continue;%>
-			<th><%= attr%> </th>	 
-		<%}%>
-		<th>Options</th>
-	</tr>
-	</thead>
-	<tbody>
-		<%= $.View('//graoupack/views/panel/list',{panels: panels})%>
-	</tbody>
-</table>
-<h2>New panel</h2>
-<form>
-	<% for(var attr in Graoupack.Models.Panel.attributes){ %>
-		<% if(attr == 'id') continue;%>
-		<div>
-			<label><%= attr %> </label><br />
-			<input type="text" value="" name="<%= attr %>"/>
-		</div>
-	<%}%>
-	<input type='submit' value='Create'/>
-</form>
+<div class="tab-panel-available-place ui-helper-clearfix">
+  <h2>available panels</h2>
+  <div id="tab-panel-available" class="draggable">
+    <%for(var i = 0; i < available.length ; i++){%>
+      <div class="available-panel ui-helper-clearfix ui-corner-all" data-class="<%= available[i]%>">
+        <div class="action">
+          <img src="img/add.png" alt="add" class="add" /><br/>
+          <img src="img/help.png" alt="info" class="info" />
+        </div>
+        <%= $.View('//graoupack/views/panel/available/' + available[i])%>
+      </div>
+    <%}%>
+  </div>
+</div>
+<div class="tab-panel-selected-place ui-helper-clearfix">
+  <h2>selected panels</h2>
+  <div id="tab-panel-selected" class="sortable">
+  </div>
+</div>

@@ -23,7 +23,14 @@ steal.plugins(
     'abstract',
     'locale',
     // 'pack',
-    // 'panel',
+    'panel',
+    'panels/hello_panel',
+    'panels/info_panel',
+    'panels/licence_panel',
+    'panels/target_panel',
+    'panels/packs_panel',
+    'panels/install_panel',
+    'panels/finish_panel',
     'project',
     'author')
 
@@ -32,7 +39,7 @@ steal.plugins(
       'main',
       'locale',
       // 'pack',
-      // 'panel',
+      'panel',
       'presentation',
       'project')
 

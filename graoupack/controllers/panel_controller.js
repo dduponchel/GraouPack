@@ -9,28 +9,26 @@
  * or ["Graoupack.Controllers.Panel.prototype.&#46;destroy click" destroy] panels.
 */
 $.Controller.extend('Graoupack.Controllers.Panel', /* @Static */ {
+  availablePanels : [],
+  init : function() {
+    this._super.apply(this, arguments);
+    for (var i in Graoupack.Models.Panels) {
+      this.availablePanels.push(Graoupack.Models.Panels[i].shortName);
+    }
+  }
 },
 /* @Prototype */
 {
-  init: function () {
-    console.log("panel init");
-    this.load();
-  },
-  /**
- * When the page loads, gets all panels to be displayed.
-*/
-  load: function () {
-    if (!$("#panel").length) {
-      $(document.body).append($('<div/>').attr('id', 'panel'));
-      Graoupack.Models.Panel.findAll({}, this.callback('list'));
-    }
+  init: function (el) {
+    $(el).html(this.view('init', {available : this.Class.availablePanels}));
+    Graoupack.Models.Panel.findAll({}, this.callback('displaySelected'));
   },
   /**
  * Displays a list of panels and the submit form.
  * @param {Array} panels An array of Graoupack.Models.Panel objects.
 */
-  list: function (panels) {
-    $('#panel').html(this.view('init', {panels: panels}));
+  displaySelected : function (panels) {
+    $('#tab-panel-selected', this.element).html(this.view('selected', {panels: panels}));
   },
   /**
  * Responds to the create form being submitted by creating a new Graoupack.Models.Panel.

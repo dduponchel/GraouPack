@@ -27,3 +27,93 @@ ul.sortable li, ul.draggable li {
 	column-count: 3;
 }
 
+#Panel div.available-panel,
+#Panel div.selected-panel {
+	border: 1px solid #888;
+	background: #eee;
+	margin: 4px 0;
+}
+#Panel div.selected-panel {
+	height: 108px; /* bug with firefox */
+}
+
+
+#Panel .tab-panel-available-place {
+	width:60%;
+	float:left;
+}
+
+#Panel .tab-panel-selected-place {
+		width: 39%;
+		margin-left:61%;
+}
+
+#Panel img.preview {
+	float:left;
+	border:1px solid grey;
+	margin: 3px;
+}
+
+#Panel h2 {
+	text-align: center;
+}
+
+#Panel .summary p,
+#Panel h2,
+#Panel h3 {
+	margin:0;
+	padding:0;
+}
+#Panel #tab-panel-available .summary {
+	margin:0 36px 0 108px;
+	padding: 5px;
+}
+#Panel #tab-panel-available .action {
+	float:right;
+}
+#Panel #tab-panel-available .action img {
+	margin: 8px 2px;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+}
+#Panel #tab-panel-available img {
+	width: 100px;
+	height: 100px;
+}
+
+#Panel-info-dialog {
+	width: 450px;
+}
+
+#Panel-info-dialog > img {
+	border:1px solid grey;
+	width: 473px;
+	height: 275px;
+}
+
+#Panel .selected-panel .right-side img {
+	margin:10px;
+	cursor: pointer;
+}
+
+#Panel .selected-panel .right-side {
+	margin-left: 123px;
+	text-align: center;
+}
+
+#Panel .selected-panel .grip {
+	height: 100%;
+	width: 15px;
+	float:left;
+	cursor: move;
+	background: url("../../img/grip.png") #ccc;
+}
+
+#Panel .selected-panel img.preview {
+	cursor: move;
+}
+
+.Panel-selected-place #model-for-selected {
+	display:none;
+}

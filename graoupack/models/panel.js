@@ -7,7 +7,7 @@
  * [Graoupack.Models.Panel.static.destroy destroying], and
  * [Graoupack.Models.Panel.static.create creating] panels.
 */
-$.Model.extend('Graoupack.Models.Panel', {
+Graoupack.Models.Abstract.extend('Graoupack.Models.Panel', {
   /**
          * Retrieves panels data from your backend services.
          * @param {Object} params params that might refine your results.
@@ -15,15 +15,7 @@ $.Model.extend('Graoupack.Models.Panel', {
          * @param {Function} error a callback function for an error in the ajax request.
 */
   findAll: function (params, success, error) {
-    $.ajax({
-      url: '/panel',
-      type: 'get',
-      dataType: 'json',
-      data: params,
-      success: this.callback(['wrapMany', success]),
-      error: error,
-      fixture: "//graoupack/fixtures/panels.json.get" //calculates the fixture path from the url and type.
-    });
+    success(this.wrapMany(this.getArray("panels")));
   },
   /**
          * Updates a panel's data.

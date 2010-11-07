@@ -1,0 +1,14 @@
+<%for(var i = 0; i < panels.length ; i++){%>
+  <div class="selected-panel ui-helper-clearfix ui-corner-all">
+    <div class="grip"></div>
+    <img src="img/panel/<%= panels[i]%>-small.png" class="preview" alt=""/>
+    <div class="right-side">
+      <h3><%= panels[i]%></h3>
+      <div class="action">
+        <img src="img/remove.png" alt="remove" class="remove" />
+        <img src="img/help.png" alt="info" class="info" />
+        <img src="img/configure.png" alt="configure" class="config" />
+      </div>
+    </div>
+  </div>
+<%}%>
