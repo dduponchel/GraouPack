@@ -19,25 +19,37 @@ $.Controller.extend('Graoupack.Controllers.Panel', /* @Static */ {
 },
 /* @Prototype */
 {
+  infoDialog : null,
+  infoDialogContentId : "tab-panel-info-dialog",
+
   init: function (el) {
     $(el).html(this.view('init', {available : this.Class.availablePanels}));
     Graoupack.Models.Panel.findAll({}, this.callback('displaySelected'));
+    this.infoDialog = $("<div/>").append('<div id="' + this.infoDialogContentId + '"/>').dialog({
+      autoOpen : false,
+      width : 510
+    });
   },
   /**
- * Displays a list of panels and the submit form.
+ * Displays a list of panels.
  * @param {Array} panels An array of Graoupack.Models.Panel objects.
 */
   displaySelected : function (panels) {
     $('#tab-panel-selected', this.element).html(this.view('selected', {panels: panels}));
   },
   /**
- * Responds to the create form being submitted by creating a new Graoupack.Models.Panel.
+ * Show the help if the user click on a .info button.
  * @param {jQuery} el A jQuery wrapped element.
  * @param {Event} ev A jQuery event whose default action is prevented.
 */
-  'form submit': function (el, ev) {
+  '.info click': function (el, ev) {
     ev.preventDefault();
-    new Graoupack.Models.Panel(el.formParams()).save();
+    var panel = el.closest('.panel');
+    this.infoDialog
+    $('#' + this.infoDialogContentId).html(this.view('panel/help/' + panel.attr("data-class")));
+    infoDialog : null,
+    this.infoDialog.dialog('option', 'title', $(".summary h3", panel).text())
+    .dialog("open");
   },
   /**
  * Listens for panels being created.	 When a panel is created, displays the new panel.
