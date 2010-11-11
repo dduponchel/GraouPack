@@ -10,3 +10,6 @@
 [submodule "documentjs"]
 	path = documentjs
 	url = git://github.com/jupiterjs/documentjs.git
+[submodule "graoupack/resources/jStorage"]
+	path = graoupack/resources/jStorage
+	url = git://github.com/andris9/jStorage.git

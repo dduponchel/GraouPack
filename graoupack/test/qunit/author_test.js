@@ -1,10 +1,10 @@
 module("Model: Graoupack.Models.Author", {
   populate : function () {
-    localStorage.setItem("authors", '[{"id":1,"name":"test1","mail":"user1@isp.tld"},{"id":2,"name":"test2","mail":"user2@isp.tld"}]');
-    localStorage.setItem("authors-lastindex", 2);
+    $.jStorage.set("authors", [{"id":1,"name":"test1","mail":"user1@isp.tld"},{"id":2,"name":"test2","mail":"user2@isp.tld"}]);
+    $.jStorage.set("authors-lastindex", 2);
   },
-  setup    : function(){localStorage.clear();},
-  teardown : function(){localStorage.clear();}
+  setup    : function(){$.jStorage.flush();},
+  teardown : function(){$.jStorage.flush();}
 });
 
 test("findAll", function(){

@@ -34,16 +34,12 @@
 */
 $.Model.extend('Graoupack.Models.Abstract', /* @Static */ {
   /**
- * the object which will hold all the data.
- */
-  storage : window.localStorage,
-  /**
  * get a value based on his key.
  * @param {String} key the identifier of the object value.
  * @return {Object} the object.
  */
   get : function (key) {
-    return JSON.parse(this.storage.getItem(key));
+    return $.jStorage.get(key);
   },
   /**
  * set a value.
@@ -51,7 +47,7 @@ $.Model.extend('Graoupack.Models.Abstract', /* @Static */ {
  * @param {Object} the value to set.
  */
   set : function (key, obj) {
-    this.storage.setItem(key, JSON.stringify(obj));
+    $.jStorage.set(key, obj);
   },
   /**
  * get an array by its key.
@@ -110,7 +106,7 @@ $.Model.extend('Graoupack.Models.Abstract', /* @Static */ {
  * @param {String} key the id of the object.
  */
   destroy : function (key) {
-    this.storage.removeItem(key);
+    $.jStorage.deleteKey(key);
   },
   /**
  * Remove an object from an array.
@@ -132,10 +128,10 @@ $.Model.extend('Graoupack.Models.Abstract', /* @Static */ {
  * @return {Integer} the new index.
  */
   nextIndex : function (key) {
-    var lastindex = this.storage.getItem(key + '-lastindex');
+    var lastindex = this.get(key + '-lastindex');
     lastindex = lastindex ? lastindex : 0;
     lastindex++;
-    this.storage.setItem(key + '-lastindex', lastindex);
+    this.set(key + '-lastindex', lastindex);
 
     return lastindex;
   },
@@ -143,7 +139,7 @@ $.Model.extend('Graoupack.Models.Abstract', /* @Static */ {
  * Empty the db.
  */
   nuke : function () {
-    this.storage.clear();
+    $.jStorage.flush();
   }
 },
 /* @Prototype */

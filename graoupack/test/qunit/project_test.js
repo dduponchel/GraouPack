@@ -1,6 +1,6 @@
 module("Model: Graoupack.Models.Project", {
-  setup    : function(){localStorage.clear();},
-  teardown : function(){localStorage.clear();}
+  setup    : function(){$.jStorage.flush();},
+  teardown : function(){$.jStorage.flush();}
 });
 
 test("create", function(){

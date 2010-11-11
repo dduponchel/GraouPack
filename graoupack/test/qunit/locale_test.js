@@ -1,8 +1,8 @@
 "use strict";
 
 module("Model: Graoupack.Models.Locale", {
-  setup    : function(){localStorage.clear();},
-  teardown : function(){localStorage.clear();}
+  setup    : function(){$.jStorage.flush();},
+  teardown : function(){$.jStorage.flush();}
 });
 
 test("findRemainingAvailable - no locale selected", function () {

@@ -16,7 +16,7 @@ steal.plugins(
 
   .css('graoupack')  // loads styles
 
-  .resources()       // 3rd party script's (like jQueryUI), in resources folder
+  .resources('jStorage/jstorage')       // 3rd party script's (like jQueryUI), in resources folder
 
   // loads files in models folder
   .models(
