@@ -11,13 +11,13 @@ steal.plugins(
   'jquery/view/ejs',              // client side templates
   'jquery/model',                 // Ajax wrappers
   'jquery/model/validations',     // validation
-  'jquery/dom/fixture',           // simulated Ajax requests
   'jquery/dom/form_params',       // form data helper
   'graoupack/generators')
+  .then('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js',
+        'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js')
 
-  .css('graoupack')  // loads styles
-
-  .resources('jStorage/jstorage')       // 3rd party script's (like jQueryUI), in resources folder
+  .css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/base/jquery.ui.all',
+       'graoupack')
 
   // loads files in models folder
   .models(
