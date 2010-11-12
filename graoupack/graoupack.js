@@ -12,7 +12,8 @@ steal.plugins(
   'jquery/model',                 // Ajax wrappers
   'jquery/model/validations',     // validation
   'jquery/dom/fixture',           // simulated Ajax requests
-  'jquery/dom/form_params')       // form data helper
+  'jquery/dom/form_params',       // form data helper
+  'graoupack/generators')
 
   .css('graoupack')  // loads styles
 
@@ -37,6 +38,7 @@ steal.plugins(
     // loads files in controllers folder
     .controllers(
       'main',
+      'generate',
       'locale',
       // 'pack',
       'panel',

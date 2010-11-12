@@ -40,21 +40,21 @@
     throw new Error("XML generation : this browser doesn't seem to be recent enough");
   }
 
-  $.Class.extend("Graoupack.Xml.Element", {
+  $.Class.extend("Graoupack.Xml", {
     /**
      * Create a new XML document.
      * @Param {String} rootName the name of the root element
-     * @Return {Graoupack.Xml.Element} The root element.
+     * @Return {Graoupack.Xml} The root element.
      */
     createDocument : xmlCompat.w3c
     ? function (rootName) {
       var xmlDocument = document.implementation.createDocument("", rootName, null);
-      return new Graoupack.Xml.Element(xmlDocument, xmlDocument.childNodes[0]);
+      return new Graoupack.Xml(xmlDocument, xmlDocument.childNodes[0]);
     }
     : function (rootName) {
       var doc = new ActiveXObject("MSXML2.DOMDocument"),
       xmlDocument = doc.loadXML("<" + rootName + "/>");
-      return new Graoupack.Xml.Element(xmlDocument, xmlDocument.childNodes[0]);
+      return new Graoupack.Xml(xmlDocument, xmlDocument.childNodes[0]);
     }
   }, {
 
@@ -84,7 +84,7 @@
 
       // this element targets the xml document and not its first element
       // to avoid treating differently the first element.
-      currentNode = new Graoupack.Xml.Element(this.xmlDocument, this.xmlDocument);
+      currentNode = new Graoupack.Xml(this.xmlDocument, this.xmlDocument);
 
       // for each level
       for (depth = 0; depth < nodeNames.length; depth++) {
@@ -250,22 +250,22 @@
     /**
      * Create a child of this xml node.
      * @Param {String} name the node name.
-     * @Return {Graoupack.Xml.Element} the created child.
+     * @Return {Graoupack.Xml} the created child.
      */
     createChild : function (name) {
       var newElement = this.xmlDocument.createElement(name);
       this.xmlNode.appendChild(newElement);
-      return new Graoupack.Xml.Element(this.xmlDocument, newElement);
+      return new Graoupack.Xml(this.xmlDocument, newElement);
     },
     /**
      * Get the children of the current node.
-     * @Return {[Graoupack.Xml.Element]} the children
+     * @Return {[Graoupack.Xml]} the children
      */
     getChildren : function () {
       var children = [],
       i; // iteration
       for (i = 0; i < this.xmlNode.childNodes.length; i++) {
-        children.push(new Graoupack.Xml.Element(this.xmlDocument, this.xmlNode.childNodes[i]));
+        children.push(new Graoupack.Xml(this.xmlDocument, this.xmlNode.childNodes[i]));
       }
       return children;
     },
