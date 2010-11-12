@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+    <script>
+      window.addEventListener('storage', function (event){
+        console.log(event);
+        // works on firefox 4beta and chromium
+        // event.url // don't really care
+        // event.key
+        // event.oldValue
+        // event.newValue
+      }, false);
+    </script>
+  </body>
+</html>
