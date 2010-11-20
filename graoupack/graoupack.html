@@ -4,6 +4,15 @@
   <head>
     <title>GraouPack</title>
     <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <!--
+    Load the font and use it ASAP. Moreover, jmvc add an useless ".css".
+    -->
+    <link href='http://fonts.googleapis.com/css?family=OFL+Sorts+Mill+Goudy+TT&subset=latin' rel='stylesheet' type='text/css'>
+    <style>
+    body, body .ui-widget {
+      font-family: 'OFL Sorts Mill Goudy TT', verdana !important;
+    }
+    </style>
   </head>
   <body>
     <h1>GraouPack, an <a href="http://izpack.org">IzPack</a> Js UI !</h1>
@@ -13,6 +22,7 @@
         <p>This application is entirely written in javascript, therefore it needs the js to be enable. Enable js and try again !</p>
       </noscript>
     </div>
-    <script type='text/javascript' src='steal/steal.js?graoupack,development'></script>
+    <script type='text/javascript' src='steal/steal.js?graoupack'></script>
+    <!-- <script type='text/javascript' src='steal/steal.production.js?graoupack'></script> -->
   </body>
 </html>

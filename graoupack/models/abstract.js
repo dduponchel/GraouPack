@@ -29,7 +29,7 @@
 "use strict";
 
 // steal.resources('jStorage/jstorage').then(function ( $ ) {
-steal('/graoupack/resources/jStorage/jstorage').then(function ( $ ) {
+steal('//graoupack/resources/jStorage/jstorage').then(function ( $ ) {
   /**
    * @tag models, home
    * An parent model, which contains the static methods to handle the storage.
