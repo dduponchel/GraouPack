@@ -13,3 +13,9 @@
 [submodule "graoupack/resources/jStorage"]
 	path = graoupack/resources/jStorage
 	url = git://github.com/andris9/jStorage.git
+[submodule "graoupack/resources/jszip"]
+	path = graoupack/resources/jszip
+	url = git://github.com/Stuk/jszip.git
+[submodule "graoupack/resources/Downloadify"]
+	path = graoupack/resources/Downloadify
+	url = git://github.com/dcneiner/Downloadify.git
