@@ -28,33 +28,35 @@
 
 "use strict";
 
-steal.plugin('graoupack/xml')
-.then(
-  'project',
-  // 'pack',
-  'locale')
+steal('abstract')
 .then(function( $ ) {
-  $.Class.extend('Graoupack.Generators', {
-    // classes
-    generators : [
-      Graoupack.Generators.Project,
-      // Graoupack.Generators.Pack,
-      Graoupack.Generators.Locale
-    ]
-  }, {
-    // instances
-    generators : [],
-    init : function () {
-      for (var i in this.Class.generators) {
-        this.generators.push(new this.Class.generators[i]());
+
+  Graoupack.Generators.Abstract.extend("Graoupack.Generators.Pack", {
+    addGeneratedInfo : function (wholeProject, files) {
+      var xml = this.getFile(files, 'install.xml'),
+          packs = wholeProject.packs, // packs, js side
+          pack, // a pack, js side
+          packsXml, // packs, xml side
+          packXml, // a pack, xml side
+          files, // files for a pack
+          fileXml, // file, xml side
+          i, j; // iter
+
+      packsXml = xml.get("/installation/packs");
+      for (i = 0; i < packs.length; i++) {
+        pack = packs[i];
+        packXml = packsXml.createChild("pack");
+        packXml.setAttribute("name", pack.name);
+        packXml.setAttribute("required", pack.required ? "yes" : "no");
+        packXml.createChild("description").setContent(pack.description);
+
+        files = pack.files;
+        for (j = 0; j < files.length; j++) {
+          fileXml = packXml.createChild("file");
+          fileXml.setAttribute("targetdir", "$INSTALL_PATH");
+          fileXml.setAttribute("src", files[j]);
+        }
       }
-    },
-    generateXML : function (wholeProject) {
-      var files = {};
-      for (var i in this.generators) {
-        this.generators[i].addGeneratedInfo(wholeProject, files);
-      }
-      return files;
     }
   });
 });

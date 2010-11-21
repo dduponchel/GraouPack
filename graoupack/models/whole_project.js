@@ -28,33 +28,31 @@
 
 "use strict";
 
-steal.plugin('graoupack/xml')
-.then(
-  'project',
-  // 'pack',
-  'locale')
-.then(function( $ ) {
-  $.Class.extend('Graoupack.Generators', {
-    // classes
-    generators : [
-      Graoupack.Generators.Project,
-      // Graoupack.Generators.Pack,
-      Graoupack.Generators.Locale
-    ]
-  }, {
-    // instances
-    generators : [],
-    init : function () {
-      for (var i in this.Class.generators) {
-        this.generators.push(new this.Class.generators[i]());
-      }
-    },
-    generateXML : function (wholeProject) {
-      var files = {};
-      for (var i in this.generators) {
-        this.generators[i].addGeneratedInfo(wholeProject, files);
-      }
-      return files;
-    }
-  });
-});
+Graoupack.Models.Abstract.extend('Graoupack.Models.WholeProject', {
+
+  init : function(){
+    this.hasMany("Graoupack.Models.Author" , "authors");
+    this.hasMany("Graoupack.Models.Locale" , "locales");
+    this.hasMany("Graoupack.Models.Panel"  , "panels");
+    this.hasMany("Graoupack.Models.Project", "projects");
+  },
+
+
+  /**
+   * Retrieves the whole project.
+   * @param {Object} params params that might refine your results.
+   * @param {Function} success a callback function that returns wrapped project.
+   * @param {Function} error a callback function for an error.
+   */
+  findOne: function (params, success, error) {
+    var wholeProject = {
+      locales : this.getArray('locales'),
+      authors : this.getArray('authors'),
+      panels  : this.getArray('panels'),
+      projects: [this.get('project')],
+    };
+    success(this.wrap(wholeProject));
+  }
+},
+/* @Prototype */
+{});

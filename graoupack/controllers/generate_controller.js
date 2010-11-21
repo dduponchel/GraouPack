@@ -29,40 +29,67 @@
 /*global confirm: true */
 "use strict";
 
-/**
+steal('//graoupack/resources/jszip/jszip', '//graoupack/resources/Downloadify/src/downloadify.js')
+.then(function ($) {
+
+  /**
  * @tag controllers, home
  * Display the list of available locales and let the user select which
  * locale he wants.
 */
-$.Controller.extend('Graoupack.Controllers.Generate', /* @Static */ {
-},
-/* @Prototype */
-{
-  /**
+  $.Controller.extend('Graoupack.Controllers.Generate', /* @Static */ {
+  },
+  /* @Prototype */
+  {
+    /**
  * The dialog with tabs displaying the generated xml
- */
-  dialog : null,
-  /**
+*/
+    dialog : null,
+    /**
    * @param {jQuery} el A jQuery wrapped element.
 */
-  init : function (el) {
-    $(el).html(this.view('init'));
-    $(".generateXML button", el).button();
-    this.dialog = $(".dialog", el).dialog({
-      autoOpen : false,
-      modal    : true,
-      title    : "generated XML",
-      width    : 700,
-      height   : 500
-    }).tabs();
-    $(el).show();
-  },
-  /**
+    init : function (el) {
+      $(el).html(this.view('init'));
+      $(".generateXML button", el).button();
+      this.dialog = $(".dialog", el).dialog({
+        autoOpen : false,
+        modal    : true,
+        title    : "generated XML",
+        width    : 700,
+        height   : 500
+      }).tabs();
+      $(el).show();
+      $('.flash', this.dialog).downloadify({
+        swf           : "graoupack/resources/Downloadify/media/downloadify.swf",
+        downloadImage : "graoupack/resources/Downloadify/images/download.png",
+        width: 100,
+        height: 30,
+        filename : "GraouPack.zip",
+        data : function () {
+          var files = $(this.el).parents('.dialog').data('files');
+          var zip = new JSZip();
+          for (var filename in files) {
+            zip.add(filename, files[filename].toXMLString());
+          }
+          return zip.generate();
+        },
+        dataType: "base64"
+      });
+
+    },
+    /**
     * When the list of selected locales is updated, tell the model.
     * @param {jQuery} el A jQuery wrapped element.
     * @param {Event} ev A jQuery event.
-    */
-  '.generateXML button click' : function (el, ev) {
-    this.dialog.dialog("open");
-  }
+*/
+    '.generateXML button click' : function (el, ev) {
+      var that = this;
+      Graoupack.Models.WholeProject.findOne({}, function (wholeProject) {
+        var generator = new Graoupack.Generators();
+        var files = generator.generateXML(wholeProject);
+        that.dialog.data('files', files);
+        that.dialog.dialog("open");
+      });
+    }
+  });
 });

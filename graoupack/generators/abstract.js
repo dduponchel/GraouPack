@@ -29,32 +29,25 @@
 "use strict";
 
 steal.plugin('graoupack/xml')
-.then(
-  'project',
-  // 'pack',
-  'locale')
 .then(function( $ ) {
-  $.Class.extend('Graoupack.Generators', {
-    // classes
-    generators : [
-      Graoupack.Generators.Project,
-      // Graoupack.Generators.Pack,
-      Graoupack.Generators.Locale
-    ]
-  }, {
-    // instances
-    generators : [],
-    init : function () {
-      for (var i in this.Class.generators) {
-        this.generators.push(new this.Class.generators[i]());
+  $.Class.extend('Graoupack.Generators.Abstract', {
+    getFile : function (files, fileName) {
+      if (files[fileName]) {
+        return files[fileName];
       }
-    },
-    generateXML : function (wholeProject) {
-      var files = {};
-      for (var i in this.generators) {
-        this.generators[i].addGeneratedInfo(wholeProject, files);
+
+      var xml = null;
+
+      switch (fileName) {
+        case 'install.xml':
+          xml = Graoupack.Xml.createDocument('installation');
+          xml.setAttribute("version", "1.0");
+        break;
+        default :
+          throw new Error('no xml constructor for ' + fileName);
       }
-      return files;
+      files[fileName] = xml;
+      return xml;
     }
   });
 });

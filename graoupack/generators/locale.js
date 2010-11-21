@@ -28,33 +28,18 @@
 
 "use strict";
 
-steal.plugin('graoupack/xml')
-.then(
-  'project',
-  // 'pack',
-  'locale')
+steal('abstract')
 .then(function( $ ) {
-  $.Class.extend('Graoupack.Generators', {
-    // classes
-    generators : [
-      Graoupack.Generators.Project,
-      // Graoupack.Generators.Pack,
-      Graoupack.Generators.Locale
-    ]
-  }, {
-    // instances
-    generators : [],
-    init : function () {
-      for (var i in this.Class.generators) {
-        this.generators.push(new this.Class.generators[i]());
+
+  Graoupack.Generators.Abstract.extend("Graoupack.Generators.Locale", {
+    addGeneratedInfo : function (wholeProject, files) {
+      var xml = this.getFile(files, 'install.xml'),
+      localeXml = xml.get("/installation/locale"),
+      locales = wholeProject.locales,
+      i;
+      for (i = 0; i < locales.length; i++) {
+        localeXml.createChild("langpack").setAttribute("iso3", locales[i].iso3);
       }
-    },
-    generateXML : function (wholeProject) {
-      var files = {};
-      for (var i in this.generators) {
-        this.generators[i].addGeneratedInfo(wholeProject, files);
-      }
-      return files;
     }
   });
 });

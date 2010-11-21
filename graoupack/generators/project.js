@@ -2,7 +2,7 @@
  * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -13,7 +13,7 @@
  *     * Neither the name of the GraouPack nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,36 +25,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+ 
 "use strict";
 
-steal.plugin('graoupack/xml')
-.then(
-  'project',
-  // 'pack',
-  'locale')
+steal('abstract')
 .then(function( $ ) {
-  $.Class.extend('Graoupack.Generators', {
-    // classes
-    generators : [
-      Graoupack.Generators.Project,
-      // Graoupack.Generators.Pack,
-      Graoupack.Generators.Locale
-    ]
-  }, {
-    // instances
-    generators : [],
-    init : function () {
-      for (var i in this.Class.generators) {
-        this.generators.push(new this.Class.generators[i]());
+
+  Graoupack.Generators.Abstract.extend("Graoupack.Generators.Project", {
+    addGeneratedInfo : function (wholeProject, files) {
+      var xml = this.getFile(files, 'install.xml'),
+          project = wholeProject.projects[0],
+          authors = wholeProject.authors, // authors, js side
+          author, // an author, js side
+          authorsXml, // authors, xml side
+          authorXml, // an author, xml side
+          i; // iter
+      if (authors.length) {
+        authorsXml = xml.get("/installation/info/authors");
+        for (i = 0; i < authors.length; i++) {
+          author = authors[i];
+          authorXml = authorsXml.createChild("author");
+          authorXml.setAttribute("name", author.name);
+          authorXml.setAttribute("email", author.mail);
+        }
       }
-    },
-    generateXML : function (wholeProject) {
-      var files = {};
-      for (var i in this.generators) {
-        this.generators[i].addGeneratedInfo(wholeProject, files);
-      }
-      return files;
+
+      xml.get("/installation/info/appname").setContent(project.appname);
+      xml.get("/installation/info/appversion").setContent(project.appversion);
     }
   });
 });

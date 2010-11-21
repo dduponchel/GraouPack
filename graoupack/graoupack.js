@@ -11,6 +11,7 @@ steal.plugins(
   'jquery/view/ejs',              // client side templates
   'jquery/model',                 // Ajax wrappers
   'jquery/model/validations',     // validation
+  'jquery/model/associations',    // associations
   'jquery/dom/form_params',       // form data helper
   'graoupack/generators')
   .then('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js',
@@ -33,7 +34,8 @@ steal.plugins(
     'panels/install_panel',
     'panels/finish_panel',
     'project',
-    'author')
+    'author',
+    'whole_project')
 
     // loads files in controllers folder
     .controllers(
