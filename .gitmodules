@@ -19,3 +19,6 @@
 [submodule "graoupack/resources/Downloadify"]
 	path = graoupack/resources/Downloadify
 	url = git://github.com/dcneiner/Downloadify.git
+[submodule "graoupack/resources/jquery-ui"]
+	path = graoupack/resources/jquery-ui
+	url = https://github.com/jquery/jquery-ui.git
