@@ -23,18 +23,23 @@ steal
   'jquery-ui/ui/jquery.ui.widget.js',
   'jquery-ui/ui/jquery.ui.button.js', // <-- dependency
   'jquery-ui/ui/jquery.ui.mouse.js',
-  'jquery-ui/ui/jquery.ui.draggable.js', // <-- dependency
+  'jquery-ui/ui/jquery.ui.draggable.js',
   'jquery-ui/ui/jquery.ui.position.js',
   'jquery-ui/ui/jquery.ui.resizable.js',
   'jquery-ui/ui/jquery.ui.dialog.js', // <-- dependency
   'jquery-ui/ui/jquery.ui.tabs.js', // <-- dependency
-  'jquery-ui/ui/jquery.ui.droppable.js', // <-- dependency
   'jquery-ui/ui/jquery.ui.sortable.js' // <-- dependency
 )
-.then('http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js')
+// .then('http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js')
 
 .css(
-  'resources/jquery-ui/themes/base/jquery.ui.all',
+  'resources/jquery-ui/themes/base/jquery.ui.core',
+  'resources/jquery-ui/themes/base/jquery.ui.button',
+  'resources/jquery-ui/themes/base/jquery.ui.dialog',
+  'resources/jquery-ui/themes/base/jquery.ui.resizable',
+  'resources/jquery-ui/themes/base/jquery.ui.selectable',
+  'resources/jquery-ui/themes/base/jquery.ui.tabs',
+  'resources/jquery-ui/themes/base/jquery.ui.theme',
   'graoupack'
 )
 
@@ -53,16 +58,18 @@ steal
   'panels/finish_panel',
   'project',
   'author',
-  'whole_project')
+  'whole_project'
+)
 
-  // loads files in controllers folder
-  .controllers(
-    'main',
-    'generate',
-    'locale',
-    // 'pack',
-    'panel',
-    'presentation',
-    'project')
+// loads files in controllers folder
+.controllers(
+  'main',
+  'generate',
+  'locale',
+  // 'pack',
+  'panel',
+  'presentation',
+  'project'
+)
 
-    .views();            // adds views to be added to build
+.views();            // adds views to be added to build
