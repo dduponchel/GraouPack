@@ -49,7 +49,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.WholeProject', {
       locales : this.getArray('locales'),
       authors : this.getArray('authors'),
       panels  : this.getArray('panels'),
-      projects: [this.get('project')],
+      projects: [this.get('project')]
     };
     success(this.wrap(wholeProject));
   }
