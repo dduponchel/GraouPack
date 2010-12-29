@@ -10,7 +10,8 @@ clean:
 	rm -rf $(PROJECT)/production.css \
 	  $(PROJECT)/production.js \
 	  $(PROJECT)/docs.html \
-	  $(PROJECT)/docs
+	  $(PROJECT)/docs \
+	  $(COFFEE_OBJS)
 
 %.js: %.coffee
 	coffee --compile $<
