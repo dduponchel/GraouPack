@@ -1,5 +1,5 @@
 PROJECT=graoupack
-COFFEE_SOURCES := $(wildcard graoupack/controllers/*.coffee)
+COFFEE_SOURCES := $(wildcard $(PROJECT)/*/*.coffee $(PROJECT)/*/*/*.coffee)
 COFFEE_OBJS := $(patsubst %.coffee, %.js, $(COFFEE_SOURCES))
 
 all: coffee

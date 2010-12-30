@@ -1,4 +1,4 @@
-/*
+###
  * Licensed under BSD http://en.wikipedia.org/wiki/BSD_License
  * Copyright (c) 2010, Duponchel David
  * All rights reserved.
@@ -24,10 +24,55 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+###
 
-"use strict";
-Graoupack.Models.Panel.extend('Graoupack.Models.Panels.TargetPanel', /** @Static */ {
+"use strict"
+
+###*
+ * @tag controllers, home
+ * Controls the page and creates the tab controllers.
+*###
+$.Controller.extend('Graoupack.Controllers.Main', {
+  onDocument: true
+  tabs : {
+    'Presentation'  : 'presentation'
+    'Project'       : 'my application'
+    'Locale'        : 'locales'
+    'Panel'         : 'panels'
+    'Pack'          : 'packs'
+  }
+  hiddenControllers : [
+    'Generate'
+  ]
 },
-/* @Prototype */
-{});
+{
+  ###*
+   * init the page.
+  *###
+  init: ->
+    $("#loading p").append(" (almost !)")
+    if not $("#GraouPack").length
+      $(document.body).append($('<div/>').hide().attr('id', 'GraouPack'))
+      $('#GraouPack').html(this.view 'init',
+        tabs : @Class.tabs
+        hidden : @Class.hiddenControllers
+      )
+
+  ###*
+   * When the page loads, create the tabs and the controllers.
+  *###
+  load: ->
+    $("#GraouPack")
+    .bind("tabsshow", (event, ui) ->
+      panel = $(ui.panel)
+      if not panel.data("controller")
+        panel.data("controller", new Graoupack.Controllers[panel.attr('id')](panel))
+    )
+    .tabs()
+    .show()
+    $("#loading").remove()
+
+    for controller in @Class.hiddenControllers
+      panel = $("#" + controller)
+      new Graoupack.Controllers[controller](panel)
+})
