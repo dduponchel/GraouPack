@@ -83,7 +83,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Locale', {
    * @param {Function} error a callback function for an error in the ajax request.
   *###
   findRemainingAvailable : (success, error) ->
-    selected = @get("locales")
+    selected = @getArray("locales")
     remaining = @available.filter((value, index, array) ->
       for oneSelected in selected
         return false if oneSelected.iso3 is value.iso3

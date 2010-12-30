@@ -46,7 +46,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Project', {
   *###
   findOrCreateOne: (params, success, error) ->
     obj = @get('project')
-    if obj?
+    if not obj
       obj = new Graoupack.Models.Project().save(@callback(['wrap', success]))
     else
       success(@wrap obj)

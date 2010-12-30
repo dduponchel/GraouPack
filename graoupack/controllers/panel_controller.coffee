@@ -39,8 +39,7 @@ $.Controller.extend('Graoupack.Controllers.Panel', {
   availablePanels : []
   init : ->
     @_super.apply(this, arguments)
-    for panel in Graoupack.Models.Panels
-      @availablePanels.push(panel.shortName)
+    @availablePanels = (name for name, panel of Graoupack.Models.Panels)
 },
 {
   infoDialog : null

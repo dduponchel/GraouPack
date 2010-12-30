@@ -44,15 +44,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Panel', {
    * @param {Function} error a callback function for an error in the ajax request.
   *###
   findAll: (params, success, error) ->
-    $.ajax(
-      url: '/panel'
-      type: 'get'
-      dataType: 'json'
-      data: params
-      success: @callback ['wrapMany', success]
-      error: error
-      fixture: "//graoupanel/fixtures/panels.json.get" # calculates the fixture path from the url and type.
-    )
+    success(@wrapMany(@getArray "panels"))
 
   ###*
    * Updates a panel's data.

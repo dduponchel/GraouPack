@@ -44,15 +44,7 @@ $.Model.extend('Graoupack.Models.Pack', {
    * @param {Function} error a callback function for an error in the ajax request.
   *###
   findAll: (params, success, error) ->
-    $.ajax(
-      url: '/pack'
-      type: 'get'
-      dataType: 'json'
-      data: params
-      success: @callback ['wrapMany', success]
-      error: error
-      fixture: "//graoupack/fixtures/packs.json.get" # calculates the fixture path from the url and type.
-    )
+    success(@wrapMany(@getArray "packs"))
 
   ###*
    * Updates a pack's data.
