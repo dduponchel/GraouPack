@@ -1,5 +1,6 @@
 PROJECT=graoupack
-COFFEE_SOURCES := $(wildcard $(PROJECT)/*/*.coffee $(PROJECT)/*/*/*.coffee)
+COFFEE_SOURCES := $(shell find $(PROJECT) -type f -name '*.coffee')
+# COFFEE_OBJS := $(patsubst %.coffee, dist/%.js, $(COFFEE_SOURCES))
 COFFEE_OBJS := $(patsubst %.coffee, %.js, $(COFFEE_SOURCES))
 
 all: coffee
@@ -13,8 +14,9 @@ clean:
 	  $(PROJECT)/docs \
 	  $(COFFEE_OBJS)
 
+# dist/%.js: %.coffee
 %.js: %.coffee
-	coffee --compile $<
+	coffee --bare --output $(@D) --compile $<
 
 coffee: $(COFFEE_OBJS)
 
