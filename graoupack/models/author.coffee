@@ -45,7 +45,7 @@ Graoupack.Models.Abstract.extend('Graoupack.Models.Author', {
       if not @Class.emailRegex.test @mail
         return "not an email"
     )
-    validatePresenceOf 'name'
+    @validatePresenceOf 'name'
 
   ###*
    * Retrieves all authors.

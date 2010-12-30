@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * [Graoupanel.Models.panel.static.destroy destroying], and
  * [Graoupanel.Models.panel.static.create creating] panels.
 *###
-$.Model.extend('Graoupack.Models.panel', {
+Graoupack.Models.Abstract.extend('Graoupack.Models.Panel', {
   ###*
    * Retrieves panels data from your backend services.
    * @param {Object} params params that might refine your results.
