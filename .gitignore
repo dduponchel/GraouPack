@@ -5,3 +5,8 @@ graoupack/docs/
 graoupack/production.css
 graoupack/production.js
 selenium.log
+graoupack/controllers/*.js
+graoupack/generators/*.js
+graoupack/models/*.js
+graoupack/models/panels/*.js
+graoupack/xml/*.js

@@ -4,7 +4,7 @@ COFFEE_SOURCES := $(shell find $(PROJECT) -type f -name '*.coffee')
 COFFEE_OBJS := $(patsubst %.coffee, %.js, $(COFFEE_SOURCES))
 
 all: coffee
-	echo steal/js $(PROJECT)/scripts/build.js
+	steal/js $(PROJECT)/scripts/build.js
 doc:
 	documentjs/doc $(PROJECT)
 clean:
@@ -16,7 +16,7 @@ clean:
 
 # dist/%.js: %.coffee
 %.js: %.coffee
-	coffee --bare --output $(@D) --compile $<
+	coffee --output $(@D) --compile $<
 
 coffee: $(COFFEE_OBJS)
 
